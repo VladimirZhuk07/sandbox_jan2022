@@ -8,12 +8,14 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=sandbox
     ports:
-      - "13306:3306"
+      - "3306:3306"
     restart: always
 
   sandbox-app:
     image: sandbox
     container_name: sandbox-app
+    environment:
+      - JDBC_URL=jdbc:mysql://mysql-db:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
     ports:
       - "8080:8080"
     build:
