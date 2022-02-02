@@ -20,8 +20,10 @@ public class TelegramBotComponent extends TelegramLongPollingBot {
   public void onUpdateReceived(Update update) {
     try {
       SendMessage message=new SendMessage();
+      String name = update.getMessage().getChat().getFirstName();
+      String text=update.getMessage().getText();
       message.setChatId(String.valueOf(update.getMessage().getChatId()));
-      message.setText("Hi!");
+      message.setText(name+", Do you mean -> "+text+"?");
       execute(message);
     } catch (TelegramApiException e) {
       e.printStackTrace();
