@@ -26,7 +26,7 @@ public class TelegramBotComponent extends TelegramLongPollingBot {
       message.setText(name+", Do you mean -> "+text+"?");
       execute(message);
     } catch (TelegramApiException e) {
-      e.printStackTrace();
+
     }
   }
 }
