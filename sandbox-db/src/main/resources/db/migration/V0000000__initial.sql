@@ -13,7 +13,7 @@ CREATE TABLE `User`
 CREATE TABLE `Vacation`
 (
    id                   INT                        NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   user_id              INT                        NOT NULL,
+   user_id              BIGINT                     NOT NULL,
    vacation_start       DATE                       NOT NULL,
    vacation_end         DATE                       NOT NULL,
    FOREIGN KEY (user_id) REFERENCES User(id)
@@ -27,7 +27,7 @@ CREATE TABLE `Role`
 
 CREATE TABLE `User_role`
 (
-   user_id              INT                        NOT NULL,
+   user_id              BIGINT                     NOT NULL,
    role_id              INT                        NOT NULL,
    PRIMARY KEY (user_id, role_id),
    FOREIGN KEY (user_id) REFERENCES User(id),
