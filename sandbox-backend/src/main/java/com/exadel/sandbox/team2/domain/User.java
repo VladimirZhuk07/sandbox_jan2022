@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.domain;
 
+import com.exadel.sandbox.team2.domain.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,13 +15,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
-
+public class User extends BaseEntity {
     @Column
     private String username;
 }
