@@ -7,8 +7,7 @@ CREATE TABLE `User`
    email                VARCHAR(50)                NOT NULL,
    employment_start     DATE                       NOT NULL,
    employment_end       DATE,
-   is_fired             BOOLEAN,
-   created_date         DATE                       NOT NULL
+   is_fired             BOOLEAN
 );
 
 CREATE TABLE `Vacation`
