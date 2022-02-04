@@ -7,7 +7,6 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString(callSuper = true)
 @Getter
 @Setter
