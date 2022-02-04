@@ -23,4 +23,7 @@ logging:
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
       org.hibernate.SQL: DEBUG
       org.springframework.web: DEBUG
+bot:
+   name: exadelofficebot
+   token: 5109606367:AAF3xZPF6UDIfHSbI6gwDZkPoDl-TcwpuJQ
 
