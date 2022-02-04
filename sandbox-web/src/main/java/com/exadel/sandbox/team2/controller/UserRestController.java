@@ -31,7 +31,7 @@ public class UserRestController {
 
     @PutMapping("/{id}")
     public User update(@PathVariable Long id, @RequestBody User entity) {
-        entity.setId(id);
+//        entity.setId(id);
         return service.update(entity);
     }
 
