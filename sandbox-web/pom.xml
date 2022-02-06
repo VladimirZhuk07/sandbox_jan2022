@@ -27,16 +27,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.5</version>
-        </dependency>
 
     </dependencies>
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>${maven.compiler.source.version}</maven.compiler.source>
+        <maven.compiler.target>${maven.compiler.target.version}</maven.compiler.target>
     </properties>
 
     <build>

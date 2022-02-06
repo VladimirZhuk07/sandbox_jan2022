@@ -10,10 +10,10 @@ import javax.persistence.*;
 @ToString(callSuper = true)
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
 @Table
 public class User extends BaseEntity {
+    String username;
 }
