@@ -25,5 +25,5 @@ logging:
       org.springframework.web: DEBUG
 bot:
    name: exadelofficebot
-   token: 5109606367:AAF3xZPF6UDIfHSbI6gwDZkPoDl-TcwpuJQ
+   token: 5294755437:AAEqe6YcFIUExNjVGBG56R2ypK1cLKf8o14
 
