@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Component
+
 @Data
 public class TelegramBotComponent extends TelegramLongPollingBot {
   @Value("${bot.name}")

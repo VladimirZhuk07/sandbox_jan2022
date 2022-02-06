@@ -27,3 +27,6 @@ bot:
    name: exadelofficebot
    token: 5109606367:AAF3xZPF6UDIfHSbI6gwDZkPoDl-TcwpuJQ
 
+authorization:
+   secret: 8cbd7616-874a-11ec-a8a3-0242ac120002
+   expiration: 3600
