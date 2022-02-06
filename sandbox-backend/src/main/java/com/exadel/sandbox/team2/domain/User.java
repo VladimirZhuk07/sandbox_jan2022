@@ -15,5 +15,4 @@ import javax.persistence.*;
 @Entity
 @Table
 public class User extends BaseEntity {
-    String username;
 }
