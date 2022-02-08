@@ -1,6 +1,6 @@
 package com.exadel.sandbox.team2.component;
 
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,12 +8,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
-@Data
+@Getter
 public class TelegramBotComponent extends TelegramLongPollingBot {
-  @Value("${bot.name}")
+  @Value("${telegrambot.botUsername}")
   private String botUsername;
-  @Value("${bot.token}")
+  @Value("${telegrambot.botToken}")
   private String botToken;
 
   @Override
@@ -26,7 +25,7 @@ public class TelegramBotComponent extends TelegramLongPollingBot {
       message.setText(name+", Do you mean -> "+text+"?");
       execute(message);
     } catch (TelegramApiException e) {
-
+       e.printStackTrace();
     }
   }
 }
