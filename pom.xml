@@ -21,6 +21,7 @@
       <module>sandbox-backend</module>
       <module>sandbox-db</module>
       <module>sandbox-web</module>
+      <module>sandbox-telegram</module>
    </modules>
 
    <properties>
