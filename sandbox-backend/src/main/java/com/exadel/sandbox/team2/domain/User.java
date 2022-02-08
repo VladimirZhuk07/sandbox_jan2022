@@ -1,26 +1,18 @@
 package com.exadel.sandbox.team2.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.exadel.sandbox.team2.domain.base.BaseEntity;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@ToString(callSuper = true)
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 
 @Entity
 @Table
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
-
-    @Column
-    private String username;
+public class User extends BaseEntity {
 }
