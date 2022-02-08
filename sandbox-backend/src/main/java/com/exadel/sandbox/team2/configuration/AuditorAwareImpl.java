@@ -6,11 +6,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+import static com.exadel.sandbox.team2.domain.test.TestUser.testUser;
+
 @Component
 public class AuditorAwareImpl implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
 //        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        return Optional.of("System");
+        return Optional.of(testUser.getUsername());
     }
 }

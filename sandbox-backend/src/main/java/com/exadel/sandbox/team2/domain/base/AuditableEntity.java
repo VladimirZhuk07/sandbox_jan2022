@@ -1,18 +1,20 @@
 package com.exadel.sandbox.team2.domain.base;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @ToString(callSuper = true)
-@Builder
+@SuperBuilder
 
 public class AuditableEntity extends BaseEntity{
 

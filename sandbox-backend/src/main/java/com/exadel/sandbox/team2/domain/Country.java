@@ -6,13 +6,19 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true)
+@NoArgsConstructor
 @Getter
 @Setter
+@ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 
 @Entity
-public class User extends BaseEntity {
+@Table(name = "country")
+public class Country extends BaseEntity {
+
+    @Column(unique = true)
+    String name;
+
 }
