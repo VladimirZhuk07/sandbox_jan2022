@@ -1,38 +1,35 @@
-package com.exadel.sandbox.team2.component;
+package com.exadel.sandbox.team2.telegram.webhook.component;
 
-import com.exadel.sandbox.team2.service.TelegramMessageService;
-import lombok.AccessLevel;
+import com.exadel.sandbox.team2.telegram.webhook.service.TelegramMessageService;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Getter
 @Setter
 @Component
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TelegramWebhookBotComponent extends TelegramWebhookBot {
     private final TelegramMessageService messageService;
-    @Value("${telegrambot.botPath}")
-    String botPath;
-    @Value("${telegrambot.botUsername}")
-    String botUsername;
-    @Value("${telegrambot.botToken}")
-    String botToken;
 
-    public TelegramWebhookBotComponent(TelegramMessageService messageService) {
-        this.messageService = messageService;
-    }
+    @Value("${telegrambot.botUsername}")
+    private String botUsername = "Exadel_office_bot";
+    @Value("${telegrambot.botToken}")
+    private String botToken = "5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo";
+    @Value("${telegrambot.botPath}")
+    private String botPath = "https://b0ff-31-148-162-123.ngrok.io/api/telegram";
+
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         return messageService.handleUpdate(update);
     }
+
+    public TelegramWebhookBotComponent(TelegramMessageService messageService) {
+        this.messageService = messageService;
+    }
 }
+
