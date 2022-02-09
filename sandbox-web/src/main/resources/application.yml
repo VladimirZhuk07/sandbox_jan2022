@@ -1,25 +1,36 @@
 server:
-   port: 8080
-   servlet:
-      context-path: /api
+  port: 8080
+  servlet:
+    context-path: /api
 
 spring:
-   application:
-      name: sandbox
-   datasource:
-      url: ${JDBC_URL:jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
-      username: ${JDBC_USER:root}
-      password: ${JDBC_PASSWORD:root}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-   jpa:
-      generate-ddl: false
-      hibernate:
-         naming:
-            implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  application:
+    name: sandbox
+  datasource:
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${JDBC_USER:root}
+    password: ${JDBC_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    generate-ddl: false
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 logging:
-   level:
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-      org.hibernate.SQL: DEBUG
-      org.springframework.web: DEBUG
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.SQL: DEBUG
+    org.springframework.web: DEBUG
+
+telegramBot:
+  botUsername: ${TG_BOT_USERNAME}
+  botToken: ${TG_BOT_TOKEN}
+  botPath: ${TG_BOT_PATH}
+
+#telegrambot:
+#   botUsername: Exadel_office_bot
+#   botToken: 5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo
+#   botPath: https://b0ff-31-148-162-123.ngrok.io/api/telegram
+
