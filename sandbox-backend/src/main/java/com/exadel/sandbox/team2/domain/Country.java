@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.domain;
 
-import com.exadel.sandbox.team2.domain.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,9 +14,9 @@ import javax.persistence.*;
 @Builder
 
 @Entity
-@Table(name = "country")
-public class Country extends BaseEntity {
+public class Country{
 
+    @Id
     @Column(unique = true)
     String name;
 

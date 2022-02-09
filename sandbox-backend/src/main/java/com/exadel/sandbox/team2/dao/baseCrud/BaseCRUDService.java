@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team2.dao.baseCrud;
 
 import com.exadel.sandbox.team2.domain.base.BaseEntity;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,10 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RequiredArgsConstructor
 public abstract class BaseCRUDService <E extends BaseEntity, I> {
 
-    protected final CrudRepository<E,I> repository;
+    protected CrudRepository<E,I> repository;
+
+    public BaseCRUDService(CrudRepository<E,I> repository){
+        this.repository = repository;
+    }
 
 
     public Optional<E> findById(I i) {

@@ -14,10 +14,12 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 
+@Entity
 public class Map extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
+    @JoinColumn(name = "officeId", referencedColumnName = "id")
     Office office;
     int floorNum;
     int kitchenNum;
