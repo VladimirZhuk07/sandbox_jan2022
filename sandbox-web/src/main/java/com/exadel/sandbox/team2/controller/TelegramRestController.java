@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.telegram.webhook.controller;
+package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.telegram.webhook.component.TelegramWebhookBotComponent;
 import lombok.RequiredArgsConstructor;
