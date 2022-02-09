@@ -1,6 +1,8 @@
 package com.exadel.sandbox.team2.domain;
 
+import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,17 +12,17 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"roles", "vacation"})
+@EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
 @ToString(exclude = {"roles", "vacation"})
-@Builder
+@SuperBuilder
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "User")
+public class User extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Long id;
 
     @Column(name = "chat_id")
@@ -49,7 +51,7 @@ public class User {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
-            name = "user_role"
+            name = "User_Role"
             , joinColumns = @JoinColumn(name = "user_id")
             , inverseJoinColumns = @JoinColumn(name = "role_id")
     )

@@ -1,18 +1,22 @@
-ALTER TABLE `user` DROP COLUMN username;
+DROP TABLE `User`;
 
-ALTER TABLE `user` MODIFY id BIGINT AUTO_INCREMENT;
+CREATE TABLE `User` (
+   id                   BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   chat_id              VARCHAR(50)                NOT NULL,
+   first_name           VARCHAR(50)                NOT NULL,
+   last_name            VARCHAR(50)                NOT NULL,
+   email                VARCHAR(50)                NOT NULL,
+   phone_number         VARCHAR(20)                NOT NULL,
+   employment_start     DATE                       NOT NULL,
+   employment_end       DATE,
+   created_date         DATETIME                   NOT NULL,
+   modified_date        DATETIME                   NOT NULL,
+   created_by           VARCHAR(50)                NOT NULL,
+   modified_by          VARCHAR(50)                NOT NULL,
+   is_fired             BOOLEAN
+);
 
-ALTER TABLE `user`
-   ADD COLUMN  chat_id              VARCHAR(50)                NOT NULL,
-   ADD COLUMN  first_name           VARCHAR(50)                NOT NULL,
-   ADD COLUMN  last_name            VARCHAR(50)                NOT NULL,
-   ADD COLUMN  email                VARCHAR(50)                NOT NULL,
-   ADD COLUMN  phone_number         VARCHAR(20)                NOT NULL,
-   ADD COLUMN  employment_start     DATE                       NOT NULL,
-   ADD COLUMN  employment_end       DATE,
-   ADD COLUMN  is_fired             BOOLEAN;
-
-CREATE TABLE `vacation`
+CREATE TABLE `Vacation`
 (
    id                   BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
    user_id              BIGINT                     NOT NULL,
@@ -21,13 +25,13 @@ CREATE TABLE `vacation`
    FOREIGN KEY (user_id) REFERENCES User(id)
 );
 
-CREATE TABLE `role`
+CREATE TABLE `Role`
 (
    id                   BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   name                 VARCHAR(50)                NOT NULL
+   name   ENUM("COMMON_USER", "MAP_EDITOR", "ADMIN", "MANAGER")   DEFAULT NULL
 );
 
-CREATE TABLE `user_role`
+CREATE TABLE `User_Role`
 (
    user_id              BIGINT                     NOT NULL,
    role_id              BIGINT                     NOT NULL,
