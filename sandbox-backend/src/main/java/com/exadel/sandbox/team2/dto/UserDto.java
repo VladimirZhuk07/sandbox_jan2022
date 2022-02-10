@@ -5,14 +5,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserDto {
-  private Long id;
 
-  private String username;
+    private Long id;
+
+    private String chatId;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private String phoneNumber;
+
+    private LocalDate employmentStart;
+
+    private LocalDate employmentEnd;
+
+    private Boolean isFired;
 }
