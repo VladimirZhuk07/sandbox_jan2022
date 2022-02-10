@@ -14,7 +14,7 @@ public class TelegramMessageService {
         String name = update.getMessage().getChat().getFirstName();
         String text = update.getMessage().getText();
         replyMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        replyMessage.setText(name + ", Do you mean -> " + text + "?(Webhook)");
+        replyMessage.setText(name + ", Do you mean -> " + text + "? (Webhook)");
         return replyMessage;
     }
 }
