@@ -9,46 +9,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
-
-    @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
-    public List<User> findAll() {
-        List<User> list = new ArrayList<>();
-        userRepository.findAll().forEach(list::add);
-        return list;
-    }
-
-    @Override
-    public User save(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User update(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public void delete(Long id) {
-        userRepository.deleteById(id);
-    }
 
     @Override
     public Set<Role> getRoles(User user) {

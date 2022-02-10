@@ -6,14 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserDto {
-
-    private Long id;
 
     private String chatId;
 
@@ -30,4 +29,12 @@ public class UserDto {
     private LocalDate employmentEnd;
 
     private Boolean isFired;
+
+    private String createdBy;
+
+    private LocalDateTime createdDate;
+
+    private String modifiedBy;
+
+    private LocalDateTime modifiedDate;
 }
