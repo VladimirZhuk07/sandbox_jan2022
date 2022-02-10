@@ -18,10 +18,6 @@ import java.util.Set;
 @Entity
 public class User extends AuditableEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String chatId;
 
     private String firstName;
