@@ -7,12 +7,11 @@ import lombok.*;
 import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 
 @Entity
-@Table(name = "Role")
 public class Role extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
