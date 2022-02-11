@@ -22,7 +22,6 @@ public class Map extends BaseEntity {
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId", referencedColumnName = "id")
     @MapsId
-    @PrimaryKeyJoinColumn
     Office officeId;
     int floorNum;
     int kitchenNum;
