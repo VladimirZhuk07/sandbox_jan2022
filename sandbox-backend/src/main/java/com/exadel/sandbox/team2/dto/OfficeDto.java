@@ -1,15 +1,17 @@
 package com.exadel.sandbox.team2.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OfficeDto {
 
     long id;
-    CountryDto country;
+    CountryDto countryName;
     String city;
     String name;
     String address;

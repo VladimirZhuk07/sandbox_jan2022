@@ -3,6 +3,8 @@ package com.exadel.sandbox.team2.domain;
 import com.exadel.sandbox.team2.domain.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
@@ -12,15 +14,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
+@SuperBuilder
 
 @Entity
 public class Map extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @MapsId
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId", referencedColumnName = "id")
-    Office office;
+    @MapsId
+    @PrimaryKeyJoinColumn
+    Office officeId;
     int floorNum;
     int kitchenNum;
     int confRoomsNum;

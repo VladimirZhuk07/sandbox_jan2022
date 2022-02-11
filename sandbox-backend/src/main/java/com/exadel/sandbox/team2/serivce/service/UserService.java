@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.serivce;
+package com.exadel.sandbox.team2.serivce.service;
 
 import com.exadel.sandbox.team2.domain.User;
 

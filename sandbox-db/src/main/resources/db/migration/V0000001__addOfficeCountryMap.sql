@@ -1,4 +1,3 @@
-
 CREATE TABLE `Country`
 (
     name                    VARCHAR(50)                   NOT NULL PRIMARY KEY
@@ -14,10 +13,10 @@ CREATE TABLE `Office`
     name                    VARCHAR(80)                   NOT NULL,
     address                     VARCHAR(120)                   NOT NULL,
     hasParking                  BOOLEAN                 DEFAULT FALSE,
-    createdBy                   VARCHAR(80)                    NOT NULL,
-    createdDate                 DATE                    NOT NULL,
+    createdBy                   VARCHAR(80)                    DEFAULT 'aa',
+    createdDate                 DATETIME                    DEFAULT NULL,
     modifiedBy                  VARCHAR(80)                   DEFAULT NULL,
-    modifiedDate                    DATE                    DEFAULT NULL,
+    modifiedDate                    DATETIME                    DEFAULT NULL,
 
     CONSTRAINT customer_name_fqv FOREIGN KEY (countryName)
     REFERENCES Country(name)
