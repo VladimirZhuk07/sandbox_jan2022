@@ -44,4 +44,7 @@ public class User extends AuditableEntity {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Vacation vacation;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Booking booking;
 }
