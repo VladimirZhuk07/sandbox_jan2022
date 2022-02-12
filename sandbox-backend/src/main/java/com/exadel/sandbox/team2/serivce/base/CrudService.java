@@ -3,15 +3,15 @@ package com.exadel.sandbox.team2.serivce.base;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudService<T> {
+public interface CrudService<T,D> {
 
     Optional<T> findById(Long id);
 
     List<T> findAll();
 
-    T save(T t);
+    D save(D d);
 
-    T update(T t);
+    D update(D d, long id);
 
     void delete(Long id);
 

@@ -1,9 +1,9 @@
 package com.exadel.sandbox.team2.serivce.service;
 
 import com.exadel.sandbox.team2.domain.Country;
+import com.exadel.sandbox.team2.dto.CountryDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CountryService {
 
@@ -11,7 +11,7 @@ public interface CountryService {
 
     List<Country> findAll();
 
-    Country save(Country country);
+    CountryDto save(CountryDto country);
 
     void deleteByName(String name);
 

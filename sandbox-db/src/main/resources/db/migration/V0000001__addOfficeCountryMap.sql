@@ -18,7 +18,10 @@ CREATE TABLE `Office`
     modifiedBy                  VARCHAR(80)                   DEFAULT NULL,
     modifiedDate                    DATETIME                    DEFAULT NULL,
 
-    CONSTRAINT customer_name_fqv FOREIGN KEY (countryName)
+--     customer_name_fqv
+--     CONSTRAINT
+
+    FOREIGN KEY (countryName)
     REFERENCES Country(name)
 );
 
@@ -32,6 +35,9 @@ CREATE TABLE `Map`
     kitchenNum                  INTEGER                 DEFAULT 0,
     confRoomsNum                    INTEGER                 DEFAULT 0,
 
-    CONSTRAINT office_id_fqv FOREIGN KEY (officeId)
+--     office_id_fqv
+--     CONSTRAINT
+
+    FOREIGN KEY (officeId)
     REFERENCES Office(id)
 );

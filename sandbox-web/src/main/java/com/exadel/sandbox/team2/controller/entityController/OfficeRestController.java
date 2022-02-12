@@ -31,15 +31,12 @@ public class OfficeRestController {
 
     @PostMapping
     public OfficeDto save(@RequestBody OfficeDto entity) {
-        Office office = mapper.toEntity(entity);
-        Office newOffice = service.save(office);
-        return mapper.toDto(newOffice);
+        return service.save(entity);
     }
 
     @PutMapping("/{id}")
-    public Office update(@PathVariable Long id, @RequestBody Office entity) {
-        entity.setId(id);
-        return service.update(entity);
+    public OfficeDto update(@PathVariable Long id, @RequestBody OfficeDto entity) {
+        return service.update(entity, id);
     }
 
     @DeleteMapping("/{id}")

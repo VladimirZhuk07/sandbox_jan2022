@@ -5,7 +5,6 @@ import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.MapDto;
 import com.exadel.sandbox.team2.mapper.MapMapper;
-import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.base.CrudServiceImp;
 import com.exadel.sandbox.team2.serivce.service.MapService;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
@@ -23,7 +22,6 @@ public class MapServiceImpl extends CrudServiceImp<Map> implements MapService {
     private final OfficeService officeService;
 
     private final MapMapper mapper;
-    private final OfficeMapper officeMapper;
 
     private final MapRepository repository;
 
@@ -40,33 +38,34 @@ public class MapServiceImpl extends CrudServiceImp<Map> implements MapService {
     }
 
     @Override
-    public Map save(Map map) {
-        return repository.save(map);
+    public MapDto save(MapDto entity) {
+        Office office = officeService.findById(entity.getOfficeId()).get();
+        Map map = mapper.toEntity(entity);
+        map.setOfficeId(office);
+        repository.save(map);
+
+        return mapper.toDto(map);
     }
 
     @Override
-    public Map update(Map map) {
-        return repository.save(map);
+    public MapDto update(MapDto mapDto, long mapId) {
+        Map map = repository.findById(mapId).get();
+        if(mapDto.getFloorNum() != 0 ){
+            map.setFloorNum(mapDto.getFloorNum());
+        }
+        if(mapDto.getConfRoomsNum() != 0 ){
+            map.setConfRoomsNum(mapDto.getConfRoomsNum());
+        }
+        if(mapDto.getKitchenNum() != 0 ){
+            map.setKitchenNum(mapDto.getKitchenNum());
+        }
+        return mapper.toDto(repository.save(map));
     }
+
 
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public MapDto saveMap(MapDto entity) {
-
-        Map map = new Map();
-
-
-
-        map.setOfficeId(officeMapper.toEntity(entity.getOfficeId()));
-        map.setFloorNum(entity.getFloorNum());
-        map.setKitchenNum(entity.getKitchenNum());
-        map.setConfRoomsNum(entity.getConfRoomsNum());
-
-        return mapper.toDto(repository.save(map));
     }
 
     @Override

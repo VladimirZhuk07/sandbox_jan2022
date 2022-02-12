@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.domain.Country;
+import com.exadel.sandbox.team2.dto.CountryDto;
 import com.exadel.sandbox.team2.serivce.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class CountryRestController {
     }
 
     @PostMapping
-    public Country save(@RequestBody Country entity) {
+    public CountryDto save(@RequestBody CountryDto entity) {
         return service.save(entity);
     }
 

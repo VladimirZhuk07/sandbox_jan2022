@@ -1,12 +1,8 @@
 package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.domain.Map;
-import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.MapDto;
-import com.exadel.sandbox.team2.mapper.MapMapper;
-import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.service.MapService;
-import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +25,14 @@ public class MapRestController {
         return service.findAll();
     }
 
+    @PutMapping("/{id}")
+    public MapDto update(@PathVariable Long id, @RequestBody MapDto mapDto){
+        return service.update(mapDto, id);
+    }
+
     @PostMapping
     public MapDto save(@RequestBody MapDto entity) {
-        return service.saveMap(entity);
+        return service.save(entity);
     }
 
     @DeleteMapping("/{id}")

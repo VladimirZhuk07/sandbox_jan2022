@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.dto;
 
-import com.exadel.sandbox.team2.domain.Office;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 public class MapDto {
 
     long id;
-    OfficeDto officeId;
+    long officeId;
     int floorNum;
     int kitchenNum;
     int confRoomsNum;

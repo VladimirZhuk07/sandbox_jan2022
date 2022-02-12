@@ -12,15 +12,14 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 
 @Entity
 public class Map extends BaseEntity {
 
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "officeId", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "officeId")
     @MapsId
     Office officeId;
     int floorNum;

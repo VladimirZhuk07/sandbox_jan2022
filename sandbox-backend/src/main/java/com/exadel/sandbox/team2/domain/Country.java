@@ -4,12 +4,12 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 
@@ -20,4 +20,12 @@ public class Country{
     @Column(unique = true)
     String name;
 
+    @OneToMany(mappedBy = "countryName", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}, orphanRemoval = true)
+    List<Office> office;
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "name = " + name + ")";
+    }
 }

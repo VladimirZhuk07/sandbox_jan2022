@@ -4,6 +4,9 @@ import com.exadel.sandbox.team2.dao.CountryRepository;
 import com.exadel.sandbox.team2.dao.OfficeRepository;
 import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.domain.Office;
+import com.exadel.sandbox.team2.dto.OfficeDto;
+import com.exadel.sandbox.team2.mapper.CountryMapper;
+import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.base.CrudServiceImp;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,9 @@ public class OfficeServiceImpl  extends CrudServiceImp<Office> implements Office
     private final OfficeRepository repository;
     private final CountryRepository countryRepository;
 
+    private final OfficeMapper mapper;
+    private final CountryMapper countryMapper;
+
     public Optional<Office> findById(Long id) {
         return repository.findById(id);
     }
@@ -31,6 +37,26 @@ public class OfficeServiceImpl  extends CrudServiceImp<Office> implements Office
         List<Office> list = new ArrayList<>();
         repository.findAll().forEach(list::add);
         return list;
+    }
+
+    @Override
+    public OfficeDto save(OfficeDto entity) {
+        return mapper.toDto(repository.save(mapper.toEntity(entity)));
+    }
+
+    @Override
+    public OfficeDto update(OfficeDto officeDto, long id) {
+        Office office = repository.findById(id).get();
+        if(!officeDto.getCity().equals("string") && !officeDto.getCity().equals(""))
+            office.setCity(officeDto.getCity());
+        if(!officeDto.getAddress().equals("string") && !officeDto.getAddress().equals(""))
+            office.setAddress(officeDto.getAddress());
+        if(!officeDto.getCountryName().getName().equals("string") && !officeDto.getCountryName().getName().equals(""))
+            office.setCountryName(countryMapper.toEntity(officeDto.getCountryName()));
+        if(!officeDto.getName().equals("string") && !officeDto.getName().equals(""))
+            office.setName(officeDto.getName());
+
+        return mapper.toDto(repository.save(office));
     }
 
 
@@ -48,9 +74,7 @@ public class OfficeServiceImpl  extends CrudServiceImp<Office> implements Office
 
     @Override
     public void deleteByCountry(String country) {
-
         Country country1 = countryRepository.findByName(country);
-
         repository.deleteByCountryName(country1);
     }
 
