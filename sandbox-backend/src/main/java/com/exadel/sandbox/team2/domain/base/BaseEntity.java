@@ -14,7 +14,6 @@ import java.util.Objects;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-
 @MappedSuperclass
 public class BaseEntity {
 
