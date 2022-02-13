@@ -23,14 +23,20 @@ public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
 
     private final MapRepository repository;
 
+    public void deleteMap(Long id){
+        Office office = repository.findById(id).get().getOfficeId();
+        office.setMap(null);
+        officeService.save(office);
+        repository.deleteById(id);
+    }
+
     public MapDto saveMap(MapDto entity) {
         Office office = officeService.findById(entity.getOfficeId()).get();
         Map map = mapper.toEntity(entity);
         map.setOfficeId(office);
-        map.setId(office.getId());
-        repository.save(map);
+        Map newMap = repository.save(map);
 
-        return mapper.toDto(map);
+        return mapper.toDto(newMap);
     }
 
     public MapDto updateMap(MapDto mapDto, long mapId) {

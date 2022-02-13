@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface MapService extends CRUDService<Map> {
 
+    void deleteMap(Long id);
+
     MapDto saveMap(MapDto mapDto);
 
     MapDto updateMap(MapDto mapDto, long mapId);

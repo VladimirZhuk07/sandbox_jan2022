@@ -19,7 +19,6 @@ public class Map extends BaseEntity{
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId")
-    @MapsId
     Office officeId;
     int floorNum;
     int kitchenNum;
