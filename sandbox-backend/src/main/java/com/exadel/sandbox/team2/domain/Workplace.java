@@ -34,6 +34,6 @@ public class Workplace extends BaseEntity {
 
     private Boolean headset;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "workplace")
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "workplace")
     private Booking booking;
 }

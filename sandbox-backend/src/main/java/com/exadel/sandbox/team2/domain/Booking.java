@@ -25,7 +25,19 @@ public class Booking extends AuditableEntity {
 
     private Boolean isRecurring;
 
-    private String frequency;
+    private boolean monday;
+
+    private boolean tuesday;
+
+    private boolean wednesday;
+
+    private boolean thursday;
+
+    private boolean friday;
+
+    private boolean saturday;
+
+    private boolean sunday;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")

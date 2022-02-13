@@ -1,6 +1,8 @@
 package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.Booking;
+import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.Workplace;
 import com.exadel.sandbox.team2.dto.BookingDto;
 import com.exadel.sandbox.team2.mapper.BookingMapper;
 import com.exadel.sandbox.team2.serivce.CRUDService;
@@ -18,6 +20,10 @@ public class BookingRestController {
 
     private final CRUDService<Booking> crudService;
 
+    private final CRUDService<User> userCRUDService;
+
+    private final CRUDService<Workplace> workplaceCRUDService;
+
     private final BookingMapper mapper;
 
     @GetMapping("/{id}")
@@ -32,9 +38,11 @@ public class BookingRestController {
         return list.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
-    @PostMapping
-    public BookingDto add(@RequestBody BookingDto bookingDto) {
+    @PostMapping("/{userId}")
+    public BookingDto add(@RequestBody BookingDto bookingDto, @PathVariable Long userId) {
         Booking booking = mapper.toEntity(bookingDto);
+        booking.setWorkplace(workplaceCRUDService.findById(bookingDto.getWorkplaceId()).get());
+        booking.setUser(userCRUDService.findById(userId).get());
         Booking newBooking = crudService.save(booking);
         return mapper.toDto(newBooking);
     }
@@ -43,6 +51,8 @@ public class BookingRestController {
     public BookingDto update(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
         Booking newBooking = mapper.toEntity(bookingDto);
         newBooking.setId(id);
+        newBooking.setWorkplace(workplaceCRUDService.findById(bookingDto.getWorkplaceId()).get());
+        newBooking.setUser(userCRUDService.findById(id).get());
         crudService.update(newBooking);
         return mapper.toDto(newBooking);
     }
