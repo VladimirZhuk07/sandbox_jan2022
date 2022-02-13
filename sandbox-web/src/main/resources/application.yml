@@ -23,10 +23,8 @@ logging:
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
       org.hibernate.SQL: DEBUG
       org.springframework.web: DEBUG
-bot:
-   name: exadelofficebot
-   token: 5109606367:AAF3xZPF6UDIfHSbI6gwDZkPoDl-TcwpuJQ
 
-authorization:
-   secret: 8cbd7616-874a-11ec-a8a3-0242ac120002
-   expiration: 3600
+telegrambot:
+   botUsername: Exadel_office_bot
+   botToken: 5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo
+   botPath: https://cc0e-178-120-9-200.ngrok.io

@@ -1,104 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-   <parent>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-parent</artifactId>
-      <version>2.6.3</version>
-      <relativePath/>
-   </parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.3</version>
+        <relativePath/>
+    </parent>
 
-   <groupId>com.exadel.sandbox</groupId>
-   <artifactId>team2</artifactId>
-   <version>0.0.1-SNAPSHOT</version>
-   <packaging>pom</packaging>
-   <name>team2</name>
-   <description>Demo project for Spring Boot</description>
+    <groupId>com.exadel.sandbox</groupId>
+    <artifactId>team2</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>team2</name>
+    <description>Demo project for Spring Boot</description>
 
-   <modules>
-      <module>sandbox-backend</module>
-      <module>sandbox-db</module>
-      <module>sandbox-web</module>
-   </modules>
+    <modules>
+        <module>sandbox-backend</module>
+        <module>sandbox-db</module>
+        <module>sandbox-web</module>
+        <module>sandbox-telegram</module>
+    </modules>
 
-   <properties>
-      <java.version>17</java.version>
-      <maven.compiler.source>17</maven.compiler.source>
-      <maven.compiler.target>17</maven.compiler.target>
-      <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-      <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-      <telegrambot-version>5.7.1</telegrambot-version>
-   </properties>
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <telegrambot-version>5.7.1</telegrambot-version>
+    </properties>
 
-   <dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
 
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-security</artifactId>
-      </dependency>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>${telegrambot-version}</version>
+        </dependency>
 
-      <dependency>
-         <groupId>org.projectlombok</groupId>
-         <artifactId>lombok</artifactId>
-         <optional>true</optional>
-      </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
 
-      <dependency>
-         <groupId>org.telegram</groupId>
-         <artifactId>telegrambots-spring-boot-starter</artifactId>
-        <version>${telegrambot-version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>${lombok-mapstruct-binding.version}</version>
+        </dependency>
 
-      <dependency>
-         <groupId>org.mapstruct</groupId>
-         <artifactId>mapstruct</artifactId>
-         <version>${org.mapstruct.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-      <dependency>
-         <groupId>org.projectlombok</groupId>
-         <artifactId>lombok-mapstruct-binding</artifactId>
-         <version>${lombok-mapstruct-binding.version}</version>
-      </dependency>
-
-      <dependency>
-         <groupId>org.springframework.boot</groupId>
-         <artifactId>spring-boot-starter-test</artifactId>
-         <scope>test</scope>
-      </dependency>
-   </dependencies>
-
-   <build>
-      <plugins>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.5.1</version>
-            <configuration>
-               <source>${java.version}</source>
-               <target>${java.version}</target>
-               <annotationProcessorPaths>
-                  <path>
-                     <groupId>org.mapstruct</groupId>
-                     <artifactId>mapstruct-processor</artifactId>
-                     <version>${org.mapstruct.version}</version>
-                  </path>
-                  <path>
-                     <groupId>org.projectlombok</groupId>
-                     <artifactId>lombok</artifactId>
-                     <version>${lombok.version}</version>
-                  </path>
-                  <path>
-                     <groupId>org.projectlombok</groupId>
-                     <artifactId>lombok-mapstruct-binding</artifactId>
-                     <version>${lombok-mapstruct-binding.version}</version>
-                  </path>
-               </annotationProcessorPaths>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
