@@ -1,32 +1,30 @@
-package com.exadel.sandbox.team2.security;
+package com.exadel.sandbox.team2.configuration;
 
 import java.io.IOException;
-import java.util.Collection;
+
+import com.exadel.sandbox.team2.service.UserDetailsServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
 
-    private UserServiceImpl userService;
+    private final UserDetailsServiceImpl userService;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
 
-    public JwtAuthenticationTokenFilter(JwtTokenProvider tokenProvider, UserServiceImpl userService) {
+    public JwtAuthenticationTokenFilter(JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {
         this.tokenProvider = tokenProvider;
         this.userService = userService;
     }

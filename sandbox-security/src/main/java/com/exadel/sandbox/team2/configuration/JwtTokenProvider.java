@@ -1,6 +1,5 @@
-package com.exadel.sandbox.team2.security;
+package com.exadel.sandbox.team2.configuration;
 
-import com.exadel.sandbox.team2.domain.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + expiration*1000))
+                .setExpiration(new Date((new Date()).getTime() + expiration* 1000L))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }

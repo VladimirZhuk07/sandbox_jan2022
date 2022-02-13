@@ -1,13 +1,9 @@
 package com.exadel.sandbox.team2.configuration;
 
-
-import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.security.JwtAuthenticationEntryPoint;
-import com.exadel.sandbox.team2.security.JwtAuthenticationTokenFilter;
-import com.exadel.sandbox.team2.security.JwtTokenProvider;
-import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
+import com.exadel.sandbox.team2.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -30,9 +26,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final JwtTokenProvider tokenProvider;
-    private final UserServiceImpl userService;
+    private final UserDetailsServiceImpl userService;
 
-    public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserServiceImpl userService) {
+    public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {
         this.userService = userService;
         this.tokenProvider = tokenProvider;
         this.unauthorizedHandler = unauthorizedHandler;
@@ -82,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v3/api-docs/**",
+        web.ignoring().antMatchers("/**","/v3/api-docs/**",
                 "/swagger-resources",
                 "/swagger-resources/**",
                 "/configuration/ui",

@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team2.controller;
 
+import com.exadel.sandbox.team2.configuration.JwtTokenProvider;
 import com.exadel.sandbox.team2.model.LoginDto;
 import com.exadel.sandbox.team2.model.TokenDto;
-import com.exadel.sandbox.team2.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
