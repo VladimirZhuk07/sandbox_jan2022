@@ -25,6 +25,6 @@ logging:
       org.springframework.web: DEBUG
 
 telegrambot:
-   botUsername: Exadel_office_bot
-   botToken: 5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo
-   botPath: https://3ac7-213-230-80-158.ngrok.io/api/telegram
+   botUsername: ${TG_BOT_USERNAME}
+   botToken: ${TG_BOT_TOKEN}
+   botPath: ${TG_BOT_PATH}
