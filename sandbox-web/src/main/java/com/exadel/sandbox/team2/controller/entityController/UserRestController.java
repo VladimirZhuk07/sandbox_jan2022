@@ -1,9 +1,9 @@
-package com.exadel.sandbox.team2.controller;
+package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
-import com.exadel.sandbox.team2.serivce.CRUDService;
+import com.exadel.sandbox.team2.serivce.base.CRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

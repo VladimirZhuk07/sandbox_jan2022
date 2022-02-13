@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.serivce.service;
 
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.serivce.base.CRUDService;
 
 import java.util.Set;
 

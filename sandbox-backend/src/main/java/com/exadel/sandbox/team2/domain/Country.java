@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -21,6 +22,7 @@ public class Country{
     String name;
 
     @OneToMany(mappedBy = "countryName", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}, orphanRemoval = true)
+    @JsonIgnore
     List<Office> office;
 
     @Override

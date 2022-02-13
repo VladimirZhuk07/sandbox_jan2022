@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.dto;
 
-import com.exadel.sandbox.team2.domain.Country;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

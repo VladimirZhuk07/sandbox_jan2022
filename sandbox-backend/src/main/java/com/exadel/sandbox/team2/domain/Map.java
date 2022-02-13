@@ -4,7 +4,6 @@ import com.exadel.sandbox.team2.domain.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 
@@ -16,9 +15,9 @@ import javax.persistence.*;
 @SuperBuilder
 
 @Entity
-public class Map extends BaseEntity {
+public class Map extends BaseEntity{
 
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId")
     @MapsId
     Office officeId;

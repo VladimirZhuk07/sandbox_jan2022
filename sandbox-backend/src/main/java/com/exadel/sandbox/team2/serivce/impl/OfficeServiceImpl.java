@@ -7,19 +7,18 @@ import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.OfficeDto;
 import com.exadel.sandbox.team2.mapper.CountryMapper;
 import com.exadel.sandbox.team2.mapper.OfficeMapper;
-import com.exadel.sandbox.team2.serivce.base.CrudServiceImp;
+import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
-public class OfficeServiceImpl  extends CrudServiceImp<Office> implements OfficeService {
+public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements OfficeService {
 
     //I had to call repository, since calling
     //through CrudServiceImpl won`t include new queries
@@ -29,23 +28,11 @@ public class OfficeServiceImpl  extends CrudServiceImp<Office> implements Office
     private final OfficeMapper mapper;
     private final CountryMapper countryMapper;
 
-    public Optional<Office> findById(Long id) {
-        return repository.findById(id);
+    public Office getOffice(long id){
+        return repository.findById(id).get();
     }
 
-    public List<Office> findAll() {
-        List<Office> list = new ArrayList<>();
-        repository.findAll().forEach(list::add);
-        return list;
-    }
-
-    @Override
-    public OfficeDto save(OfficeDto entity) {
-        return mapper.toDto(repository.save(mapper.toEntity(entity)));
-    }
-
-    @Override
-    public OfficeDto update(OfficeDto officeDto, long id) {
+    public OfficeDto updateOffice(OfficeDto officeDto, long id) {
         Office office = repository.findById(id).get();
         if(!officeDto.getCity().equals("string") && !officeDto.getCity().equals(""))
             office.setCity(officeDto.getCity());
@@ -57,19 +44,6 @@ public class OfficeServiceImpl  extends CrudServiceImp<Office> implements Office
             office.setName(officeDto.getName());
 
         return mapper.toDto(repository.save(office));
-    }
-
-
-    public Office save(Office office) {
-        return repository.save(office);
-    }
-
-    public Office update(Office office) {
-        return repository.save(office);
-    }
-
-    public void delete(Long id) {
-        repository.deleteById(id);
     }
 
     @Override

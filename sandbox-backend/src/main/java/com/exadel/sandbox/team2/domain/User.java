@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -12,6 +13,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
 @SuperBuilder
 
@@ -44,4 +47,7 @@ public class User extends AuditableEntity {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Vacation vacation;
+
+    @Transient
+    public static String username1 = "Rony";
 }
