@@ -1,19 +1,15 @@
 package com.exadel.sandbox.team2.serivce;
 
+import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
-public interface UserService {
+public interface UserService extends CRUDService<User> {
 
-    Optional<User> findById(Long id);
+    Set<Role> getRoles(User user);
 
-    List<User> findAll();
+    void assignUserRole(Long userId, Long roleId);
 
-    User save(User user);
-
-    User update(User user);
-
-    void delete(Long id);
+    void unassignUserRole(Long userId, Long roleId);
 }

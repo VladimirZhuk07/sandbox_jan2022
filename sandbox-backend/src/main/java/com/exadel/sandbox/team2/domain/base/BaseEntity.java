@@ -1,7 +1,9 @@
 package com.exadel.sandbox.team2.domain.base;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -10,7 +12,8 @@ import java.util.Objects;
 
 @Getter
 @Setter
-
+@SuperBuilder
+@NoArgsConstructor
 @MappedSuperclass
 public class BaseEntity {
 
