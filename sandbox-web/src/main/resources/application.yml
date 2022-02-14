@@ -24,7 +24,11 @@ logging:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
 
-telegramBot:
-  username: ${TG_BOT_USERNAME}
-  token: ${TG_BOT_TOKEN}
-  path: ${TG_BOT_PATH}
+
+telegrambot:
+   botUsername: Exadel_office_bot
+   botToken: 5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo
+   botPath: https://cc0e-178-120-9-200.ngrok.io
+authorization:
+   secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
+   expiration: 3600
