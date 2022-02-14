@@ -31,6 +31,10 @@ telegrambot:
    botToken: 5178866872:AAGaxtgiG4-vJ5za7JEw1-RnbYV26DSGtSY
    botPath: https://cc0e-178-120-9-200.ngrok.io
 
+notificationGmail:
+  password: ${NOTIFICATION_GMAIL_PASSWORD:AzizVladTeam2}
+  username: ${NOTIFICATION_GMAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
    expiration: 3600
