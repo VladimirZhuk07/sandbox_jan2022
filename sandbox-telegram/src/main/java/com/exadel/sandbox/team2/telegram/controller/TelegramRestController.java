@@ -1,14 +1,15 @@
-package com.exadel.sandbox.team2.telegram.webhook.controller;
+package com.exadel.sandbox.team2.telegram.controller;
 
-import com.exadel.sandbox.team2.telegram.webhook.component.TelegramWebhookBotComponent;
-import lombok.extern.slf4j.Slf4j;
+import com.exadel.sandbox.team2.telegram.component.TelegramWebhookBotComponent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/telegram")
+@Profile("prod")
 public class TelegramRestController {
 
     private final TelegramWebhookBotComponent telegramWebhookBotComponent;
