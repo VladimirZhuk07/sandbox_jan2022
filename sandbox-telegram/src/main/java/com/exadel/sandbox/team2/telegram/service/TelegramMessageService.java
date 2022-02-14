@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.service;
+package com.exadel.sandbox.team2.telegram.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,12 +10,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class TelegramMessageService {
 
     public SendMessage handleUpdate(Update update) {
-        SendMessage replyMessage=new SendMessage();
+        SendMessage replyMessage = new SendMessage();
         String name = update.getMessage().getChat().getFirstName();
-        String text=update.getMessage().getText();
+        String text = update.getMessage().getText();
         replyMessage.setChatId(String.valueOf(update.getMessage().getChatId()));
-        replyMessage.setText(name+", Do you mean -> "+text+"?(Webhook)");
+        replyMessage.setText(name + ", Do you mean -> " + text + "? (Webhook)");
         return replyMessage;
     }
-
 }
