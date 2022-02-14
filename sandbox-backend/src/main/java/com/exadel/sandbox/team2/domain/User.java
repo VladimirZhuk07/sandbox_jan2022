@@ -49,5 +49,5 @@ public class User extends AuditableEntity {
     private Vacation vacation;
 
     @Transient
-    public static String username1 = "Rony";
+    public static String SYSTEM_USER = "Rony";
 }

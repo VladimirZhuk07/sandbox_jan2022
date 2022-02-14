@@ -20,7 +20,8 @@ import java.util.Date;
 @SuperBuilder
 
 @EntityListeners(AuditingEntityListener.class)
-public class AuditableEntity extends BaseEntity{
+public class
+AuditableEntity extends BaseEntity{
 
     @CreatedBy
     private String createdBy;
