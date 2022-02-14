@@ -1,37 +1,34 @@
-package com.exadel.sandbox.team2.telegram.component;
+package com.exadel.sandbox.team2.telegram.longpolling.component;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-@Component
-public class TelegramBotComponent extends TelegramLongPollingBot {
+//@Component
+public class TelegramLongPollingBotComponent extends TelegramLongPollingBot {
 
-    @Value("${bot.name}")
-    private static final String USERNAME = "exadelofficebot";
-    @Value("${bot.token}")
-    private static final String TOKEN = "5294755437:AAEqe6YcFIUExNjVGBG56R2ypK1cLKf8o14";
+    private final String username;
+    private final String token;
 
-    public TelegramBotComponent() {
-
-    }
-
-    public TelegramBotComponent(DefaultBotOptions options) {
-        super(options);
+    //@Autowired
+    public TelegramLongPollingBotComponent(@Value("${telegramBot.username}") String username,
+                                           @Value("${telegramBot.token}") String token) {
+        this.username = username;
+        this.token = token;
     }
 
     @Override
     public String getBotUsername() {
-        return USERNAME;
+        return username;
     }
 
     @Override
     public String getBotToken() {
-        return TOKEN;
+        return token;
     }
 
     @Override
