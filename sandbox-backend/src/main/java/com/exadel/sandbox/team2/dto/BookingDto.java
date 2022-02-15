@@ -19,7 +19,7 @@ public class BookingDto {
 
     private LocalDateTime endDate;
 
-    private Boolean isRecurring;
+    private Boolean recurring;
 
     private boolean monday;
 

@@ -15,7 +15,7 @@ CREATE TABLE `Booking` (
    userId              BIGINT                     NOT NULL,
    startDate           DATE                       NOT NULL,
    endDate             DATE                       NOT NULL,
-   isRecurring         BOOLEAN                    NOT NULL,
+   recurring           BOOLEAN                    NOT NULL,
    monday              BIT(1)                     DEFAULT NULL,
    tuesday             BIT(1)                     DEFAULT NULL,
    wednesday           BIT(1)                     DEFAULT NULL,

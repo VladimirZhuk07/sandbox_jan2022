@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user", "workplace"}, callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @SuperBuilder
 
 @Entity
@@ -23,7 +23,7 @@ public class Booking extends AuditableEntity {
 
     private LocalDateTime endDate;
 
-    private Boolean isRecurring;
+    private Boolean recurring;
 
     private boolean monday;
 

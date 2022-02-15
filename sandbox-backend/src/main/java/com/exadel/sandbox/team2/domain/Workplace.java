@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -22,18 +21,18 @@ public class Workplace extends BaseEntity {
 
     private Long workplaceNumber;
 
-    private Boolean nextToWindow;
+    private boolean nextToWindow;
 
-    private Boolean pc;
+    private boolean pc;
 
-    private Boolean monitor;
+    private boolean monitor;
 
-    private Boolean keyboard;
+    private boolean keyboard;
 
-    private Boolean mouse;
+    private boolean mouse;
 
-    private Boolean headset;
+    private boolean headset;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE}, mappedBy = "workplace")
+    @OneToOne(mappedBy = "workplace")
     private Booking booking;
 }
