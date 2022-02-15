@@ -6,7 +6,6 @@ telegram:
     username: 'ExadelTeam2OfficeBot'
     token: '5178866872:AAGaxtgiG4-vJ5za7JEw1-RnbYV26DSGtSY'
     webhook:
-      webhook:
-        setWebhookPath: '/setWebhook'
-        webhookInfoPath: '/getWebhookinfo'
-        path: 'https://cc0e-178-120-9-200.ngrok.io'
+      setWebhookPath: '/setWebhook'
+      webhookInfoPath: '/getWebhookinfo'
+      path: 'https://8118-94-158-61-201.ngrok.io/api/telegram'

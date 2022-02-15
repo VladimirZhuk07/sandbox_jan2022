@@ -24,14 +24,14 @@ public class TelegramProperties {
   @FieldDefaults(level = AccessLevel.PRIVATE)
   public static class Api{
     Base base;
+  }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class Base{
-      String path;
-    }
+  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @FieldDefaults(level = AccessLevel.PRIVATE)
+  public static class Base{
+    String path;
   }
 
   @Data
@@ -42,16 +42,14 @@ public class TelegramProperties {
     String username;
     String token;
     Webhook webhook;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    public static class Webhook{
-      String setWebhookPath;
-      String webhookInfoPath;
-      String path;
-    }
-
+  }
+  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @FieldDefaults(level = AccessLevel.PRIVATE)
+  public static class Webhook{
+    String setWebhookPath;
+    String webhookInfoPath;
+    String path;
   }
 }
