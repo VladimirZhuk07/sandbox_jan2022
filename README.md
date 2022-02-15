@@ -4,8 +4,8 @@
 
 We can use swagger from this url: http://localhost:8080/api/swagger-ui/index.html.   
 First please read telegram bot documentation: https://core.telegram.org/bots.  
-Get Information from webhook: https://api.telegram.org/bot5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo/getWebhookinfo.  
-Set Webhook url: https://api.telegram.org/bot5286582269:AAHWN4NhOps8q4Rz-T1PaMMNVBk0yuhLeoo/setWebhook?url=https://2a9a-188-113-202-83.ngrok.io/api/telegram.  
+Get Information from webhook: https://api.telegram.org/bot{BOT_TOKEN}/getWebhookinfo.  
+Set Webhook url: https://api.telegram.org/bot{BOT_TOKEN}/setWebhook?url={WEBHOOK_PATH}.  
 
 
 ### **Installation for Telegram Bot**
