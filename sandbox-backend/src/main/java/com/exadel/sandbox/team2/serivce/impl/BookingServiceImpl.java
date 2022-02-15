@@ -45,6 +45,7 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     public void delete(Long id) {
         Booking booking = bookingRepository.findById(id).get();
         booking.setUser(null);
+        booking.setWorkplace(null);
         bookingRepository.deleteById(id);
     }
 }
