@@ -27,13 +27,29 @@ logging:
     org.springframework.web: DEBUG
 
 telegrambot:
-   botUsername: ExadelTeam2OfficeBot
-   botToken: 5178866872:AAGaxtgiG4-vJ5za7JEw1-RnbYV26DSGtSY
-   botPath: https://cc0e-178-120-9-200.ngrok.io
+  botUsername: ExadelTeam2OfficeBot
+  botToken: 5178866872:AAGaxtgiG4-vJ5za7JEw1-RnbYV26DSGtSY
+  botPath: https://cc0e-178-120-9-200.ngrok.io
 
-notificationGmail:
-  password: ${NOTIFICATION_GMAIL_PASSWORD:AzizVladTeam2}
-  username: ${NOTIFICATION_GMAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+notification:
+  mail:
+    username: ${MAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+    password: ${MAIL_PASSWORD:AzizVladTeam2}
+
+mail:
+  properties:
+    host:
+      name: mail.smtp.host
+      value: smtp.gmail.com
+    port:
+      name: mail.smtp.port
+      value: 587
+    auth:
+      name: mail.smtp.auth
+      value: true
+    starttls:
+      name: mail.smtp.starttls.enable
+      value: true
 
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
