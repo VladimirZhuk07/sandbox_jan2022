@@ -35,21 +35,11 @@ notification:
   mail:
     username: ${MAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
     password: ${MAIL_PASSWORD:AzizVladTeam2}
-
-mail:
   properties:
-    host:
-      name: mail.smtp.host
-      value: smtp.gmail.com
-    port:
-      name: mail.smtp.port
-      value: 587
-    auth:
-      name: mail.smtp.auth
-      value: true
-    starttls:
-      name: mail.smtp.starttls.enable
-      value: true
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls: true
 
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
