@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 @Configuration
 public class MailSettingProperties {
+    public String hostName = "mail.smtp.host";
+    private String portName = "mail.smtp.port";
+    private String authName = "mail.smtp.auth";
+    private String starttlsName = "mail.smtp.starttls.enable";
 
     @Value("notification.mail.username")
     private String usernameOfMailFromSend;
@@ -18,25 +22,16 @@ public class MailSettingProperties {
     @Value("notification.mail.password")
     private String passwordOfMailFormSend;
 
-    private String hostName = "mail.smtp.host";
-
-    @Value("notification.properties.host")
+    @Value("notification.mail.host")
     private String hostValue;
 
-    private String portName = "mail.smtp.port";
-
-    @Value("notification.properties.port")
-
+    @Value("notification.mail.port")
     private String portValue;
 
-    private String authName = "mail.smtp.auth";
-
-    @Value("notification.properties.auth")
+    @Value("notification.mail.auth")
     private String authValue;
 
-    private String starttlsName = "mail.smtp.starttls.enable";
-
-    @Value("notification.properties.starttls")
+    @Value("notification.mail.starttls")
     private String starttlsValue;
 
 }

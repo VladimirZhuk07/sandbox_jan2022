@@ -3,14 +3,10 @@ package com.exadel.sandbox.team2.notification.mail.service.impl;
 import com.exadel.sandbox.team2.notification.mail.configuration.MailSettingProperties;
 import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
 import com.exadel.sandbox.team2.notification.mail.service.EmailService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jvnet.hk2.annotations.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -21,57 +17,47 @@ import java.util.Properties;
 @RequiredArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
-    @Autowired
-    MailDto mailDto;
-
-    @Setter
-    @Getter
-    private Boolean emailNotificationEnabled = false;
-
     private final MailSettingProperties mailProperties;
 
     @SneakyThrows
-    public void sendMail() {
-        log.info("Calling method sendMail in Class EmailService with emailNotificationEnabled parameter equal to {}.", emailNotificationEnabled);
-        if (emailNotificationEnabled) {
-            String recipient = mailDto.getRecipientMail();
-            Properties properties = setSettingsOfProperties();
+    public void sendMail(MailDto mailDto) {
+        String recipient = mailDto.getRecipientMail();
+        Properties properties = setSettingsOfProperties();
 
-            Session session = Session.getInstance(properties,
-                    new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
-                                    mailProperties.getPasswordOfMailFormSend());
-                        }
-                    });
+        Session session = Session.getInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
+                                mailProperties.getPasswordOfMailFormSend());
+                    }
+                });
 
-            Message message = prepareMessage(session, recipient);
-            Transport.send(message);
-            log.info("Successfully send to recipient.");
-        }
+        Message message = prepareMessage(session, recipient, mailDto);
+        Transport.send(message);
+        log.info("Successfully send to recipient.");
     }
 
-    public Message prepareMessage(Session session, String recipient) {
+    private Message prepareMessage(Session session, String recipient, MailDto mailDto) {
         Message message = null;
         try {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(mailProperties.getUsernameOfMailFromSend()));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    new InternetAddress[]{new InternetAddress(recipient)}
+                    new InternetAddress[]{new InternetAddress(recipient), new InternetAddress()}
             );
 
             message.setSubject(mailDto.getHeaderOfMessage());
-
             message.setText(mailDto.getTextOfMessage());
-            log.info("Email to: {}, with title: {}, and text: {}", recipient, mailDto.getHeaderOfMessage(), mailDto.getTextOfMessage());
+
+            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
         } catch (MessagingException e) {
-            log.error("Error in EmailService class, method  prepareMessage: " + e.getMessage());
+            log.error("Error by preparing message. ", e);
         }
         return message;
     }
 
-    public Properties setSettingsOfProperties() {
+    private Properties setSettingsOfProperties() {
         Properties properties = new Properties();
         properties.put(mailProperties.getHostName(), mailProperties.getHostValue());
         properties.put(mailProperties.getPortName(), mailProperties.getPortValue());
