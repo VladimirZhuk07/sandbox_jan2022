@@ -35,7 +35,7 @@ public class TelegramMessageService {
                 String authorizationCode = command.substring("/start".length()).trim();
 
 
-                return requestPhoneNumber(chatId,"Please send your phone number");
+                return requestPhoneNumber(chatId,"Please send your phone number "+ authorizationCode);
             }
             return SendMessage.builder().chatId(chatId).text("Please select command").build();
         }
