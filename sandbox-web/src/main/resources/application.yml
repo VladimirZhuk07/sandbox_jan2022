@@ -30,6 +30,10 @@ telegrambot:
    botUsername: ExadelTeam2OfficeBot
    botToken: 5178866872:AAGaxtgiG4-vJ5za7JEw1-RnbYV26DSGtSY
    botPath: https://cc0e-178-120-9-200.ngrok.io
+   
+#    botUsername: ${TG_BOT_USERNAME}
+#    botToken: ${TG_BOT_TOKEN}
+#    botPath: ${TG_BOT_PATH}
 
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
