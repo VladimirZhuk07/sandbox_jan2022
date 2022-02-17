@@ -9,18 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/mails")
 @RequiredArgsConstructor
 public class MailController {
-
     private final EmailSender emailSender;
 
     @PostMapping
     public void sendEmail(@RequestBody MailDto mailDto) {
         emailSender.send(mailDto);
     }
-
     @GetMapping("/activate/{code}")
     public void activate(@PathVariable String code){
     }
-
-
-
 }

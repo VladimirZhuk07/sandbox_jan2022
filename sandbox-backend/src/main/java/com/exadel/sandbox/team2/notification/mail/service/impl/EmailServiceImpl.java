@@ -25,13 +25,13 @@ public class EmailServiceImpl implements EmailService {
         String recipient = mailDto.getRecipientMail();
         Properties properties = setSettingsOfProperties();
 
-        Session session = Session.getInstance(properties,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
-                                mailProperties.getPasswordOfMailFormSend());
-                    }
-                });
+        Authenticator auth = new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
+                        mailProperties.getPasswordOfMailFormSend());
+            }
+        };
+        Session session = Session.getInstance(properties,auth);
 
         Message message = prepareMessage(session, recipient, mailDto);
         Transport.send(message);
@@ -48,24 +48,31 @@ public class EmailServiceImpl implements EmailService {
                     Message.RecipientType.TO,
                     new InternetAddress[]{new InternetAddress(recipient)}
             );
-
-            String link = UUID.randomUUID().toString();
-
             message.setSubject(mailDto.getHeaderOfMessage());
-            message.setText(String.format(
-                    """
-                            Hello!\s
-                            This email was sent to verify your account
-                            Please follow the link below to verify it:
-                            http://localhost:8080/api/mails/activate/%s""",
-                            link
-            ));
+            generateMailBody(message);
 
             log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
         return message;
+    }
+
+    private void generateMailBody(Message message){
+        String link = UUID.randomUUID().toString();
+        try {
+            message.setText(String.format(
+                    """
+                            Hello!\s
+                            This email was sent to verify your account
+                            Please follow the link below to verify it:
+                            http://localhost:8080/api/mails/activate/%s""",
+                    link
+            ));
+
+        } catch (MessagingException e) {
+            log.error("Error in generating body of message. ", e);
+        }
     }
 
     private Properties setSettingsOfProperties() {
