@@ -1,14 +1,13 @@
 package com.exadel.sandbox.team2.notification.mail.configuration;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Configuration
 public class MailSettingProperties {
     public String hostName = "mail.smtp.host";
@@ -16,22 +15,22 @@ public class MailSettingProperties {
     private String authName = "mail.smtp.auth";
     private String starttlsName = "mail.smtp.starttls.enable";
 
-    @Value("notification.mail.username")
+    @Value("${notification.mail.username}")
     private String usernameOfMailFromSend;
 
-    @Value("notification.mail.password")
+    @Value("${notification.mail.password}")
     private String passwordOfMailFormSend;
 
-    @Value("notification.mail.host")
+    @Value("${notification.mail.host}")
     private String hostValue;
 
-    @Value("notification.mail.port")
-    private String portValue;
+    @Value("${notification.mail.port}")
+    private int portValue;
 
-    @Value("notification.mail.auth")
+    @Value("${notification.mail.auth}")
     private String authValue;
 
-    @Value("notification.mail.starttls")
+    @Value("${notification.mail.starttls}")
     private String starttlsValue;
 
 }

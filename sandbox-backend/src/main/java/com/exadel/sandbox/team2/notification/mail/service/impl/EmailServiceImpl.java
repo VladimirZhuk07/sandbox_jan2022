@@ -6,12 +6,13 @@ import com.exadel.sandbox.team2.notification.mail.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.jvnet.hk2.annotations.Service;
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,16 +40,26 @@ public class EmailServiceImpl implements EmailService {
 
     private Message prepareMessage(Session session, String recipient, MailDto mailDto) {
         Message message = null;
+        session.setDebug(true);
         try {
             message = new MimeMessage(session);
             message.setFrom(new InternetAddress(mailProperties.getUsernameOfMailFromSend()));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    new InternetAddress[]{new InternetAddress(recipient), new InternetAddress()}
+                    new InternetAddress[]{new InternetAddress(recipient)}
             );
 
+            String link = UUID.randomUUID().toString();
+
             message.setSubject(mailDto.getHeaderOfMessage());
-            message.setText(mailDto.getTextOfMessage());
+            message.setText(String.format(
+                    """
+                            Hello!\s
+                            This email was sent to verify your account
+                            Please follow the link below to verify it:
+                            http://localhost:8080/api/mails/activate/%s""",
+                            link
+            ));
 
             log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
         } catch (MessagingException e) {
