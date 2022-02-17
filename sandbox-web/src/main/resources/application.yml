@@ -35,6 +35,15 @@ telegrambot:
 #    botToken: ${TG_BOT_TOKEN}
 #    botPath: ${TG_BOT_PATH}
 
+notification:
+  mail:
+    username: ${MAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+    password: ${MAIL_PASSWORD:AzizVladTeam2}
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls: true
+
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
    expiration: 3600
