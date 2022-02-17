@@ -32,11 +32,14 @@ public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
 
     public MapDto saveMap(MapDto entity) {
         Office office = officeService.findById(entity.getOfficeId()).get();
-        Map map = mapper.toEntity(entity);
-        map.setOfficeId(office);
-        Map newMap = repository.save(map);
+        if(office.getMap() == null) {
+            Map map = mapper.toEntity(entity);
+            map.setOfficeId(office);
+            Map newMap = repository.save(map);
+            return mapper.toDto(newMap);
+        }
 
-        return mapper.toDto(newMap);
+        return null;
     }
 
     public MapDto updateMap(MapDto mapDto, long mapId) {
