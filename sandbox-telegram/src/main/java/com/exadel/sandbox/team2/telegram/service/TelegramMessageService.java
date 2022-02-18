@@ -10,23 +10,36 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import java.util.List;
 
-@Service
 @Slf4j
+@Service
 public class TelegramMessageService {
 
     public SendMessage handleUpdate(Update update) {
 
         if(update.hasCallbackQuery()){
-            return SendMessage.builder().chatId(update.getMessage().getChatId().toString()).text("Please select command").build();
+            return SendMessage.builder()
+                              .chatId(update.getMessage()
+                                            .getChatId()
+                                            .toString())
+                              .text("Please select command")
+                              .build();
         }
         else if(update.hasMessage() && !update.getMessage().hasText()){
             Contact contact=update.getMessage().getContact();
-            return SendMessage.builder().chatId(update.getMessage().getChatId().toString()).text("Thanks for contact: ".concat(contact.getPhoneNumber())).build();
+            return SendMessage.builder()
+                              .chatId(update.getMessage()
+                                            .getChatId()
+                                            .toString())
+                              .text("Thanks for contact: ".concat(contact.getPhoneNumber()))
+                              .build();
         }
         else if (update.hasMessage() && update.getMessage().hasText()) {
             String chatId=update.getMessage().getChatId().toString();
             String command = update.getMessage().getText().trim();
-            String userId = update.getMessage().getChat().getId().toString();
+            String userId = update.getMessage()
+                                  .getChat()
+                                  .getId()
+                                  .toString();
 
             if(command.equals("/start")){
                 return requestPhoneNumber(chatId, "Please send your phone number");
@@ -37,30 +50,40 @@ public class TelegramMessageService {
 
                 return requestPhoneNumber(chatId,"Please send your phone number "+ authorizationCode);
             }
-            return SendMessage.builder().chatId(chatId).text("Please select command").build();
+            return SendMessage
+                            .builder()
+                            .chatId(chatId)
+                            .text("Please select command")
+                            .build();
         }
         return null;
     }
 
 
     private SendMessage requestPhoneNumber(String chatId,String message){
-        SendMessage sendMessage = new SendMessage();
 
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
         replyKeyboardMarkup.setOneTimeKeyboard(true);
 
+        replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(createReplyButton("Share your number >",true)))));
 
-        KeyboardButton keyboardButton = new KeyboardButton();
-        keyboardButton.setText("Share your number >");
-        keyboardButton.setRequestContact(true);
-        replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(keyboardButton))));
-
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(message);
-        sendMessage.setReplyMarkup(replyKeyboardMarkup);
-
-        return sendMessage;
+        return SendMessage.builder()
+                            .chatId(chatId)
+                            .text(message)
+                            .replyMarkup(replyKeyboardMarkup)
+                            .build();
     }
+
+
+
+    private KeyboardButton createReplyButton(String buttonText, boolean requestContact){
+        return KeyboardButton.builder()
+                                .text(buttonText)
+                                .requestContact(requestContact)
+                             .build();
+    }
+
+
 }
