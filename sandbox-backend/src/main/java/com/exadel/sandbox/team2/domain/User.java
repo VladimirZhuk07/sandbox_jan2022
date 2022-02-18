@@ -17,7 +17,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
 @SuperBuilder
 
 @Entity
@@ -41,8 +40,10 @@ public class User extends AuditableEntity {
 
     private String telegramAuthorizationCode;
 
+    @Enumerated(EnumType.STRING)
     private TelegramState telegramState;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
