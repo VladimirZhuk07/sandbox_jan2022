@@ -1,7 +1,6 @@
-package com.exadel.sandbox.team2.serivce.impl;
+package com.exadel.sandbox.team2.serivce.base;
 
 import com.exadel.sandbox.team2.domain.base.BaseEntity;
-import com.exadel.sandbox.team2.serivce.CRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;

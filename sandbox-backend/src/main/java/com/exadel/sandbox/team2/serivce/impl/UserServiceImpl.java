@@ -4,14 +4,13 @@ import com.exadel.sandbox.team2.dao.RoleRepository;
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.serivce.UserService;
+import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
+import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-@Transactional
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {

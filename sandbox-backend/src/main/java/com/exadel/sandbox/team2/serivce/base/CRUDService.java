@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.serivce;
+package com.exadel.sandbox.team2.serivce.base;
 
 import java.util.List;
 import java.util.Optional;
