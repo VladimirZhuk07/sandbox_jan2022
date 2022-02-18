@@ -8,36 +8,34 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.util.Date;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString(callSuper = true)
+@MappedSuperclass
 @SuperBuilder
 
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class AuditableEntity extends BaseEntity{
+public class
+AuditableEntity extends BaseEntity{
 
     @CreatedBy
     private String createdBy;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "createdDate", nullable = false)
+    private Date createdDate;
 
     @LastModifiedBy
     private String modifiedBy;
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modifiedDate;
 
-    @PrePersist
-    void onCreate() {
-        this.createdBy = "me";
-        this.modifiedBy = "me";
-        this.createdDate = LocalDateTime.now();
-        this.modifiedDate = LocalDateTime.now();
-    }
 }
