@@ -1,5 +1,7 @@
+DROP TABLE `Vacation`;
+DROP TABLE `UserRole`;
+DROP TABLE `Role`;
 DROP TABLE `User`;
-
 CREATE TABLE `User` (
    id                  BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
    chatId              VARCHAR(50)                NOT NULL,
@@ -11,7 +13,7 @@ CREATE TABLE `User` (
    employmentEnd       DATE,
    telegramAuthorizationCode        VARCHAR(50)   DEFAULT NULL,
    telegramState       ENUM('GIVE_PHONE_NUMBER')  DEFAULT NULL,
-   status              BOOLEAN,
+   isActive            BOOLEAN,
    createdDate         DATETIME                   NOT NULL,
    modifiedDate        DATETIME                   NOT NULL,
    createdBy           VARCHAR(50)                NOT NULL,
