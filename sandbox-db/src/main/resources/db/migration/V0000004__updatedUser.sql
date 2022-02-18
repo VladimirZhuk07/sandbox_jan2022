@@ -13,7 +13,7 @@ CREATE TABLE `User` (
    employmentEnd       DATE,
    telegramAuthorizationCode        VARCHAR(50)   DEFAULT NULL,
    telegramState       ENUM('GIVE_PHONE_NUMBER')  DEFAULT NULL,
-   isActive            BOOLEAN,
+   status              ENUM('NEW_USER','ACTIVE','BLOCKED')   DEFAULT NULL,
    createdDate         DATETIME                   NOT NULL,
    modifiedDate        DATETIME                   NOT NULL,
    createdBy           VARCHAR(50)                NOT NULL,
