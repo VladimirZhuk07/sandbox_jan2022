@@ -9,6 +9,9 @@ CREATE TABLE `User` (
    phoneNumber         VARCHAR(20)                NOT NULL,
    employmentStart     DATE                       NOT NULL,
    employmentEnd       DATE,
+   telegramAuthorizationCode        VARCHAR(50)   DEFAULT NULL,
+   telegramState       ENUM('GIVE_PHONE_NUMBER')  DEFAULT NULL,
+   status              ENUM('BLOCKED','ACTIVE')   DEFAULT NULL,
    createdDate         DATETIME                   NOT NULL,
    modifiedDate        DATETIME                   NOT NULL,
    createdBy           VARCHAR(50)                NOT NULL,
@@ -28,7 +31,7 @@ CREATE TABLE `Vacation`
 CREATE TABLE `Role`
 (
    id                   BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   name   ENUM("USER", "MAP_EDITOR", "ADMIN", "MANAGER")   DEFAULT NULL
+   name   ENUM('USER', 'MAP_EDITOR', 'ADMIN', 'MANAGER')   DEFAULT NULL
 );
 
 CREATE TABLE `UserRole`
