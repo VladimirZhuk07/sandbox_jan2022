@@ -1,7 +1,7 @@
 package com.exadel.sandbox.team2.exception.handler;
 
-import com.exadel.sandbox.team2.exception.AppException;
 import com.exadel.sandbox.team2.exception.ErrorData;
+import com.exadel.sandbox.team2.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorData> handleAppException(AppException exception) {
+    public ResponseEntity<ErrorData> handleAppException(ServiceException exception) {
         ErrorData data = new ErrorData();
         data.setData(exception.getData());
         data.setMessage(exception.getMessage());

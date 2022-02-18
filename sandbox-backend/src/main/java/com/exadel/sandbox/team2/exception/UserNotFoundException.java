@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-public class UserNotFoundException extends AppException {
+public class UserNotFoundException extends ServiceException {
 
     private static final String ERROR_MESSAGE = "error.user_not_found";
 

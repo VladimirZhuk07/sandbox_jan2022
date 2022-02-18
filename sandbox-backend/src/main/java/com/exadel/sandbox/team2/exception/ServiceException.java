@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
-public class AppException extends RuntimeException {
+public class ServiceException extends RuntimeException {
 
     private Object data;
 
-    public AppException(String message, Object data) {
+    public ServiceException(String message, Object data) {
         super(message);
         this.data = data;
     }
