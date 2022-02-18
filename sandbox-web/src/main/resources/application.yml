@@ -17,6 +17,8 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  profiles:
+    active: prod
 
 logging:
   level:
@@ -24,7 +26,15 @@ logging:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
 
-telegramBot:
-  username: ${TG_BOT_USERNAME}
-  token: ${TG_BOT_TOKEN}
-  path: ${TG_BOT_PATH}
+notification:
+  mail:
+    username: ${MAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+    password: ${MAIL_PASSWORD:AzizVladTeam2}
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls: true
+
+authorization:
+   secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
+   expiration: 3600
