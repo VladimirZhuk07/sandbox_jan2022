@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"user"}, callSuper = false)
+@AllArgsConstructor
 @SuperBuilder
 
 @Entity

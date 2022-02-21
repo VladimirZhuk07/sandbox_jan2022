@@ -1,7 +1,10 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
+import com.exadel.sandbox.team2.domain.enums.Status;
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -12,7 +15,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 
 @Entity
@@ -34,6 +38,14 @@ public class User extends AuditableEntity {
 
     private Boolean isFired;
 
+    private String telegramAuthorizationCode;
+
+    @Enumerated(EnumType.STRING)
+    private TelegramState telegramState;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "UserRole"
@@ -42,9 +54,9 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private Vacation vacation;
 
-    @OneToOne(mappedBy = "user")
-    private Booking booking;
+    @Transient
+    public static String SYSTEM_USER = "Rony";
 }
