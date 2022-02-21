@@ -41,6 +41,7 @@ public class TelegramAuthorizationService {
         .build();
     }
     else if(Objects.equals(phoneNumber,user.getPhoneNumber())){
+      user.setChatId(chatId);
       user.setStatus(UserState.NEW);
       userService.save(user);
       return TelegramResponse.builder()

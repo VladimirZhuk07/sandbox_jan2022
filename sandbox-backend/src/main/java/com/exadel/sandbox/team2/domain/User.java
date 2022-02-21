@@ -40,9 +40,11 @@ public class User extends AuditableEntity {
     private Boolean isFired;
 
     private String telegramAuthorizationCode;
-
+    @Enumerated(EnumType.STRING)
+    @Column
     private TelegramState telegramState;
-
+    @Enumerated(EnumType.STRING)
+    @Column
     private UserState status;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
