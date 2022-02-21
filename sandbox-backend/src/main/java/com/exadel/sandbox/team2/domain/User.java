@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
+import com.exadel.sandbox.team2.domain.enums.UserState;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -42,7 +43,7 @@ public class User extends AuditableEntity {
 
     private TelegramState telegramState;
 
-    private Boolean isActive;
+    private UserState status;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(

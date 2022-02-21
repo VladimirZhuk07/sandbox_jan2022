@@ -9,6 +9,7 @@ import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -40,4 +41,15 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
         user.getRoles().removeIf(x -> x.getId().equals(roleId));
         userRepository.save(user);
     }
+
+    @Override
+    public Optional<User> getUserByAuthorizationCode(String code) {
+        return userRepository.findByTelegramAuthorizationCode(code);
+    }
+
+    @Override
+    public Optional<User> getUserByTelegramChatIdOrPhone(String chatId, String phone) {
+        return userRepository.findByChatIdOrPhoneNumber(chatId,phone);
+    }
+
 }
