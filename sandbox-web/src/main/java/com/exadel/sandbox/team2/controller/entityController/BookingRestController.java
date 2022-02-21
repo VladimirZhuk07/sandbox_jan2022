@@ -1,8 +1,8 @@
-package com.exadel.sandbox.team2.controller;
+package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.dto.BookingDto;
 import com.exadel.sandbox.team2.mapper.BookingMapper;
-import com.exadel.sandbox.team2.serivce.BookingService;
+import com.exadel.sandbox.team2.serivce.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,18 +28,18 @@ public class BookingRestController {
         return bookingService.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
-    @PostMapping("/{userId}")
-    public BookingDto add(@RequestBody BookingDto bookingDto, @PathVariable Long userId) {
-        return bookingService.save(bookingDto, userId);
+    @PostMapping
+    public BookingDto add(@RequestBody BookingDto bookingDto) {
+        return bookingService.save(bookingDto);
     }
 
-    @PutMapping("/{id}/{userId}")
-    public BookingDto update(@PathVariable Long id, @PathVariable Long userId, @RequestBody BookingDto bookingDto) {
-        return bookingService.update(id, userId, bookingDto);
+    @PutMapping("/{id}")
+    public BookingDto update(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
+        return bookingService.update(id, bookingDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookingService.delete(id);
+        bookingService.remove(id);
     }
 }

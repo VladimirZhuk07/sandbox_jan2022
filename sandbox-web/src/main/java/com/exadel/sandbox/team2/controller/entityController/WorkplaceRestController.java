@@ -1,8 +1,8 @@
-package com.exadel.sandbox.team2.controller;
+package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.dto.WorkplaceDto;
 import com.exadel.sandbox.team2.mapper.WorkplaceMapper;
-import com.exadel.sandbox.team2.serivce.WorkplaceService;
+import com.exadel.sandbox.team2.serivce.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

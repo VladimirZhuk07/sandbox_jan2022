@@ -4,9 +4,12 @@ import com.exadel.sandbox.team2.dao.BookingRepository;
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.dao.WorkplaceRepository;
 import com.exadel.sandbox.team2.domain.Booking;
+import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.Workplace;
 import com.exadel.sandbox.team2.dto.BookingDto;
 import com.exadel.sandbox.team2.mapper.BookingMapper;
-import com.exadel.sandbox.team2.serivce.BookingService;
+import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
+import com.exadel.sandbox.team2.serivce.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +26,44 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     private final BookingMapper mapper;
 
     @Override
-    public BookingDto save(BookingDto bookingDto, Long userId) {
-        Booking booking = mapper.toEntity(bookingDto);
-        booking.setWorkplace(workplaceRepository.findById(bookingDto.getWorkplaceId()).get());
-        booking.setUser(userRepository.findById(userId).get());
-        Booking newBooking = bookingRepository.save(booking);
-        return mapper.toDto(newBooking);
+    public BookingDto save(BookingDto bookingDto) {
+        User user = userRepository.findById(bookingDto.getUserId()).get();
+        Workplace workplace = workplaceRepository.findById(bookingDto.getWorkplaceId()).get();
+        if(workplace.getBookingId() == null && user.getBookingId() == null) {
+            Booking booking = mapper.toEntity(bookingDto);
+            booking.setWorkplaceId(workplace);
+            booking.setUserId(user);
+            Booking newBooking = bookingRepository.save(booking);
+            return mapper.toDto(newBooking);
+        }
+
+        return null;
     }
 
     @Override
-    public BookingDto update(Long id, Long userId, BookingDto bookingDto) {
-        Booking newBooking = mapper.toEntity(bookingDto);
-        newBooking.setId(id);
-        newBooking.setWorkplace(workplaceRepository.findById(bookingDto.getWorkplaceId()).get());
-        newBooking.setUser(userRepository.findById(userId).get());
-        bookingRepository.save(newBooking);
-        return mapper.toDto(newBooking);
-    }
-
-    @Override
-    public void delete(Long id) {
+    public BookingDto update(long id, BookingDto bookingDto) {
         Booking booking = bookingRepository.findById(id).get();
-        booking.setUser(null);
-        booking.setWorkplace(null);
+        if(bookingDto.getStartDate() != null){
+            booking.setStartDate(booking.getStartDate());
+        }if(bookingDto.getEndDate() != null){
+            booking.setEndDate(bookingDto.getEndDate());
+        }if(bookingDto.isRecurring() != booking.isRecurring()){
+            booking.setRecurring(bookingDto.isRecurring());
+        }
+
+        return mapper.toDto(bookingRepository.save(booking));
+    }
+
+    @Override
+    public void remove(long id) {
+        Booking booking = bookingRepository.findById(id).get();
+        User user = booking.getUserId();
+        user.setBookingId(null);
+        userRepository.save(user);
+        Workplace workplace = booking.getWorkplaceId();
+        workplace.setBookingId(null);
+        workplaceRepository.save(workplace);
+
         bookingRepository.deleteById(id);
     }
 }

@@ -1,10 +1,7 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 @SuperBuilder
 
 @Entity
@@ -23,7 +20,7 @@ public class Booking extends AuditableEntity {
 
     private LocalDateTime endDate;
 
-    private Boolean recurring;
+    private boolean recurring;
 
     private boolean monday;
 
@@ -39,12 +36,12 @@ public class Booking extends AuditableEntity {
 
     private boolean sunday;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
-    private User user;
+    private User userId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "workplaceId")
-    private Workplace workplace;
+    private Workplace workplaceId;
 
 }

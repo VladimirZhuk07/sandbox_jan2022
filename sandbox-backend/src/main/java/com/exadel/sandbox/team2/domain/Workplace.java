@@ -1,19 +1,18 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.BaseEntity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 @SuperBuilder
 
 @Entity
@@ -33,6 +32,7 @@ public class Workplace extends BaseEntity {
 
     private boolean headset;
 
-    @OneToOne(mappedBy = "workplace")
-    private Booking booking;
+    @OneToOne(mappedBy = "workplaceId", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Booking bookingId;
 }

@@ -13,13 +13,15 @@ import java.time.LocalDateTime;
 @Builder
 public class BookingDto {
 
-    private LocalDateTime startDate;
+    private long workplaceId;
 
-    private Long workplaceId;
+    private long userId;
+
+    private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    private Boolean recurring;
+    private boolean recurring;
 
     private boolean monday;
 
