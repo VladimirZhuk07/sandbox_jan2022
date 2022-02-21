@@ -4,10 +4,8 @@ import com.exadel.sandbox.team2.dao.RoleRepository;
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.exception.EntityNotFoundException;
 import com.exadel.sandbox.team2.exception.RoleNotFoundException;
-import com.exadel.sandbox.team2.exception.UserNotFoundException;
-import com.exadel.sandbox.team2.serivce.UserService;
-
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +28,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public void assignUserRole(Long userId, Long roleId) {
-        User user  = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            throw new UserNotFoundException(userId);
+            throw new EntityNotFoundException("User with " + userId + " not found", userId);
         }
         Role role = roleRepository.findById(roleId).orElse(null);
         if (role == null) {
@@ -46,9 +44,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public void unassignUserRole(Long userId, Long roleId) {
-        User user  = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
-            throw new UserNotFoundException(userId);
+            throw new EntityNotFoundException("User with " + userId + " not found", userId);
         }
         user.getRoles().removeIf(x -> x.getId().equals(roleId));
         userRepository.save(user);
