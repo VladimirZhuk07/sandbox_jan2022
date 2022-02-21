@@ -19,17 +19,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         data.setData(exception.getData());
         data.setMessage(exception.getMessage());
         log.error("message = {}, data = {}", exception.getMessage(), exception.getData());
-
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(Exception exception) {
         ErrorData data = new ErrorData();
-
         data.setMessage(exception.getMessage());
         log.error("Exception: " + data.getMessage());
-
         return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
     }
 }
