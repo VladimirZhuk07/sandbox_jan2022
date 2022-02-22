@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.dto;
 
+import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +36,7 @@ public class UserDto {
 
     private TelegramState telegramState;
 
-    private Boolean isActive;
+    private Status status;
 
     private String createdBy;
 

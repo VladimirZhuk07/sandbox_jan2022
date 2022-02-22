@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
+import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import lombok.*;
@@ -17,7 +18,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
 @SuperBuilder
 
 @Entity
@@ -40,9 +40,11 @@ public class User extends AuditableEntity {
     private Boolean isFired;
 
     private String telegramAuthorizationCode;
+  
     @Enumerated(EnumType.STRING)
     @Column
     private TelegramState telegramState;
+  
     @Enumerated(EnumType.STRING)
     @Column
     private UserState status;
