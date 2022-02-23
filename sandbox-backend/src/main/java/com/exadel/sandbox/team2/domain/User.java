@@ -3,6 +3,7 @@ package com.exadel.sandbox.team2.domain;
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
+import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -40,12 +41,14 @@ public class User extends AuditableEntity {
     private boolean isFired;
 
     private String telegramAuthorizationCode;
-
+  
     @Enumerated(EnumType.STRING)
+    @Column
     private TelegramState telegramState;
-
+  
     @Enumerated(EnumType.STRING)
-    private Status status;
+    @Column
+    private UserState status;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
