@@ -4,8 +4,9 @@ import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -17,10 +18,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @SuperBuilder
 
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class User extends AuditableEntity {
 
     private String chatId;
@@ -37,7 +38,7 @@ public class User extends AuditableEntity {
 
     private LocalDate employmentEnd;
 
-    private Boolean isFired;
+    private boolean isFired;
 
     private String telegramAuthorizationCode;
   
@@ -57,8 +58,13 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private Vacation vacation;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
+    private Vacation vacationId;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
+    private Booking bookingId;
 
     @Transient
     public static String SYSTEM_USER = "Rony";
