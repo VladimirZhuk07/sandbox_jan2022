@@ -2,7 +2,6 @@ package com.exadel.sandbox.team2.notification.mail.service.impl;
 
 import com.exadel.sandbox.team2.notification.mail.configuration.MailSettingProperties;
 import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
-import com.exadel.sandbox.team2.notification.mail.dto.RegistrationMailDto;
 import com.exadel.sandbox.team2.notification.mail.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -13,7 +12,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
 
     @SneakyThrows
     public void sendMail(MailDto mailDto) {
-        String recipient = mailDto.getRecipientMail();
+        String recipient = mailDto.getRecipient();
         Properties properties = setSettingsOfProperties();
 
         Authenticator auth = new Authenticator() {
@@ -39,28 +37,6 @@ public class EmailServiceImpl implements EmailService {
         log.info("Successfully send to recipient.");
     }
 
-    @Override
-    public void sendAuthorizationMail(RegistrationMailDto registrationMailDto) {
-        String recipient = registrationMailDto.getRecipientMail();
-        Properties properties = setSettingsOfProperties();
-
-        Authenticator auth = new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
-                        mailProperties.getPasswordOfMailFormSend());
-            }
-        };
-        Session session = Session.getInstance(properties,auth);
-
-        Message message = prepareMessage(session, recipient, registrationMailDto);
-        try {
-            Transport.send(message);
-        } catch (MessagingException e) {
-            log.error("Error by preparing authorization message. ", e);
-        }
-        log.info("Successfully send to recipient.");
-    }
-
     private Message prepareMessage(Session session, String recipient, MailDto mailDto) {
         Message message = null;
         session.setDebug(true);
@@ -71,51 +47,14 @@ public class EmailServiceImpl implements EmailService {
                     Message.RecipientType.TO,
                     new InternetAddress[]{new InternetAddress(recipient)}
             );
-            message.setSubject(mailDto.getHeaderOfMessage());
-            generateMailBody(message);
+            message.setSubject(mailDto.getHeader());
+            message.setText(mailDto.getBody());
 
-            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
+            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeader());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
         return message;
-    }
-
-    private Message prepareMessage(Session session, String recipient, RegistrationMailDto registrationMailDto) {
-        Message message = null;
-        session.setDebug(true);
-        try {
-            message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(mailProperties.getUsernameOfMailFromSend()));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    new InternetAddress[]{new InternetAddress(recipient)}
-            );
-            message.setSubject(registrationMailDto.getHeaderOfMessage());
-            message.setText(registrationMailDto.getTextOfMessage());
-
-            log.info("Email to: {}, with title: {}", recipient, registrationMailDto.getHeaderOfMessage());
-        } catch (MessagingException e) {
-            log.error("Error by preparing message. ", e);
-        }
-        return message;
-    }
-
-    private void generateMailBody(Message message){
-        String link = UUID.randomUUID().toString();
-        try {
-            message.setText(String.format(
-                    """
-                            Hello!\s
-                            This email was sent to verify your account
-                            Please follow the link below to verify it:
-                            http://localhost:8080/api/mails/activate/%s""",
-                    link
-            ));
-
-        } catch (MessagingException e) {
-            log.error("Error in generating body of message. ", e);
-        }
     }
 
     private Properties setSettingsOfProperties() {
