@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.notification.mail.service.impl;
 
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.notification.mail.configuration.MailSettingProperties;
 import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
 import com.exadel.sandbox.team2.notification.mail.service.EmailService;
@@ -19,10 +20,11 @@ import java.util.UUID;
 @Service
 public class EmailServiceImpl implements EmailService {
     private final MailSettingProperties mailProperties;
+    // private final TelegramProperties telegramProperties;
 
     @SneakyThrows
     public void sendMail(MailDto mailDto) {
-        String recipient = mailDto.getRecipientMail();
+        String recipient = mailDto.getRecipient();
         Properties properties = setSettingsOfProperties();
 
         Authenticator auth = new Authenticator() {
@@ -48,10 +50,10 @@ public class EmailServiceImpl implements EmailService {
                     Message.RecipientType.TO,
                     new InternetAddress[]{new InternetAddress(recipient)}
             );
-            message.setSubject(mailDto.getHeaderOfMessage());
+            message.setSubject(mailDto.getHeader());
             generateMailBody(message);
 
-            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
+            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeader());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
@@ -59,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private void generateMailBody(Message message){
-        String link = UUID.randomUUID().toString();
+        String link = "https://t.me/" + "?start=" + UUID.randomUUID().toString();
         try {
             message.setText(String.format(
                     """

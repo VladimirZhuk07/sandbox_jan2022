@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MailDto {
-    private String recipientMail;
-    private String headerOfMessage;
-    private String textOfMessage;
+    private String recipient;
+    private String header;
+    private String text;
 }
