@@ -4,6 +4,7 @@ import com.exadel.sandbox.team2.domain.base.AuditableEntity;
 import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 @SuperBuilder
 
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class User extends AuditableEntity {
 
     private String chatId;

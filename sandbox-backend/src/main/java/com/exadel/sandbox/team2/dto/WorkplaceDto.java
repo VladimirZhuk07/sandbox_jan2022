@@ -1,27 +1,27 @@
 package com.exadel.sandbox.team2.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class WorkplaceDto {
 
-    private Long workplaceNumber;
+    private long workplaceNumber;
 
-    private Boolean nextToWindow;
+    private long mapId;
 
-    private Boolean pc;
+    private boolean nextToWindow;
 
-    private Boolean monitor;
+    private boolean pc;
 
-    private Boolean keyboard;
+    private boolean monitor;
 
-    private Boolean mouse;
+    private boolean keyboard;
 
-    private Boolean headset;
+    private boolean mouse;
+
+    private boolean headset;
 }

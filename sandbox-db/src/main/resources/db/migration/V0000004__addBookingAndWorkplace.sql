@@ -1,12 +1,14 @@
 CREATE TABLE `Workplace` (
    id                  BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   mapId               BIGINT                     NOT NULL,
    workplaceNumber     BIGINT                     NOT NULL,
    nextToWindow        BOOLEAN                    NOT NULL,
    pc                  BOOLEAN                    NOT NULL,
    monitor             BOOLEAN                    NOT NULL,
    keyboard            BOOLEAN                    NOT NULL,
    mouse               BOOLEAN                    NOT NULL,
-   headset             BOOLEAN                    NOT NULL
+   headset             BOOLEAN                    NOT NULL,
+   FOREIGN KEY (mapId) REFERENCES Map(id)
 );
 
 CREATE TABLE `Booking` (

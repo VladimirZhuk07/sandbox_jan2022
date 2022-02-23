@@ -27,8 +27,8 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
 
     @Override
     public BookingDto save(BookingDto bookingDto) {
-        User user = userRepository.findById(bookingDto.getUserId()).get();
-        Workplace workplace = workplaceRepository.findById(bookingDto.getWorkplaceId()).get();
+        User user = userRepository.getOne(bookingDto.getUserId());
+        Workplace workplace = workplaceRepository.getOne(bookingDto.getWorkplaceId());
         if(workplace.getBookingId() == null && user.getBookingId() == null) {
             Booking booking = mapper.toEntity(bookingDto);
             booking.setWorkplaceId(workplace);
