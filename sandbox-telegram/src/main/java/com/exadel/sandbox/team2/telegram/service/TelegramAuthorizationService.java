@@ -56,7 +56,7 @@ public class TelegramAuthorizationService {
 
   }
 
-  public TelegramResponse<?> authorizationTelegramUser(String code,String chatId){
+  public TelegramResponse<?> authorizationTelegramUser(String code, String chatId){
     Optional<User> optionalUser = userService.getUserByAuthorizationCode(code);
 
     if(optionalUser.isEmpty()){
