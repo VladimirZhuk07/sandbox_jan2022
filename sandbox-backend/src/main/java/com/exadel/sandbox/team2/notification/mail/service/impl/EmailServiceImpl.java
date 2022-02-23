@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.notification.mail.service.impl;
 
 import com.exadel.sandbox.team2.notification.mail.configuration.MailSettingProperties;
 import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
+import com.exadel.sandbox.team2.notification.mail.dto.RegistrationMailDto;
 import com.exadel.sandbox.team2.notification.mail.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,6 +39,28 @@ public class EmailServiceImpl implements EmailService {
         log.info("Successfully send to recipient.");
     }
 
+    @Override
+    public void sendAuthorizationMail(RegistrationMailDto registrationMailDto) {
+        String recipient = registrationMailDto.getRecipientMail();
+        Properties properties = setSettingsOfProperties();
+
+        Authenticator auth = new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
+                        mailProperties.getPasswordOfMailFormSend());
+            }
+        };
+        Session session = Session.getInstance(properties,auth);
+
+        Message message = prepareMessage(session, recipient, registrationMailDto);
+        try {
+            Transport.send(message);
+        } catch (MessagingException e) {
+            log.error("Error by preparing authorization message. ", e);
+        }
+        log.info("Successfully send to recipient.");
+    }
+
     private Message prepareMessage(Session session, String recipient, MailDto mailDto) {
         Message message = null;
         session.setDebug(true);
@@ -52,6 +75,26 @@ public class EmailServiceImpl implements EmailService {
             generateMailBody(message);
 
             log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
+        } catch (MessagingException e) {
+            log.error("Error by preparing message. ", e);
+        }
+        return message;
+    }
+
+    private Message prepareMessage(Session session, String recipient, RegistrationMailDto registrationMailDto) {
+        Message message = null;
+        session.setDebug(true);
+        try {
+            message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(mailProperties.getUsernameOfMailFromSend()));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    new InternetAddress[]{new InternetAddress(recipient)}
+            );
+            message.setSubject(registrationMailDto.getHeaderOfMessage());
+            message.setText(registrationMailDto.getTextOfMessage());
+
+            log.info("Email to: {}, with title: {}", recipient, registrationMailDto.getHeaderOfMessage());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
