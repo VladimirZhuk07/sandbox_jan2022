@@ -1,5 +1,8 @@
 package com.exadel.sandbox.team2.telegram.service;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,10 +15,14 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
 public class TelegramMessageService {
 
-    public SendMessage handleUpdate(Update update) {
+    TelegramAuthorizationService authorizationService;
 
+    public SendMessage handleUpdate(Update update) {
+        String chatId=update.getMessage().getChatId().toString();
         if(update.hasCallbackQuery()){
             return SendMessage.builder()
                               .chatId(update.getMessage()
@@ -26,29 +33,42 @@ public class TelegramMessageService {
         }
         else if(update.hasMessage() && !update.getMessage().hasText()){
             Contact contact=update.getMessage().getContact();
+            var response = authorizationService.saveTelegramUserPhone(chatId, contact.getPhoneNumber());
+
+            if(response.getCode() == 200){
+
+            }
+
+            if(response.getCode() == 201){
+
+
+            }
             return SendMessage.builder()
                               .chatId(update.getMessage()
                                             .getChatId()
                                             .toString())
-                              .text("Thanks for contact: ".concat(contact.getPhoneNumber()))
+                              .text("Thanks for your contact: ".concat(response.getMessage()))
                               .build();
         }
         else if (update.hasMessage() && update.getMessage().hasText()) {
-            String chatId=update.getMessage().getChatId().toString();
             String command = update.getMessage().getText().trim();
-            String userId = update.getMessage()
-                                  .getChat()
-                                  .getId()
-                                  .toString();
 
             if(command.equals("/start")){
                 return requestPhoneNumber(chatId, "Please send your phone number");
             }
             else if(command.startsWith("/start")){
                 String authorizationCode = command.substring("/start".length()).trim();
+                var response= authorizationService.authorizationTelegramUser(authorizationCode,chatId);
+                if(response.getCode() == 200){
+                    return requestPhoneNumber(chatId,"Please send your phone number "+ authorizationCode);
+                }
 
+                return  SendMessage
+                  .builder()
+                  .chatId(chatId)
+                  .text("You are not Exadel member so you can not use this bot")
+                  .build();
 
-                return requestPhoneNumber(chatId,"Please send your phone number "+ authorizationCode);
             }
             return SendMessage
                             .builder()
