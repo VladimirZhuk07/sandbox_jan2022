@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.notification.mail.service.impl;
 
-import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.notification.mail.configuration.MailSettingProperties;
 import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
 import com.exadel.sandbox.team2.notification.mail.service.EmailService;
@@ -13,16 +12,12 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
     private final MailSettingProperties mailProperties;
-
-
-    // private final TelegramProperties telegramProperties;
 
     @SneakyThrows
     public void sendMail(MailDto mailDto) {

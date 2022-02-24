@@ -27,13 +27,4 @@ public class EmailSender {
             log.error("Error during sending of email.", e);
         }
     }
-
-    @Async
-    public void verifyTelegramAuthorizationCode(String telegramAuthorizationCode) {
-        User user = service.getUserByAuthorizationCode(telegramAuthorizationCode).get();
-        user.setStatus(UserState.ACTIVE);
-        user.setTelegramAuthorizationCode(null);
-        user.setStatus(UserState.ACTIVE);
-        this.service.save(user);
-    }
 }
