@@ -2,30 +2,22 @@ package com.exadel.sandbox.team2.telegram.service;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
-import com.exadel.sandbox.team2.notification.mail.dto.MailDto;
-import com.exadel.sandbox.team2.notification.mail.service.EmailService;
 import com.exadel.sandbox.team2.serivce.service.UserService;
-import com.exadel.sandbox.team2.telegram.configuration.TelegramProperties;
 import com.exadel.sandbox.team2.telegram.dto.TelegramResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
 public class TelegramAuthorizationService {
 
     private final UserService userService;
-    private final TelegramProperties telegramProperties;
-    private final EmailService emailService;
 
-    public TelegramAuthorizationService(UserService userService, TelegramProperties telegramProperties, EmailService emailService) {
+    public TelegramAuthorizationService(UserService userService) {
         this.userService = userService;
-        this.telegramProperties = telegramProperties;
-        this.emailService = emailService;
     }
 
     public TelegramResponse<?> saveTelegramUserPhone(String chatId, String phoneNumber) {
@@ -89,19 +81,6 @@ public class TelegramAuthorizationService {
                 .code(200)
                 .message("User successfully updated")
                 .build();
-    }
-
-    public void sendAuthorizationLink(String chatId) {
-        MailDto mailDto = new MailDto();
-        String code = UUID.randomUUID().toString();
-        mailDto.setLink(code);
-        mailDto.putTextAndLink(telegramProperties.getBot().getUsername());
-
-        User user = userService.getUserByTelegramChatIdOrPhone(chatId, "1").get();
-        user.setTelegramAuthorizationCode(code);
-        user.setStatus(UserState.NEW);
-        userService.save(user);
-        emailService.sendMail(mailDto);
     }
 
 
