@@ -20,6 +20,8 @@ import java.util.UUID;
 @Service
 public class EmailServiceImpl implements EmailService {
     private final MailSettingProperties mailProperties;
+
+
     // private final TelegramProperties telegramProperties;
 
     @SneakyThrows
@@ -51,30 +53,13 @@ public class EmailServiceImpl implements EmailService {
                     new InternetAddress[]{new InternetAddress(recipient)}
             );
             message.setSubject(mailDto.getHeader());
-            generateMailBody(message);
+            message.setText(mailDto.getBody());
 
             log.info("Email to: {}, with title: {}", recipient, mailDto.getHeader());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
         return message;
-    }
-
-    private void generateMailBody(Message message){
-        String link = "https://t.me/" + "?start=" + UUID.randomUUID().toString();
-        try {
-            message.setText(String.format(
-                    """
-                            Hello!\s
-                            This email was sent to verify your account
-                            Please follow the link below to verify it:
-                            http://localhost:8080/api/mails/activate/%s""",
-                    link
-            ));
-
-        } catch (MessagingException e) {
-            log.error("Error in generating body of message. ", e);
-        }
     }
 
     private Properties setSettingsOfProperties() {

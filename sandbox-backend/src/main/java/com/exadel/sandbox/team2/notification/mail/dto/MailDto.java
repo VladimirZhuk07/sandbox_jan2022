@@ -12,5 +12,18 @@ import lombok.Setter;
 public class MailDto {
     private String recipient;
     private String header;
-    private String text;
+    private String body;
+    private String link;
+
+    public void putTextAndLink(String botUsername){
+        this.body = String.format(
+                """
+                        Hello!\s
+                        This email was sent to verify your account
+                        Please follow the link below to verify it:
+                        https://t.me/%s?start=%s""",
+                botUsername,
+                this.link
+        );
+    }
 }
