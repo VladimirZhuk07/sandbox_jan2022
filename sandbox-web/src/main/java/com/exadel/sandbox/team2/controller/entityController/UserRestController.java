@@ -3,14 +3,13 @@ package com.exadel.sandbox.team2.controller.entityController;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.UserSwaggerDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDService;
-import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,5 +62,10 @@ public class UserRestController {
     public List<User> findAllByStatus(@PathVariable UserState state) {
         List<User> list = userService.findAllByStatus(state);
         return list;
+    }
+
+    @PostMapping("/addSwgUser")
+    public void addUserSwaggerDto(@RequestBody UserSwaggerDto user) {
+        userService.addUserSwaggerDto(user);
     }
 }

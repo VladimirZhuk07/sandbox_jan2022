@@ -2,10 +2,16 @@ package com.exadel.sandbox.team2.mapper;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.UserSwaggerDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-  UserDto toDto(User user);
-  User toEntity(UserDto user);
+    UserDto toDto(User user);
+
+    User toEntity(UserDto user);
+
+    UserSwaggerDto toSwaggerDto(User user);
+
+    User toUser(UserSwaggerDto user);
 }

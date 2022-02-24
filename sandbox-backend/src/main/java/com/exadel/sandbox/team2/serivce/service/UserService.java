@@ -3,6 +3,7 @@ package com.exadel.sandbox.team2.serivce.service;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.exadel.sandbox.team2.dto.UserSwaggerDto;
 import com.exadel.sandbox.team2.serivce.base.CRUDService;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface UserService extends CRUDService<User> {
 
     List<User> findAllByStatus(UserState state);
 
+    void addUserSwaggerDto(UserSwaggerDto user);
 }
