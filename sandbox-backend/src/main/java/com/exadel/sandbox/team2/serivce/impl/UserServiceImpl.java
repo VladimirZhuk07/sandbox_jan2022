@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +66,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public void addUserSwaggerDto(UserSwaggerDto user) {
-        userRepository.save(mapper.toUser(user));
+        User user1 = mapper.toUser(user);
+        user1.setStatus(UserState.NEW);
+        user1.setTelegramAuthorizationCode(UUID.randomUUID().toString());
+        userRepository.save(user1);
     }
 }

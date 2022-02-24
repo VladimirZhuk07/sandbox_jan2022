@@ -41,7 +41,6 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
             emailService.sendMail(userInfo);
 
             user.setStatus(UserState.INVITED);
-            user.setTelegramAuthorizationCode(null);
             userService.save(user);
         }
     }

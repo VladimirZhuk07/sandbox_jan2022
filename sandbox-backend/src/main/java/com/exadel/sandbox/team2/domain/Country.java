@@ -23,7 +23,7 @@ public class Country{
 
     @OneToMany(mappedBy = "countryName", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}, orphanRemoval = true)
     @JsonIgnore
-    List<Office> office;
+    List<Office> offices;
 
     @Override
     public String toString() {
