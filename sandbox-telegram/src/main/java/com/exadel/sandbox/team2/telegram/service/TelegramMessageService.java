@@ -44,9 +44,9 @@ public class TelegramMessageService {
                 replyKeyboardMarkup.setOneTimeKeyboard(true);
                 // просто хочу показать как кнопка надо создать дальше вы сами будете
                 replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(
-                        createReplyButton("Share your number >",false),
-                        createReplyButton("Share your number >",false)
-
+                        createReplyButton("Book place >",false),
+                        createReplyButton("Show my booking >",false),
+                        createReplyButton("Settings >",false)
                 ))));
 
                        SendMessage buttons= SendMessage.builder()
