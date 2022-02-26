@@ -12,6 +12,7 @@ public class OfficeDto {
 
     long id;
     CountryDto countryName;
+    String city;
     String name;
     String address;
     boolean hasParking;

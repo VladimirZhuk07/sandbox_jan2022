@@ -15,8 +15,4 @@ public class MailController {
     public void sendEmail(@RequestBody MailDto mailDto) {
         emailSender.send(mailDto);
     }
-
-    @GetMapping("/activate/{code}")
-    public void activate(@PathVariable String code) {
-    }
 }

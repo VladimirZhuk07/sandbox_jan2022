@@ -26,6 +26,7 @@ public class Office extends AuditableEntity {
     @OneToOne(mappedBy = "officeId",cascade = CascadeType.ALL)
     @JsonIgnore
     Map map;
+    String city;
     String name;
     String address;
     boolean hasParking;
@@ -34,6 +35,7 @@ public class Office extends AuditableEntity {
     public String toString() {
         return "Office{" +
                 "countryName=" + countryName +
+                ", city='" + city + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", hasParking=" + hasParking +

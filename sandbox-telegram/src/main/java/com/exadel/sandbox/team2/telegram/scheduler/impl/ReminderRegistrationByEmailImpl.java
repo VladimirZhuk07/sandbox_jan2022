@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Configuration
@@ -30,18 +29,15 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
     @Scheduled(fixedDelay = 30000)
     public void remindToNewUsers() {
         List<User> newUsers = userService.findAllByStatus(UserState.NEW);
-        MailDto userInfo;
-        for (User user : newUsers) {
-            userInfo = new MailDto();
+        newUsers.forEach(user -> {
+            MailDto userInfo = new MailDto();
             userInfo.setRecipient(user.getEmail());
-            System.out.println(user.getEmail());
             userInfo.setLink(user.getTelegramAuthorizationCode());
             userInfo.putTextAndLink(telegramProperties.getBot().getUsername());
             userInfo.setHeader("Dear " + user.getFirstName() + ", please complete registration in our system");
             emailService.sendMail(userInfo);
-
             user.setStatus(UserState.INVITED);
             userService.save(user);
-        }
+        });
     }
 }
