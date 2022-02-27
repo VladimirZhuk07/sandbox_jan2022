@@ -23,6 +23,7 @@
         <module>sandbox-web</module>
         <module>sandbox-telegram</module>
         <module>sandbox-security</module>
+        <module>sandbox-email</module>
     </modules>
 
     <properties>
