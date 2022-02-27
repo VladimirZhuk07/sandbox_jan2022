@@ -4,8 +4,6 @@ import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.dto.MapDto;
 import com.exadel.sandbox.team2.serivce.base.CRUDService;
 
-import java.util.Optional;
-
 public interface MapService extends CRUDService<Map> {
 
     void deleteMap(Long id);

@@ -6,7 +6,6 @@ import com.exadel.sandbox.team2.dto.OfficeDto;
 import com.exadel.sandbox.team2.serivce.base.CRUDService;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface OfficeService extends CRUDService<Office> {
 
@@ -16,6 +15,6 @@ public interface OfficeService extends CRUDService<Office> {
 
     void deleteByCountry(String country);
 
-    List<Office> findByOfficeName(Country country);
+    List<Office> findByCountryName(Country country);
 
 }

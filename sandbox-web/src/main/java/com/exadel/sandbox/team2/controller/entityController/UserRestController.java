@@ -1,9 +1,12 @@
 package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.UserSwaggerDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDService;
+import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,8 @@ public class UserRestController {
     private final CRUDService<User> crudService;
 
     private final UserMapper mapper;
+
+    private final UserService userService;
 
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable Long id) {
@@ -50,5 +55,17 @@ public class UserRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         crudService.delete(id);
+    }
+
+
+    @GetMapping("/getUsersByState/{state}")
+    public List<User> findAllByStatus(@PathVariable UserState state) {
+        List<User> list = userService.findAllByStatus(state);
+        return list;
+    }
+
+    @PostMapping("/addSwgUser")
+    public void addUserSwaggerDto(@RequestBody UserSwaggerDto user) {
+        userService.addUserSwaggerDto(user);
     }
 }
