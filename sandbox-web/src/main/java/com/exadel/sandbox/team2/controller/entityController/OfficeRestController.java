@@ -2,7 +2,6 @@ package com.exadel.sandbox.team2.controller.entityController;
 
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.OfficeDto;
-import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,6 @@ public class OfficeRestController {
 
     private final OfficeService service;
 
-    private final OfficeMapper mapper;
-
     @GetMapping("/{id}")
     public Office get(@PathVariable Long id) {
         return service.findById(id).orElse(null);
@@ -29,9 +26,14 @@ public class OfficeRestController {
         return service.findAll();
     }
 
+    @GetMapping("/city/{city}")
+    public List<Office> getAllByCity(@PathVariable String city){
+        return service.findByCityName(city);
+    }
+
     @PostMapping
     public OfficeDto save(@RequestBody OfficeDto entity) {
-        return mapper.toDto(service.save(mapper.toEntity(entity)));
+        return service.saveOffice(entity);
     }
 
     @PutMapping("/{id}")
@@ -45,9 +47,9 @@ public class OfficeRestController {
     }
 
     @Transactional
-    @DeleteMapping("/country/{countryName}")
-    public void deleteByCountry(@PathVariable String countryName){
-        service.deleteByCountry(countryName);
+    @DeleteMapping("/city/{city}")
+    public void deleteByCountry(@PathVariable String city){
+        service.deleteByCity(city);
     }
 
 }

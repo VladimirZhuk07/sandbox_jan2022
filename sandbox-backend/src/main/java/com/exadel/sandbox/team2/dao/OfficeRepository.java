@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.dao;
 
+import com.exadel.sandbox.team2.domain.City;
 import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.domain.Office;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +12,8 @@ import java.util.List;
 @Repository
 public interface OfficeRepository  extends CrudRepository<Office, Long>{
 
-    void deleteByCountryName(Country country);
+    void deleteByCity(City city);
 
-    @Query("select o from Office o where o.countryName = ?1")
-    List<Office> findByCountryName(Country country);
+    List<Office> findByCity(City city);
 
 }

@@ -11,8 +11,7 @@ import lombok.experimental.FieldDefaults;
 public class OfficeDto {
 
     long id;
-    CountryDto countryName;
-    String city;
+    String cityName;
     String name;
     String address;
     boolean hasParking;

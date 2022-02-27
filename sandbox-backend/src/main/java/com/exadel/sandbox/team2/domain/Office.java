@@ -21,12 +21,11 @@ public class Office extends AuditableEntity {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "countryName")
-    Country countryName;
+    @JoinColumn(name = "cityName")
+    City city;
     @OneToOne(mappedBy = "officeId",cascade = CascadeType.ALL)
     @JsonIgnore
     Map map;
-    String city;
     String name;
     String address;
     boolean hasParking;
@@ -34,8 +33,6 @@ public class Office extends AuditableEntity {
     @Override
     public String toString() {
         return "Office{" +
-                "countryName=" + countryName +
-                ", city='" + city + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", hasParking=" + hasParking +
