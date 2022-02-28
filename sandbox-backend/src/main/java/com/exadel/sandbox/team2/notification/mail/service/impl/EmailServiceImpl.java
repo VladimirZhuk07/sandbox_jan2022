@@ -12,7 +12,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
 
     @SneakyThrows
     public void sendMail(MailDto mailDto) {
-        String recipient = mailDto.getRecipientMail();
+        String recipient = mailDto.getRecipient();
         Properties properties = setSettingsOfProperties();
 
         Authenticator auth = new Authenticator() {
@@ -48,31 +47,14 @@ public class EmailServiceImpl implements EmailService {
                     Message.RecipientType.TO,
                     new InternetAddress[]{new InternetAddress(recipient)}
             );
-            message.setSubject(mailDto.getHeaderOfMessage());
-            generateMailBody(message);
+            message.setSubject(mailDto.getHeader());
+            message.setText(mailDto.getBody());
 
-            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeaderOfMessage());
+            log.info("Email to: {}, with title: {}", recipient, mailDto.getHeader());
         } catch (MessagingException e) {
             log.error("Error by preparing message. ", e);
         }
         return message;
-    }
-
-    private void generateMailBody(Message message){
-        String link = UUID.randomUUID().toString();
-        try {
-            message.setText(String.format(
-                    """
-                            Hello!\s
-                            This email was sent to verify your account
-                            Please follow the link below to verify it:
-                            http://localhost:8080/api/mails/activate/%s""",
-                    link
-            ));
-
-        } catch (MessagingException e) {
-            log.error("Error in generating body of message. ", e);
-        }
     }
 
     private Properties setSettingsOfProperties() {

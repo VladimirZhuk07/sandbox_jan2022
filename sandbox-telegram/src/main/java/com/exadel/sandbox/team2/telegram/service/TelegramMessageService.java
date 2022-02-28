@@ -37,6 +37,25 @@ public class TelegramMessageService {
 
             if(response.getCode() == 200){
 
+
+                ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+                replyKeyboardMarkup.setSelective(true);
+                replyKeyboardMarkup.setResizeKeyboard(true);
+                replyKeyboardMarkup.setOneTimeKeyboard(true);
+                // просто хочу показать как кнопка надо создать дальше вы сами будете
+                replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(
+                        createReplyButton("Book place >",false),
+                        createReplyButton("Show my booking >",false),
+                        createReplyButton("Settings >",false)
+                ))));
+
+                       SendMessage buttons= SendMessage.builder()
+                               .chatId(chatId)
+                               .text("Select action")
+                               .replyMarkup(replyKeyboardMarkup)
+                               .build();
+                       return buttons;
+
             }
 
             if(response.getCode() == 201){
