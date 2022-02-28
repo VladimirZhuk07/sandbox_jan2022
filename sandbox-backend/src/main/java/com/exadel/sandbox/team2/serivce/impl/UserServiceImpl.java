@@ -1,15 +1,14 @@
 package com.exadel.sandbox.team2.serivce.impl;
 
-import com.exadel.sandbox.team2.dao.RoleRepository;
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.exception.NotFoundException;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ValidationException;
 import java.util.Set;
 
 @Service
@@ -18,8 +17,6 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
-
     @Override
     public Set<Role> getRoles(User user) {
         return user.getRoles();
@@ -27,14 +24,10 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public void assignUserRole(Long userId, Long roleId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (null == user) {
-            throw new NotFoundException("User with " + userId + " not found");
-        }
-        Role role = roleRepository.findById(roleId).orElse(null);
-        if (null == role) {
-            throw new NotFoundException("Role not found");
-        }
+        User user = new User();
+        user.setId(userId);
+        Role role = new Role();
+        role.setId(roleId);
         Set<Role> userRoles = user.getRoles();
         userRoles.add(role);
         user.setRoles(userRoles);
@@ -45,7 +38,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     public void unassignUserRole(Long userId, Long roleId) {
         User user = userRepository.findById(userId).orElse(null);
         if (null == user) {
-            throw new NotFoundException("User with " + userId + " not found");
+            throw new ValidationException("User with " + userId + " not found");
         }
         user.getRoles().removeIf(x -> x.getId().equals(roleId));
         userRepository.save(user);
