@@ -1,12 +1,12 @@
-package com.exadel.sandbox.team2.scheduler.impl;
+package com.exadel.sandbox.team2.service.impl;
 
 import com.exadel.sandbox.team2.configuration.TelegramProperties;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.MailDto;
-import com.exadel.sandbox.team2.scheduler.ReminderRegistration;
 import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
+import com.exadel.sandbox.team2.service.ReminderRegistration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

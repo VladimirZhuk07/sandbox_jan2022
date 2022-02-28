@@ -62,4 +62,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
         return userRepository.findAllByStatus(state);
     }
 
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByEmail(username);
+    }
+
 }

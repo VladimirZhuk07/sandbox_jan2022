@@ -30,6 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsServiceImpl userService;
 
+    private final String [] NO_SECURITY_PATH_LIST ={
+      "/authorization/sign-in"
+    };
+
     public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {
         this.userService = userService;
         this.tokenProvider = tokenProvider;
@@ -60,7 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("config");
             http
                 .csrf()
                     .disable()
@@ -68,19 +71,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(unauthorizedHandler)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/authorization/signin","/users").permitAll()
+                    .antMatchers(NO_SECURITY_PATH_LIST).permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/**","/v3/api-docs/**",
+        web.ignoring().antMatchers("/v3/api-docs/**",
                 "/swagger-resources",
                 "/swagger-resources/**",
                 "/configuration/ui",

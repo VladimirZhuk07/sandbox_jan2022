@@ -23,7 +23,7 @@ public class AuthorizationRestController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

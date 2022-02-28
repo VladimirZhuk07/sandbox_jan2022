@@ -24,6 +24,7 @@
         <module>sandbox-telegram</module>
         <module>sandbox-security</module>
         <module>sandbox-email</module>
+        <module>sandbox-scheduler</module>
     </modules>
 
     <properties>
@@ -41,6 +42,16 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>

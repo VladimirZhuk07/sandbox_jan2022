@@ -40,6 +40,8 @@ public class User extends AuditableEntity {
     private boolean isFired;
 
     private String telegramAuthorizationCode;
+
+    private String password;
   
     @Enumerated(EnumType.STRING)
     @Column

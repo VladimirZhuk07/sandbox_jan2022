@@ -22,4 +22,6 @@ public interface UserService extends CRUDService<User> {
     Optional<User> getUserByTelegramChatIdOrPhone(String chatId,String phone);
 
     List<User> findAllByStatus(UserState state);
+
+    Optional<User> findByUsername(String  username);
 }
