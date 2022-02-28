@@ -16,23 +16,19 @@
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-db</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-backend</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-security</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.exadel.sandbox</groupId>
-            <artifactId>sandbox-telegram</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -42,8 +38,6 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.4</version>
         </dependency>
-
-
 
     </dependencies>
 
