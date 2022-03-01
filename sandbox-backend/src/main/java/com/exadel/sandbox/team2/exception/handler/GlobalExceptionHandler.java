@@ -12,34 +12,35 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.xml.bind.ValidationException;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleAppException(ServiceException exception) {
         ErrorData data = new ErrorData(exception.getMessage(), exception.getData());
-        //log.error("message = {}, data = {}", exception.getMessage(), exception.getData());
+        log.error("message = {}, data = {}", exception.getMessage(), exception.getData());
         return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(Exception exception) {
         ErrorData data = new ErrorData(exception.getMessage());
-        //log.error("Exception: " + data.getMessage());
+        log.error("Exception: " + data.getMessage());
         return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(ValidationException exception) {
         ErrorData data = new ErrorData(exception.getMessage());
-        //log.error("Validation Exception: " + data.getMessage());
+        log.error("Validation Exception: " + data.getMessage());
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(ResourceNotFoundException exception) {
         ErrorData data = new ErrorData(exception.getMessage());
-        //log.error("Web Module Resource Not Found Exception: " + data.getMessage());
+        log.error("Web Module Resource Not Found Exception: " + data.getMessage());
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 }
