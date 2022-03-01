@@ -30,12 +30,12 @@ public class WorkplaceRestController {
 
     @PostMapping
     public WorkplaceDto add(@RequestBody WorkplaceDto workplaceDto) {
-        return workplaceService.save(workplaceDto);
+        return mapper.toDto(workplaceService.save(null, workplaceDto));
     }
 
     @PutMapping("/{id}")
     public WorkplaceDto update(@PathVariable Long id, @RequestBody WorkplaceDto workplaceDto) {
-        return workplaceService.update(id, workplaceDto);
+        return mapper.toDto(workplaceService.update(null, workplaceDto, id));
     }
 
     @DeleteMapping("/{id}")

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public abstract class CRUDServiceImpl<E extends BaseEntity> implements CRUDService<E> {
+public abstract class CRUDServiceImpl<E extends BaseEntity, D> implements CRUDService<E, D> {
 
     @Autowired
     private CrudRepository<E, Long> repository;
@@ -31,12 +31,12 @@ public abstract class CRUDServiceImpl<E extends BaseEntity> implements CRUDServi
     }
 
     @Override
-    public E save(E e) {
+    public E save(E e, D d) {
         return repository.save(e);
     }
 
     @Override
-    public E update(E e) {
+    public E update(E e, D d, long id) {
         return repository.save(e);
     }
 

@@ -34,7 +34,7 @@ public class TelegramAuthorizationService {
     if(Objects.equals(chatId,user.getChatId()) && user.getStatus() == UserState.WAIT_PHONE_AUTHORIZATION){
       user.setStatus(UserState.ACTIVE);
       user.setPhoneNumber(phoneNumber);
-      userService.save(user);
+      userService.save(user, null);
       return TelegramResponse.builder()
         .code(200)
         .message("Successfully user activated")
@@ -43,7 +43,7 @@ public class TelegramAuthorizationService {
     else if(Objects.equals(phoneNumber,user.getPhoneNumber())){
       user.setChatId(chatId);
       user.setStatus(UserState.NEW);
-      userService.save(user);
+      userService.save(user, null);
       return TelegramResponse.builder()
         .code(201)
         .message("Please wait invitation via email")
@@ -77,7 +77,7 @@ public class TelegramAuthorizationService {
 
     user.setChatId(chatId);
     user.setStatus(UserState.WAIT_PHONE_AUTHORIZATION);
-    userService.save(user);
+    userService.save(user, null);
 
     return TelegramResponse.builder()
       .code(200)

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements BookingService {
+public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> implements BookingService {
 
     private final BookingRepository bookingRepository;
 
@@ -26,23 +26,21 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     private final BookingMapper mapper;
 
     @Override
-    public BookingDto save(BookingDto bookingDto) {
-        User user = userRepository.getOne(bookingDto.getUserId());
-        Workplace workplace = workplaceRepository.getOne(bookingDto.getWorkplaceId());
+    public Booking save(Booking booking, BookingDto bookingDto) {
+        User user = userRepository.getById(bookingDto.getUserId());
+        Workplace workplace = workplaceRepository.getById(bookingDto.getWorkplaceId());
         if(workplace.getBookingId() == null && user.getBookingId() == null) {
-            Booking booking = mapper.toEntity(bookingDto);
+            booking = mapper.toEntity(bookingDto);
             booking.setWorkplaceId(workplace);
             booking.setUserId(user);
-            Booking newBooking = bookingRepository.save(booking);
-            return mapper.toDto(newBooking);
+            return bookingRepository.save(booking);
         }
-
         return null;
     }
 
     @Override
-    public BookingDto update(long id, BookingDto bookingDto) {
-        Booking booking = bookingRepository.findById(id).get();
+    public Booking update(Booking booking, BookingDto bookingDto, long id) {
+        booking = bookingRepository.findById(id).get();
         if(bookingDto.getStartDate() != null){
             booking.setStartDate(booking.getStartDate());
         }if(bookingDto.getEndDate() != null){
@@ -51,12 +49,12 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
             booking.setRecurring(bookingDto.isRecurring());
         }
 
-        return mapper.toDto(bookingRepository.save(booking));
+        return bookingRepository.save(booking);
     }
 
     @Override
-    public void remove(long id) {
-        Booking booking = bookingRepository.findById(id).get();
+    public void delete(Long id) {
+        Booking booking = bookingRepository.getById(id);
         User user = booking.getUserId();
         user.setBookingId(null);
         userRepository.save(user);

@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements OfficeService {
+public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> implements OfficeService {
 
     //I had to call repository, since calling
     //through CrudServiceImpl won`t include new queries
@@ -27,22 +27,17 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     private final OfficeMapper mapper;
     private final CountryMapper countryMapper;
 
-    public Office getOffice(long id){
-        return repository.findById(id).get();
-    }
-
-    public OfficeDto updateOffice(OfficeDto officeDto, long id) {
-        Office office = repository.findById(id).get();
+    @Override
+    public Office update(Office office, OfficeDto officeDto, long id) {
+        office = repository.findById(id).get();
         if(!officeDto.getCity().equals("string") && !officeDto.getCity().equals(""))
             office.setCity(officeDto.getCity());
         if(!officeDto.getAddress().equals("string") && !officeDto.getAddress().equals(""))
             office.setAddress(officeDto.getAddress());
-        if(!officeDto.getCountryName().getName().equals("string") && !officeDto.getCountryName().getName().equals(""))
-            office.setCountryName(countryMapper.toEntity(officeDto.getCountryName()));
         if(!officeDto.getName().equals("string") && !officeDto.getName().equals(""))
             office.setName(officeDto.getName());
 
-        return mapper.toDto(repository.save(office));
+        return repository.save(office);
     }
 
     @Override
@@ -52,7 +47,7 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     }
 
     @Override
-    public List<Office> findByOfficeName(Country country) {
+    public List<Office> findByCountryName(Country country) {
         return repository.findByCountryName(country);
     }
 }

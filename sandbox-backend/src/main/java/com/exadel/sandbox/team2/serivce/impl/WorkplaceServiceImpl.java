@@ -13,24 +13,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements WorkplaceService {
+public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto> implements WorkplaceService {
 
     private final WorkplaceRepository workplaceRepository;
     private final MapRepository mapRepository;
     private final WorkplaceMapper mapper;
 
     @Override
-    public WorkplaceDto save(WorkplaceDto workplaceDto) {
-        Workplace workplace = mapper.toEntity(workplaceDto);
-        Map map = mapRepository.getOne(workplaceDto.getMapId());
+    public Workplace save(Workplace workplace, WorkplaceDto workplaceDto) {
+        workplace = mapper.toEntity(workplaceDto);
+        Map map = mapRepository.getById(workplaceDto.getMapId());
         workplace.setMapId(map);
-        Workplace newWorkplace = workplaceRepository.save(workplace);
-        return mapper.toDto(newWorkplace);
+        return workplaceRepository.save(workplace);
     }
 
     @Override
-    public WorkplaceDto update(Long id, WorkplaceDto workplaceDto) {
-        Workplace workplace = workplaceRepository.findById(id).get();
+    public Workplace update(Workplace workplace, WorkplaceDto workplaceDto, long id) {
+        workplace = workplaceRepository.getById(id);
         if(workplace.isHeadset() != workplaceDto.isHeadset())
             workplace.setHeadset(workplaceDto.isHeadset());
         if(workplace.isKeyboard() != workplaceDto.isKeyboard())
@@ -46,6 +45,6 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
         if(workplace.getWorkplaceNumber() == workplaceDto.getWorkplaceNumber())
             workplace.setWorkplaceNumber(workplaceDto.getWorkplaceNumber());
 
-        return mapper.toDto(workplaceRepository.save(workplace));
+        return workplaceRepository.save(workplace);
     }
 }

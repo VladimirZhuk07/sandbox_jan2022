@@ -4,6 +4,7 @@ import com.exadel.sandbox.team2.dao.RoleRepository;
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.dto.UserDto;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
+public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements UserService {
 
     private final UserRepository userRepository;
 
