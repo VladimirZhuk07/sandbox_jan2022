@@ -1,11 +1,14 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,6 +18,7 @@ import javax.persistence.*;
 @SuperBuilder
 
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Map extends BaseEntity{
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -23,5 +27,9 @@ public class Map extends BaseEntity{
     int floorNum;
     int kitchenNum;
     int confRoomsNum;
+
+    @OneToMany(mappedBy = "mapId", cascade = CascadeType.ALL)
+    @JsonIgnore
+    List<Workplace> workplace;
 
 }

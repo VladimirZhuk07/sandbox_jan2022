@@ -1,8 +1,11 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
+import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -14,11 +17,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(exclude = {"roles", "vacation"}, callSuper = false)
 @SuperBuilder
 
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class User extends AuditableEntity {
 
     private String chatId;
@@ -35,7 +37,19 @@ public class User extends AuditableEntity {
 
     private LocalDate employmentEnd;
 
-    private Boolean isFired;
+    private boolean isFired;
+
+    private String telegramAuthorizationCode;
+
+    private String password;
+  
+    @Enumerated(EnumType.STRING)
+    @Column
+    private TelegramState telegramState;
+  
+    @Enumerated(EnumType.STRING)
+    @Column
+    private UserState status;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
@@ -45,9 +59,12 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private Vacation vacation;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
+    private Vacation vacationId;
 
-    @Transient
-    public static String SYSTEM_USER = "Rony";
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
+    private Booking bookingId;
+
 }

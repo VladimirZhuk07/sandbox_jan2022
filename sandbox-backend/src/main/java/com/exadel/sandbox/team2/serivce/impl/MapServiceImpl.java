@@ -11,8 +11,6 @@ import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {

@@ -28,7 +28,7 @@ CREATE TABLE `Vacation`
 CREATE TABLE `Role`
 (
    id                   BIGINT                     NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   name   ENUM("USER", "MAP_EDITOR", "ADMIN", "MANAGER")   DEFAULT NULL
+   name   ENUM('USER', 'MAP_EDITOR', 'ADMIN', 'MANAGER')   DEFAULT NULL
 );
 
 CREATE TABLE `UserRole`

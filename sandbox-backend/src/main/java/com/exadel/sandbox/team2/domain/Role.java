@@ -6,11 +6,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Getter
 @Setter
-
+@AllArgsConstructor
 @Entity
 public class Role extends BaseEntity {
 

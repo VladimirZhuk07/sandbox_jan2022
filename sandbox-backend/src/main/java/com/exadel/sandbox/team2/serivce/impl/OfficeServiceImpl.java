@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -34,12 +33,8 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
 
     public OfficeDto updateOffice(OfficeDto officeDto, long id) {
         Office office = repository.findById(id).get();
-        if(!officeDto.getCity().equals("string") && !officeDto.getCity().equals(""))
-            office.setCity(officeDto.getCity());
         if(!officeDto.getAddress().equals("string") && !officeDto.getAddress().equals(""))
             office.setAddress(officeDto.getAddress());
-        if(!officeDto.getCountryName().getName().equals("string") && !officeDto.getCountryName().getName().equals(""))
-            office.setCountryName(countryMapper.toEntity(officeDto.getCountryName()));
         if(!officeDto.getName().equals("string") && !officeDto.getName().equals(""))
             office.setName(officeDto.getName());
 
@@ -53,7 +48,7 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     }
 
     @Override
-    public List<Office> findByOfficeName(Country country) {
+    public List<Office> findByCountryName(Country country) {
         return repository.findByCountryName(country);
     }
 }

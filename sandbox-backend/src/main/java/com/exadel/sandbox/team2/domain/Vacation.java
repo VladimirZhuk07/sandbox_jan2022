@@ -11,7 +11,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"user"}, callSuper = false)
 @SuperBuilder
 
 @Entity
@@ -21,7 +20,7 @@ public class Vacation extends BaseEntity {
 
     private LocalDate vacationEnd;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
-    private User user;
+    private User userId;
 }
