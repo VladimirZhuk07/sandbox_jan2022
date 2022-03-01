@@ -11,13 +11,14 @@ import javax.persistence.EntityNotFoundException;
 @Component
 public class ResourceNotFoundExceptionInterceptor {
 
-    @AfterThrowing(pointcut = "execution(* com.exadel.sandbox.team2..*(..))",
+  /* Not Working
+    @AfterThrowing(pointcut = "execution(* com.exadel.sandbox.team2.controller.*(..))",
             throwing = "e")
     public void errorInterceptor(Exception e) {
         if (e instanceof EntityNotFoundException) {
             throw new ResourceNotFoundException("Resource was not found");
         }
-    }
+    }*/
 
     //TODO протестировать use presit and annotation
 }

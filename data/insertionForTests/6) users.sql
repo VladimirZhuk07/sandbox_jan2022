@@ -24,7 +24,13 @@ VALUES
 'NEW', '2022.01.03', '2022.01.03',
 'vlad', 'vlad', false);
 
-
+insert into user (chatId, firstName,
+                  lastName, email, phoneNumber,
+                  employmentStart, employmentEnd, telegramAuthorizationCode,
+                  telegramState, status, createdDate,
+                  modifiedDate, createdBy, modifiedBy, isFired)
+values (null, 'Vladislav', 'Userovich', 'divergenny@gmail.com', '+998946622097',
+        '01.03.2022', null, null, null, 'new_user', NOW(), NOW(), 'admin', 'admin', false);
 
 
 
