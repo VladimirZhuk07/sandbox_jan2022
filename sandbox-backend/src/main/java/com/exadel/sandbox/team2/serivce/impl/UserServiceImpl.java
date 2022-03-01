@@ -5,6 +5,7 @@ import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.exadel.sandbox.team2.dto.UserDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
@@ -17,13 +18,11 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
+public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements UserService {
 
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
-
-    private final UserMapper mapper;
 
     @Override
     public Set<Role> getRoles(User user) {

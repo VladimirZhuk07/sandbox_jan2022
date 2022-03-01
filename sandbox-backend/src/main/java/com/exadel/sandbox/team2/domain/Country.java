@@ -21,7 +21,7 @@ public class Country{
     @Column(unique = true)
     String name;
 
-    @OneToMany(mappedBy = "countryName", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}, orphanRemoval = true)
+    @OneToMany(mappedBy = "countryName", cascade = CascadeType.ALL)
     @JsonIgnore
     List<Office> offices;
 

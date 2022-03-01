@@ -37,7 +37,7 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
             userInfo.setHeader("Dear " + user.getFirstName() + ", please complete registration in our system");
             emailService.sendMail(userInfo);
             user.setStatus(UserState.INVITED);
-            userService.save(user);
+            userService.save(user, null);
         });
     }
 }

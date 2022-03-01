@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.controller.entityController;
+package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;

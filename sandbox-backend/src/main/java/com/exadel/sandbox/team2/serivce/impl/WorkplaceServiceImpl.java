@@ -42,7 +42,7 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto
             workplace.setNextToWindow(workplaceDto.isNextToWindow());
         if(workplace.isPc() != workplaceDto.isPc())
             workplace.setPc(workplaceDto.isPc());
-        if(workplace.getWorkplaceNumber() == workplaceDto.getWorkplaceNumber())
+        if(workplace.getWorkplaceNumber() != workplaceDto.getWorkplaceNumber())
             workplace.setWorkplaceNumber(workplaceDto.getWorkplaceNumber());
 
         return workplaceRepository.save(workplace);

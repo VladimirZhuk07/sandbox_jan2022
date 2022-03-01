@@ -18,7 +18,8 @@ public abstract class CRUDServiceImpl<E extends BaseEntity, D> implements CRUDSe
 
     private CrudRepository<E, Long> repository;
 
-    public CRUDServiceImpl(CrudRepository<E, Long> repository) {
+    @Autowired
+    public void setRepository(CrudRepository<E, Long> repository) {
         this.repository = repository;
     }
 

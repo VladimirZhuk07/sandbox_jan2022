@@ -30,9 +30,11 @@ public class UserDto {
 
     private LocalDate employmentEnd;
 
-    private Boolean isFired;
+    private boolean isFired;
 
     private String telegramAuthorizationCode;
+
+    private String password;
 
     private TelegramState telegramState;
 

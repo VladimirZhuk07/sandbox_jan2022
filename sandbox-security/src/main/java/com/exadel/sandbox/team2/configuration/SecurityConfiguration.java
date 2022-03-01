@@ -31,7 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userService;
 
     private final String [] NO_SECURITY_PATH_LIST ={
-      "/authorization/sign-in"
+      "/authorization/sign-in",
+      "/**"
     };
 
     public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {

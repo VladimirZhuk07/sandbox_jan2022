@@ -63,7 +63,7 @@ public class User extends AuditableEntity {
     @JsonIgnore
     private Vacation vacationId;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
     @JsonIgnore
     private Booking bookingId;
 

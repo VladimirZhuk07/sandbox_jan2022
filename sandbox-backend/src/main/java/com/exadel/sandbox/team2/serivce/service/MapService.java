@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface MapService extends CRUDService<Map,MapDto> {
 
     void deleteByOfficeId(long officeId);
-
-
 }

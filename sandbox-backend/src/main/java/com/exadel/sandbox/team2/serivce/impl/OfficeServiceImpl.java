@@ -5,11 +5,10 @@ import com.exadel.sandbox.team2.dao.OfficeRepository;
 import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.OfficeDto;
-import com.exadel.sandbox.team2.mapper.CountryMapper;
-import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +22,6 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     //through CrudServiceImpl won`t include new queries
     private final OfficeRepository repository;
     private final CountryRepository countryRepository;
-
-    private final OfficeMapper mapper;
-    private final CountryMapper countryMapper;
 
     @Override
     public Office update(Office office, OfficeDto officeDto, long id) {
