@@ -16,8 +16,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class CRUDServiceImpl<E extends BaseEntity, D> implements CRUDService<E, D> {
 
-    @Autowired
     private CrudRepository<E, Long> repository;
+
+    public CRUDServiceImpl(CrudRepository<E, Long> repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Optional<E> findById(Long id) {

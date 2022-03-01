@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-
+@AllArgsConstructor
 @Entity
 public class Role extends BaseEntity {
 

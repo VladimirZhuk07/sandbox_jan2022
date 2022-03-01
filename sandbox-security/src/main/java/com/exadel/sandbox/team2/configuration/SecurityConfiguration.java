@@ -1,9 +1,11 @@
 package com.exadel.sandbox.team2.configuration;
 
+import com.exadel.sandbox.team2.component.JwtAuthenticationEntryPoint;
+import com.exadel.sandbox.team2.component.JwtAuthenticationTokenFilter;
+import com.exadel.sandbox.team2.component.JwtTokenProvider;
 import com.exadel.sandbox.team2.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,6 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsServiceImpl userService;
+
+    private final String [] NO_SECURITY_PATH_LIST ={
+      "/authorization/sign-in"
+    };
 
     public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {
         this.userService = userService;
@@ -58,7 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("config");
             http
                 .csrf()
                     .disable()
@@ -66,19 +71,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authenticationEntryPoint(unauthorizedHandler)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/authorization/signin","/users").permitAll()
+                    .antMatchers(NO_SECURITY_PATH_LIST).permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**","/v3/api-docs/**",
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/v3/api-docs/**",
                 "/swagger-resources",
                 "/swagger-resources/**",
                 "/configuration/ui",

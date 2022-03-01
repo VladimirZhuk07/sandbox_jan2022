@@ -1,7 +1,6 @@
 package com.exadel.sandbox.team2.domain;
 
 import com.exadel.sandbox.team2.domain.base.AuditableEntity;
-import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +40,8 @@ public class User extends AuditableEntity {
     private boolean isFired;
 
     private String telegramAuthorizationCode;
+
+    private String password;
   
     @Enumerated(EnumType.STRING)
     @Column
@@ -66,6 +67,4 @@ public class User extends AuditableEntity {
     @JsonIgnore
     private Booking bookingId;
 
-    @Transient
-    public static String SYSTEM_USER = "Rony";
 }

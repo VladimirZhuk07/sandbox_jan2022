@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.dto;
 
-import com.exadel.sandbox.team2.domain.enums.Status;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import lombok.AllArgsConstructor;
