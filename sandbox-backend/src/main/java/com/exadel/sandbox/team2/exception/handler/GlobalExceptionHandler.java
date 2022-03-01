@@ -18,34 +18,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleAppException(ServiceException exception) {
-        ErrorData data = new ErrorData();
-        data.setData(exception.getData());
-        data.setMessage(exception.getMessage());
+        ErrorData data = new ErrorData(exception.getMessage(), exception.getData());
         log.error("message = {}, data = {}", exception.getMessage(), exception.getData());
-        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(Exception exception) {
-        ErrorData data = new ErrorData();
-        data.setMessage(exception.getMessage());
+        ErrorData data = new ErrorData(exception.getMessage());
         log.error("Exception: " + data.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(data, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(ValidationException exception) {
-        ErrorData data = new ErrorData();
-        data.setMessage(exception.getMessage());
+        ErrorData data = new ErrorData(exception.getMessage());
         log.error("Validation Exception: " + data.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
     public ResponseEntity<ErrorData> handleException(ResourceNotFoundException exception) {
-        ErrorData data = new ErrorData();
-        data.setMessage(exception.getMessage());
+        ErrorData data = new ErrorData(exception.getMessage());
         log.error("Web Module Resource Not Found Exception: " + data.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 }

@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.configuration;
+package com.exadel.sandbox.team2.interceptor;
 
 import com.exadel.sandbox.team2.exception.ResourceNotFoundException;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -15,7 +15,9 @@ public class ResourceNotFoundExceptionInterceptor {
             throwing = "e")
     public void errorInterceptor(Exception e) {
         if (e instanceof EntityNotFoundException) {
-            throw new ResourceNotFoundException("web module, Resource Resource Not Found");
+            throw new ResourceNotFoundException("Resource was not found");
         }
     }
+
+    //TODO протестировать use presit and annotation
 }
