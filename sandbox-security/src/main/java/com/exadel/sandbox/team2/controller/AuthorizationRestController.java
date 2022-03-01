@@ -1,8 +1,8 @@
 package com.exadel.sandbox.team2.controller;
 
-import com.exadel.sandbox.team2.configuration.JwtTokenProvider;
-import com.exadel.sandbox.team2.model.LoginDto;
-import com.exadel.sandbox.team2.model.TokenDto;
+import com.exadel.sandbox.team2.component.JwtTokenProvider;
+import com.exadel.sandbox.team2.dto.LoginDto;
+import com.exadel.sandbox.team2.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +23,7 @@ public class AuthorizationRestController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

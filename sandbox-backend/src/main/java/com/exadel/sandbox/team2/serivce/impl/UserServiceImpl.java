@@ -5,7 +5,6 @@ import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
-import com.exadel.sandbox.team2.dto.UserSwaggerDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -65,10 +63,8 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     }
 
     @Override
-    public void addUserSwaggerDto(UserSwaggerDto user) {
-        User user1 = mapper.toUser(user);
-        user1.setStatus(UserState.NEW);
-        user1.setTelegramAuthorizationCode(UUID.randomUUID().toString());
-        userRepository.save(user1);
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByEmail(username);
     }
+
 }
