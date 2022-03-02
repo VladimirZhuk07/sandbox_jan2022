@@ -4,10 +4,7 @@ import com.exadel.sandbox.team2.exception.ResourceNotFoundException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -15,22 +12,51 @@ import javax.persistence.EntityNotFoundException;
 @Component
 public class ResourceNotFoundExceptionInterceptor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceNotFoundExceptionInterceptor.class);
-
-
-    @AfterThrowing(value = "execution(* *(..))", throwing = "e")
-    public void log(JoinPoint thisJoinPoint, Throwable e) {
-        System.out.println(thisJoinPoint + " ---------------> " + e);
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.UserRestController.*(..))",
+            throwing = "e")
+    public void errorInterceptorForUserRestController(JoinPoint thisJoinPoint, Throwable e) {
+        if (e instanceof EntityNotFoundException) {
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+        }
     }
 
-  /* Not Working
-    @AfterThrowing(pointcut = "execution(* com.exadel.sandbox.team2.controller.*(..))",
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.BookingRestController.*(..))",
             throwing = "e")
-    public void errorInterceptor(Exception e) {
+    public void errorInterceptorForBookingRestController(JoinPoint thisJoinPoint, Throwable e) {
         if (e instanceof EntityNotFoundException) {
-            throw new ResourceNotFoundException("Resource was not found");
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
         }
-    }*/
+    }
 
-    //TODO протестировать use presit and annotation
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.CountryRestController.*(..))",
+            throwing = "e")
+    public void errorInterceptorForCountryRestController(JoinPoint thisJoinPoint, Throwable e) {
+        if (e instanceof EntityNotFoundException) {
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+        }
+    }
+
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.MapRestController.*(..))",
+            throwing = "e")
+    public void errorInterceptorForMapRestController(JoinPoint thisJoinPoint, Throwable e) {
+        if (e instanceof EntityNotFoundException) {
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+        }
+    }
+
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.OfficeRestController.*(..))",
+            throwing = "e")
+    public void errorInterceptorForOfficeRestController(JoinPoint thisJoinPoint, Throwable e) {
+        if (e instanceof EntityNotFoundException) {
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+        }
+    }
+
+    @AfterThrowing(value = "execution(* com.exadel.sandbox.team2.controller.WorkplaceRestController.*(..))",
+            throwing = "e")
+    public void errorInterceptorForWorkplaceRestController(JoinPoint thisJoinPoint, Throwable e) {
+        if (e instanceof EntityNotFoundException) {
+            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+        }
+    }
 }

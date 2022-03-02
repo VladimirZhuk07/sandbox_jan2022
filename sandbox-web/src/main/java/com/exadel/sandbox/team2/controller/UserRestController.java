@@ -28,7 +28,7 @@ public class UserRestController {
     public UserDto findById(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
         return user.map(mapper::toDto)
-                   .orElseThrow(NotFoundException::new);
+                .orElseThrow(NotFoundException::new);
     }
 
     @GetMapping
@@ -54,7 +54,6 @@ public class UserRestController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        throw new ResourceNotFoundException("Resource was not found");
-        // userService.delete(id);
+        userService.delete(id);
     }
 }

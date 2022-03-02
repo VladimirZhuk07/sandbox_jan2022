@@ -42,7 +42,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public void unassignUserRole(Long userId, Long roleId) {
-        User user  = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
         user.getRoles().removeIf(x -> x.getId().equals(roleId));
         userRepository.save(user);
     }
@@ -66,5 +66,4 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     public Optional<User> findByUsername(String username) {
         return userRepository.findByEmail(username);
     }
-
 }
