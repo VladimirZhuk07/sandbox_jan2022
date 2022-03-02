@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.exception.ResourceNotFoundException;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -53,6 +54,7 @@ public class UserRestController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        userService.delete(id);
+        throw new ResourceNotFoundException("Resource was not found");
+        // userService.delete(id);
     }
 }
