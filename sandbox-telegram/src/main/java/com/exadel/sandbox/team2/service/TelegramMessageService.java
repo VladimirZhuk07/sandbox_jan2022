@@ -16,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +66,7 @@ public class TelegramMessageService {
                           .chatId(chatId)
                           .text("Please select your function")
                           .replyMarkup(createInlineKeyboardMarkup(new String[][]{{"\uD83C\uDF0E Language", "⚙️ Settings"}, {"Booking", "History"}},new String[][]{{"\uD83C\uDF0E Language", "⚙️ Settings"}, {"Booking", "History"}}))
-                          //.replyMarkup(createReplyKeyboardMarkup(new String[][]{{"\uD83C\uDF0E Language", "⚙️ Settings"}, {"Booking", "History"}}))
+                          .replyMarkup(createReplyKeyboardMarkup(new String[][]{{"\uD83C\uDF0E Language", "⚙️ Settings"}, {"Booking", "History"}}))
                           .build();
                     }
                 }
