@@ -29,13 +29,10 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
     public Booking save(Booking booking, BookingDto bookingDto) {
         User user = userRepository.getById(bookingDto.getUserId());
         Workplace workplace = workplaceRepository.getById(bookingDto.getWorkplaceId());
-        if(workplace.getBookingId() == null && user.getBookingId() == null) {
-            booking = mapper.toEntity(bookingDto);
-            booking.setWorkplaceId(workplace);
-            booking.setUserId(user);
-            return bookingRepository.save(booking);
-        }
-        return null;
+        booking = mapper.toEntity(bookingDto);
+        booking.setWorkplaceId(workplace);
+        booking.setUserId(user);
+        return bookingRepository.save(booking);
     }
 
     @Override
@@ -54,14 +51,6 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
 
     @Override
     public void delete(Long id) {
-        Booking booking = bookingRepository.getById(id);
-        User user = booking.getUserId();
-        user.setBookingId(null);
-        userRepository.save(user);
-        Workplace workplace = booking.getWorkplaceId();
-        workplace.setBookingId(null);
-        workplaceRepository.save(workplace);
-
         bookingRepository.deleteById(id);
     }
 }

@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -63,8 +64,8 @@ public class User extends AuditableEntity {
     @JsonIgnore
     private Vacation vacationId;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     @JsonIgnore
-    private Booking bookingId;
+    private List<Booking> bookings;
 
 }

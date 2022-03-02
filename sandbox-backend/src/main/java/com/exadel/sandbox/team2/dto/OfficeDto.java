@@ -1,6 +1,5 @@
 package com.exadel.sandbox.team2.dto;
 
-import com.exadel.sandbox.team2.domain.Country;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,11 +11,10 @@ import lombok.experimental.FieldDefaults;
 public class OfficeDto {
 
     long id;
-    Country countryName;
-    String city;
+    long cityId;
     String name;
     String address;
-    boolean hasParking;
+    boolean parking;
 
 
 }

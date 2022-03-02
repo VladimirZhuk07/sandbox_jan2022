@@ -36,11 +36,11 @@ public class Booking extends AuditableEntity {
 
     private boolean sunday;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
     private User userId;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "workplaceId")
     private Workplace workplaceId;
 

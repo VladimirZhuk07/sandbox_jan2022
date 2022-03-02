@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CountryDto {
 
+    long id;
     String name;
 
 }

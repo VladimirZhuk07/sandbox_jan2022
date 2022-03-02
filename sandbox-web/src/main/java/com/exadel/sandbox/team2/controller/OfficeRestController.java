@@ -31,7 +31,7 @@ public class OfficeRestController {
 
     @PostMapping
     public OfficeDto save(@RequestBody OfficeDto entity) {
-        return mapper.toDto(service.save(mapper.toEntity(entity),null));
+        return mapper.toDto(service.save(null,entity));
     }
 
     @PutMapping("/{id}")
@@ -44,10 +44,15 @@ public class OfficeRestController {
         service.delete(id);
     }
 
+    @GetMapping("/cities/{id}")
+    public List<Office> getAllByCity(@PathVariable Long id){
+        return service.findByCityId(id);
+    }
+
     @Transactional
-    @DeleteMapping("/country/{countryName}")
-    public void deleteByCountry(@PathVariable String countryName){
-        service.deleteByCountry(countryName);
+    @DeleteMapping("/cities/{id}")
+    public void deleteByCity(@PathVariable long id){
+        service.deleteByCity(id);
     }
 
 }

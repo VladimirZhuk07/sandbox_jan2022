@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,7 +37,7 @@ public class Workplace extends BaseEntity {
 
     private boolean headset;
 
-    @OneToOne(mappedBy = "workplaceId", cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplaceId")
     @JsonIgnore
-    private Booking bookingId;
+    private List<Booking> bookings;
 }

@@ -1,16 +1,17 @@
 package com.exadel.sandbox.team2.serivce.impl;
 
-import com.exadel.sandbox.team2.dao.CountryRepository;
+import com.exadel.sandbox.team2.dao.CityRepository;
 import com.exadel.sandbox.team2.dao.OfficeRepository;
-import com.exadel.sandbox.team2.domain.Country;
+import com.exadel.sandbox.team2.domain.City;
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.OfficeDto;
+import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,16 +19,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> implements OfficeService {
 
-    //I had to call repository, since calling
-    //through CrudServiceImpl won`t include new queries
     private final OfficeRepository repository;
-    private final CountryRepository countryRepository;
+    private final CityRepository cityRepository;
+    private final OfficeMapper mapper;
+
+    @Override
+    public Office save(Office office, OfficeDto officeDto) {
+        City city = cityRepository.getById(officeDto.getCityId());
+        office = mapper.toEntity(officeDto);
+        office.setCityId(city);
+        return repository.save(office);
+    }
 
     @Override
     public Office update(Office office, OfficeDto officeDto, long id) {
         office = repository.findById(id).get();
-        if(!officeDto.getCity().equals("string") && !officeDto.getCity().equals(""))
-            office.setCity(officeDto.getCity());
         if(!officeDto.getAddress().equals("string") && !officeDto.getAddress().equals(""))
             office.setAddress(officeDto.getAddress());
         if(!officeDto.getName().equals("string") && !officeDto.getName().equals(""))
@@ -37,13 +43,14 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     }
 
     @Override
-    public void deleteByCountry(String country) {
-        Country country1 = countryRepository.findByName(country);
-        repository.deleteByCountryName(country1);
+    public void deleteByCity(long id) {
+        City city = cityRepository.getById(id);
+        repository.deleteByCityId(city);
     }
 
     @Override
-    public List<Office> findByCountryName(Country country) {
-        return repository.findByCountryName(country);
+    public List<Office> findByCityId(long id) {
+        City city = cityRepository.findById(id).get();
+        return new ArrayList<>(repository.findByCityId(city)).stream().toList();
     }
 }
