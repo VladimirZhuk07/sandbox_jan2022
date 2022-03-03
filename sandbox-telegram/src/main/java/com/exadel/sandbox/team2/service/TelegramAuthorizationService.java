@@ -2,7 +2,6 @@ package com.exadel.sandbox.team2.service;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
-import com.exadel.sandbox.team2.dto.TelegramResponse;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
