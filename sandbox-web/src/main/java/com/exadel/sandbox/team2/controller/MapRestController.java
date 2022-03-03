@@ -27,17 +27,17 @@ public class MapRestController {
 
     @PutMapping("/{id}")
     public MapDto update(@PathVariable Long id, @RequestBody MapDto mapDto){
-        return service.updateMap(mapDto, id);
+        return service.updateDto(mapDto, id);
     }
 
     @PostMapping
     public MapDto save(@RequestBody MapDto entity) {
-        return service.saveMap(entity);
+        return service.saveDto(entity);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.deleteMap(id);
+        service.delete(id);
     }
 
     @DeleteMapping("/office/{officeId}")

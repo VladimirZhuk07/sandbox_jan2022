@@ -1,10 +1,13 @@
 package com.exadel.sandbox.team2.domain;
 
+import com.exadel.sandbox.team2.domain.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,18 +15,16 @@ import java.util.List;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
+@SuperBuilder
 
 @Entity
-public class Country{
+public class Country extends BaseEntity {
 
-    @Id
-    @Column(unique = true)
     String name;
 
-    @OneToMany(mappedBy = "countryName", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}, orphanRemoval = true)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<Office> offices;
+    List<City> cities = new ArrayList<>();
 
     @Override
     public String toString() {

@@ -1,17 +1,17 @@
 package com.exadel.sandbox.team2.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.exadel.sandbox.team2.domain.base.BaseDto;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class BookingDto {
+public class BookingDto extends BaseDto {
 
     private long workplaceId;
 
@@ -21,21 +21,21 @@ public class BookingDto {
 
     private LocalDateTime endDate;
 
-    private boolean recurring;
+    private Boolean recurring;
 
-    private boolean monday;
+    private Boolean monday;
 
-    private boolean tuesday;
+    private Boolean tuesday;
 
-    private boolean wednesday;
+    private Boolean wednesday;
 
-    private boolean thursday;
+    private Boolean thursday;
 
-    private boolean friday;
+    private Boolean friday;
 
-    private boolean saturday;
+    private Boolean saturday;
 
-    private boolean sunday;
+    private Boolean sunday;
 
     private String createdBy;
 

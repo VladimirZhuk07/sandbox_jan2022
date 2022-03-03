@@ -14,32 +14,31 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class WorkplaceRestController {
 
-    private final WorkplaceService workplaceService;
-
+    private final WorkplaceService service;
     private final WorkplaceMapper mapper;
 
     @GetMapping("/{id}")
     public WorkplaceDto findById(@PathVariable Long id) {
-        return mapper.toDto(workplaceService.findById(id).get());
+        return mapper.toDto(service.findById(id).get());
     }
 
     @GetMapping
     public List<WorkplaceDto> findAll() {
-        return workplaceService.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
+        return service.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @PostMapping
     public WorkplaceDto add(@RequestBody WorkplaceDto workplaceDto) {
-        return workplaceService.save(workplaceDto);
+        return service.saveDto(workplaceDto);
     }
 
     @PutMapping("/{id}")
     public WorkplaceDto update(@PathVariable Long id, @RequestBody WorkplaceDto workplaceDto) {
-        return workplaceService.update(id, workplaceDto);
+        return service.updateDto(workplaceDto,id);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        workplaceService.delete(id);
+        service.delete(id);
     }
 }

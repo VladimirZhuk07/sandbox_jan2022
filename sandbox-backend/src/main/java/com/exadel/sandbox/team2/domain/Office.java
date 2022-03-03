@@ -19,26 +19,23 @@ import javax.persistence.*;
 @Entity
 public class Office extends AuditableEntity {
 
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "countryName")
-    Country countryName;
-    @OneToOne(mappedBy = "officeId",cascade = CascadeType.ALL)
+    @JoinColumn(name = "cityId")
+    City city;
+    @OneToOne(mappedBy = "office",cascade = CascadeType.ALL)
     @JsonIgnore
     Map map;
-    String city;
     String name;
     String address;
-    boolean hasParking;
+    Boolean parking;
 
     @Override
     public String toString() {
         return "Office{" +
-                "countryName=" + countryName +
-                ", city='" + city + '\'' +
+                "cityId=" + city +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", hasParking=" + hasParking +
+                ", hasParking=" + parking +
                 '}';
     }
 }

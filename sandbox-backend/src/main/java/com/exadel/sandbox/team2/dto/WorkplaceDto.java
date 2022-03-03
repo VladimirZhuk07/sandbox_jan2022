@@ -1,27 +1,29 @@
 package com.exadel.sandbox.team2.dto;
 
+import com.exadel.sandbox.team2.domain.base.BaseDto;
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class WorkplaceDto {
+public class WorkplaceDto extends BaseDto {
 
     private long workplaceNumber;
 
     private long mapId;
 
-    private boolean nextToWindow;
+    private Boolean nextToWindow;
 
-    private boolean pc;
+    private Boolean pc;
 
-    private boolean monitor;
+    private Boolean monitor;
 
-    private boolean keyboard;
+    private Boolean keyboard;
 
-    private boolean mouse;
+    private Boolean mouse;
 
-    private boolean headset;
+    private Boolean headset;
 }

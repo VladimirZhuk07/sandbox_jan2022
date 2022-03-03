@@ -2,12 +2,14 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.dto.CountryDto;
+import com.exadel.sandbox.team2.mapper.CountryMapper;
 import com.exadel.sandbox.team2.serivce.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/countries")
@@ -16,9 +18,9 @@ public class CountryRestController {
 
     private final CountryService service;
 
-    @GetMapping("/{name}")
-    public Country getByName(@PathVariable String name) {
-        return service.findByName(name);
+    @GetMapping("/{id}")
+    public Optional<Country> getById(@PathVariable long id) {
+        return service.findById(id);
     }
 
     @GetMapping
@@ -28,13 +30,18 @@ public class CountryRestController {
 
     @PostMapping
     public CountryDto save(@RequestBody CountryDto entity) {
-        return service.save(entity);
+        return service.saveDto(entity);
+    }
+
+    @PutMapping("/{id}")
+    public CountryDto update(@PathVariable long id, @RequestBody CountryDto countryDto){
+        return service.updateDto(countryDto,id);
     }
 
     @Transactional
-    @DeleteMapping("/{name}")
-    public void delete(@PathVariable String name) {
-        service.deleteByName(name);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
+        service.delete(id);
     }
 
 }

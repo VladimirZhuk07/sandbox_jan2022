@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,13 +24,13 @@ public class Map extends BaseEntity{
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId")
-    Office officeId;
+    Office office;
     int floorNum;
     int kitchenNum;
     int confRoomsNum;
 
-    @OneToMany(mappedBy = "mapId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<Workplace> workplace;
+    List<Workplace> workplace = new ArrayList<>();
 
 }

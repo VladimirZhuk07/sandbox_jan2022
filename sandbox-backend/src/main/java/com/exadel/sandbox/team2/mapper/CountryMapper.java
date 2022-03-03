@@ -3,7 +3,6 @@ package com.exadel.sandbox.team2.mapper;
 import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.dto.CountryDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CountryMapper {

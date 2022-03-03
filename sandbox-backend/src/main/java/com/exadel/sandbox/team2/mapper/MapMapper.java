@@ -12,10 +12,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface MapMapper {
 
-    @Mapping(source = "officeId" ,target = "officeId", qualifiedByName = "getOfficeId")
+    @Mapping(source = "office" ,target = "officeId", qualifiedByName = "getOfficeId")
     MapDto toDto(Map map);
-
-    @Mapping(source = "officeId", target = "officeId", ignore = true)
     Map toEntity(MapDto mapDto);
 
     @Named("getOfficeId")
