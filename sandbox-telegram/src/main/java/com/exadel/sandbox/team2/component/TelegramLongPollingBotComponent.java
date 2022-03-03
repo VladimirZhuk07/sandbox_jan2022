@@ -14,8 +14,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 @Setter
 @RequiredArgsConstructor
-//@Component
-//@Profile("dev")
+@Component
+@Profile("dev")
 public class TelegramLongPollingBotComponent extends TelegramLongPollingBot {
 
     private final TelegramProperties telegramProperties;

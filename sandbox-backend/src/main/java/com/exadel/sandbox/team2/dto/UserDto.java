@@ -34,6 +34,8 @@ public class UserDto {
 
     private String telegramAuthorizationCode;
 
+    private String password;
+
     private TelegramState telegramState;
 
     private UserState status;
