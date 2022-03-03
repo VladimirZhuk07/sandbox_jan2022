@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,7 +24,7 @@ public class Workplace extends BaseEntity {
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "mapId")
-    private Map mapId;
+    private Map map;
 
     private Boolean nextToWindow;
 
@@ -37,7 +38,7 @@ public class Workplace extends BaseEntity {
 
     private Boolean headset;
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplaceId")
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplace")
     @JsonIgnore
-    private List<Booking> bookings;
+    private List<Booking> bookings = new ArrayList<>();
 }

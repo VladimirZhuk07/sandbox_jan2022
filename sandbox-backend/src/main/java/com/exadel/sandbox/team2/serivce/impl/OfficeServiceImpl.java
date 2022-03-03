@@ -28,7 +28,7 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     public OfficeDto saveDto(OfficeDto dto) {
         City city = cityRepository.getById(dto.getCityId());
         Office office = mapper.toEntity(dto);
-        office.setCityId(city);
+        office.setCity(city);
         return mapper.toDto(repository.save(office));
     }
 

@@ -25,7 +25,7 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto
     public WorkplaceDto saveDto(WorkplaceDto dto) {
         Workplace workplace = mapper.toEntity(dto);
         Map map = mapRepository.getById(dto.getMapId());
-        workplace.setMapId(map);
+        workplace.setMap(map);
         return mapper.toDto(repository.save(workplace));
     }
 

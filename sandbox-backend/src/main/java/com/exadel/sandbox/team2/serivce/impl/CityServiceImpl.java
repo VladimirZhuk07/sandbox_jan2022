@@ -25,7 +25,7 @@ public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements C
     public CityDto saveDto(CityDto dto) {
         Country country = countryRepository.getById(dto.getCountryId());
         City city = mapper.toEntity(dto);
-        city.setCountryId(country);
+        city.setCountry(country);
         return mapper.toDto(repository.save(city));
     }
 

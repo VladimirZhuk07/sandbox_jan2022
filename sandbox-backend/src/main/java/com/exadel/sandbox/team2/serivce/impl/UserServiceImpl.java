@@ -73,6 +73,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
     public void assignUserRole(Long userId, Long roleId) {
         User user = repository.findById(userId).orElse(null);
         Role role = roleRepository.findById(roleId).orElse(null);
+        assert user != null;
         Set<Role> userRoles = user.getRoles();
         userRoles.add(role);
         user.setRoles(userRoles);
@@ -82,6 +83,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
     @Override
     public void unassignUserRole(Long userId, Long roleId) {
         User user = repository.findById(userId).orElse(null);
+        assert user != null;
         user.getRoles().removeIf(x -> x.getId().equals(roleId));
         repository.save(user);
     }

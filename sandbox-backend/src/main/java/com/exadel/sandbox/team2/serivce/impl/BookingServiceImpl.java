@@ -32,8 +32,8 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
         User user = userRepository.getById(dto.getUserId());
         Workplace workplace = workplaceRepository.getById(dto.getWorkplaceId());
         Booking booking = mapper.toEntity(dto);
-        booking.setWorkplaceId(workplace);
-        booking.setUserId(user);
+        booking.setWorkplace(workplace);
+        booking.setUser(user);
         return mapper.toDto(repository.save(booking));
     }
 
@@ -82,11 +82,11 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
         }
         if(bookingDto.getWorkplaceId() != 0) {
             Optional<Workplace> workplace = workplaceRepository.findById(bookingDto.getWorkplaceId());
-            workplace.ifPresent(booking::setWorkplaceId);
+            workplace.ifPresent(booking::setWorkplace);
         }
         if(bookingDto.getUserId() != 0){
             Optional<User> user = userRepository.findById(bookingDto.getUserId());
-            user.ifPresent(booking::setUserId);
+            user.ifPresent(booking::setUser);
         }
     }
 

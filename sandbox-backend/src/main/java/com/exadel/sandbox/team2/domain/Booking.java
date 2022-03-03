@@ -38,10 +38,10 @@ public class Booking extends AuditableEntity {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
-    private User userId;
+    private User user;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "workplaceId")
-    private Workplace workplaceId;
+    private Workplace workplace;
 
 }

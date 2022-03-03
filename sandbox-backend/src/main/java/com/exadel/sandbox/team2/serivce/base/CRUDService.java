@@ -11,9 +11,9 @@ public interface CRUDService<E extends BaseEntity> {
 
     List<E> findAll();
 
-    E save(E e);
+    E save(E entity);
 
-    E update(E e, long id);
+    E update(E entity, long id);
 
     void delete(Long id);
 }

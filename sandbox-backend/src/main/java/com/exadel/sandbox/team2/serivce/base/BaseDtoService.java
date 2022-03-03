@@ -9,6 +9,6 @@ public interface BaseDtoService<E extends BaseEntity,D extends BaseDto> extends 
 
     D updateDto(D dto, long id);
 
-    void checkAndSet(E e,D d);
+    void checkAndSet(E entity,D dto);
 
 }

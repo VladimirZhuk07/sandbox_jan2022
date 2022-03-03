@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,11 +23,11 @@ public class City extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "countryId")
-    private Country countryId;
+    private Country country;
 
     private String name;
 
-    @OneToMany(mappedBy = "cityId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<Office> offices;
+    List<Office> offices = new ArrayList<>();
 }

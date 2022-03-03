@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,12 +61,12 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
-    private Vacation vacationId;
+    private Vacation vacation;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
-    private List<Booking> bookings;
+    private List<Booking> bookings = new ArrayList<>();
 
 }

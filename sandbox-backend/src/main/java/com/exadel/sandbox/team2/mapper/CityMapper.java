@@ -10,10 +10,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface CityMapper {
 
-    @Mapping(source = "countryId" ,target = "countryId", qualifiedByName = "getCountryId")
+    @Mapping(source = "country" ,target = "countryId", qualifiedByName = "getCountryId")
     CityDto toDto(City city);
-
-    @Mapping(source = "countryId", target = "countryId", ignore = true)
     City toEntity(CityDto cityDto);
 
     @Named("getCountryId")

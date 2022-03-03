@@ -10,9 +10,8 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface WorkplaceMapper {
-    @Mapping(source = "mapId" ,target = "mapId", qualifiedByName = "getMapId")
+    @Mapping(source = "map" ,target = "mapId", qualifiedByName = "getMapId")
     WorkplaceDto toDto(Workplace workplace);
-    @Mapping(source = "mapId", target = "mapId", ignore = true)
     Workplace toEntity(WorkplaceDto workplaceDto);
 
     @Named("getMapId")

@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -21,9 +22,9 @@ public class Country extends BaseEntity {
 
     String name;
 
-    @OneToMany(mappedBy = "countryId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     @JsonIgnore
-    List<City> cities;
+    List<City> cities = new ArrayList<>();
 
     @Override
     public String toString() {

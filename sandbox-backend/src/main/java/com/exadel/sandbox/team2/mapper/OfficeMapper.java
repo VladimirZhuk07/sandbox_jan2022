@@ -10,10 +10,8 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface OfficeMapper {
 
-    @Mapping(source = "cityId" ,target = "cityId", qualifiedByName = "getCityId")
+    @Mapping(source = "city" ,target = "cityId", qualifiedByName = "getCityId")
     OfficeDto toDto(Office office);
-
-    @Mapping(source = "cityId", target = "cityId", ignore = true)
     Office toEntity(OfficeDto officeDto);
 
     @Named("getCityId")

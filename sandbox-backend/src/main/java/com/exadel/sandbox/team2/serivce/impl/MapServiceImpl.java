@@ -25,7 +25,7 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
 
     @Override
     public void delete(Long id) {
-        Office office = repository.getById(id).getOfficeId();
+        Office office = repository.getById(id).getOffice();
         office.setMap(null);
         officeRepository.save(office);
         repository.deleteById(id);
@@ -36,7 +36,7 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
         Office office = officeRepository.getById(dto.getOfficeId());
         if(office.getMap() == null) {
             Map map = mapper.toEntity(dto);
-            map.setOfficeId(office);
+            map.setOffice(office);
             return mapper.toDto(repository.save(map));
         }
 

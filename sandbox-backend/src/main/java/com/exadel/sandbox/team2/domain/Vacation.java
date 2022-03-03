@@ -22,5 +22,5 @@ public class Vacation extends BaseEntity {
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
-    private User userId;
+    private User user;
 }
