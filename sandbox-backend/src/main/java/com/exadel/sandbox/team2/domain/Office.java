@@ -27,7 +27,7 @@ public class Office extends AuditableEntity {
     Map map;
     String name;
     String address;
-    boolean parking;
+    Boolean parking;
 
     @Override
     public String toString() {

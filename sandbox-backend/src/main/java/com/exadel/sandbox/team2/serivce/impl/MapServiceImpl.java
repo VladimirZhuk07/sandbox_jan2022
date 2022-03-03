@@ -11,6 +11,8 @@ import com.exadel.sandbox.team2.serivce.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapService {
@@ -30,30 +32,36 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
     }
 
     @Override
-    public Map save(Map map, MapDto mapDto) {
-        Office office = officeRepository.getById(mapDto.getOfficeId());
+    public MapDto saveDto(MapDto dto) {
+        Office office = officeRepository.getById(dto.getOfficeId());
         if(office.getMap() == null) {
-            map = mapper.toEntity(mapDto);
+            Map map = mapper.toEntity(dto);
             map.setOfficeId(office);
-            return repository.save(map);
+            return mapper.toDto(repository.save(map));
         }
 
         return null;
     }
 
     @Override
-    public Map update(Map map, MapDto mapDto, long id) {
-        map = repository.getById(id);
-        if(mapDto.getFloorNum() != 0 ){
+    public MapDto updateDto(MapDto dto, long id) {
+        Optional<Map> isExist = repository.findById(id);
+        if(isExist.isPresent()){
+            Map map = isExist.get();
+            checkAndSet(map,dto);
+            return mapper.toDto(repository.save(map));
+        }
+        return null;
+    }
+
+    @Override
+    public void checkAndSet(Map map, MapDto mapDto) {
+        if(map.getFloorNum() != mapDto.getFloorNum() && mapDto.getFloorNum() != 0)
             map.setFloorNum(mapDto.getFloorNum());
-        }
-        if(mapDto.getConfRoomsNum() != 0 ){
-            map.setConfRoomsNum(mapDto.getConfRoomsNum());
-        }
-        if(mapDto.getKitchenNum() != 0 ){
+        if(map.getKitchenNum() != mapDto.getKitchenNum() && mapDto.getKitchenNum() != 0)
             map.setKitchenNum(mapDto.getKitchenNum());
-        }
-        return repository.save(map);
+        if(map.getConfRoomsNum() != mapDto.getConfRoomsNum() && mapDto.getConfRoomsNum() != 0)
+            map.setConfRoomsNum(mapDto.getConfRoomsNum());
     }
 
     @Override

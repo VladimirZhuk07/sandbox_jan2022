@@ -25,17 +25,17 @@ public class Workplace extends BaseEntity {
     @JoinColumn(name = "mapId")
     private Map mapId;
 
-    private boolean nextToWindow;
+    private Boolean nextToWindow;
 
-    private boolean pc;
+    private Boolean pc;
 
-    private boolean monitor;
+    private Boolean monitor;
 
-    private boolean keyboard;
+    private Boolean keyboard;
 
-    private boolean mouse;
+    private Boolean mouse;
 
-    private boolean headset;
+    private Boolean headset;
 
     @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplaceId")
     @JsonIgnore

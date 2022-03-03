@@ -38,7 +38,7 @@ public class User extends AuditableEntity {
 
     private LocalDate employmentEnd;
 
-    private boolean isFired;
+    private Boolean isFired;
 
     private String telegramAuthorizationCode;
 

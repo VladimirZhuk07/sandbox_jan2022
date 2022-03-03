@@ -17,8 +17,6 @@ public class OfficeRestController {
 
     private final OfficeService service;
 
-    private final OfficeMapper mapper;
-
     @GetMapping("/{id}")
     public Office get(@PathVariable Long id) {
         return service.findById(id).orElse(null);
@@ -31,12 +29,12 @@ public class OfficeRestController {
 
     @PostMapping
     public OfficeDto save(@RequestBody OfficeDto entity) {
-        return mapper.toDto(service.save(null,entity));
+        return service.saveDto(entity);
     }
 
     @PutMapping("/{id}")
     public OfficeDto update(@PathVariable Long id, @RequestBody OfficeDto entity) {
-        return mapper.toDto(service.update(null, entity, id));
+        return service.updateDto(entity,id);
     }
 
     @DeleteMapping("/{id}")

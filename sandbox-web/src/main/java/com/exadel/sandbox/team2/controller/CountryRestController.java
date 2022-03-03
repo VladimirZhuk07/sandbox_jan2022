@@ -17,7 +17,6 @@ import java.util.Optional;
 public class CountryRestController {
 
     private final CountryService service;
-    private final CountryMapper mapper;
 
     @GetMapping("/{id}")
     public Optional<Country> getById(@PathVariable long id) {
@@ -30,13 +29,13 @@ public class CountryRestController {
     }
 
     @PostMapping
-    public CountryDto save(@RequestBody Country entity) {
-        return mapper.toDto(service.save(entity,null));
+    public CountryDto save(@RequestBody CountryDto entity) {
+        return service.saveDto(entity);
     }
 
     @PutMapping("/{id}")
-    public Country update(@PathVariable long id, @RequestBody CountryDto countryDto){
-        return service.update(null, countryDto, id);
+    public CountryDto update(@PathVariable long id, @RequestBody CountryDto countryDto){
+        return service.updateDto(countryDto,id);
     }
 
     @Transactional

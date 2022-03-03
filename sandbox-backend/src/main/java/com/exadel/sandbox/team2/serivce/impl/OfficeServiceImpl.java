@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -24,22 +25,32 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     private final OfficeMapper mapper;
 
     @Override
-    public Office save(Office office, OfficeDto officeDto) {
-        City city = cityRepository.getById(officeDto.getCityId());
-        office = mapper.toEntity(officeDto);
+    public OfficeDto saveDto(OfficeDto dto) {
+        City city = cityRepository.getById(dto.getCityId());
+        Office office = mapper.toEntity(dto);
         office.setCityId(city);
-        return repository.save(office);
+        return mapper.toDto(repository.save(office));
     }
 
     @Override
-    public Office update(Office office, OfficeDto officeDto, long id) {
-        office = repository.findById(id).get();
-        if(!officeDto.getAddress().equals("string") && !officeDto.getAddress().equals(""))
-            office.setAddress(officeDto.getAddress());
-        if(!officeDto.getName().equals("string") && !officeDto.getName().equals(""))
-            office.setName(officeDto.getName());
+    public OfficeDto updateDto(OfficeDto dto, long id) {
+        Optional<Office> isExist = repository.findById(id);
+        if(isExist.isPresent()){
+            Office office = isExist.get();
+            checkAndSet(office,dto);
+            return mapper.toDto(repository.save(office));
+        }
+        return null;
+    }
 
-        return repository.save(office);
+    @Override
+    public void checkAndSet(Office office, OfficeDto officeDto) {
+        if(officeDto.getName() != null && !office.getName().equals(officeDto.getName()) && !officeDto.getName().equals("string"))
+            office.setName(officeDto.getName());
+        if(officeDto.getAddress() != null && !office.getAddress().equals(officeDto.getAddress()) && !officeDto.getAddress().equals("string"))
+            office.setAddress(officeDto.getAddress());
+        if(officeDto.getParking() != null && office.getParking() != officeDto.getParking())
+            office.setParking(officeDto.getParking());
     }
 
     @Override
@@ -50,7 +61,7 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
 
     @Override
     public List<Office> findByCityId(long id) {
-        City city = cityRepository.findById(id).get();
-        return new ArrayList<>(repository.findByCityId(city)).stream().toList();
+        Optional<City> city = cityRepository.findById(id);
+        return city.map(value -> new ArrayList<>(repository.findByCityId(value)).stream().toList()).orElse(null);
     }
 }

@@ -11,6 +11,8 @@ import com.exadel.sandbox.team2.serivce.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements CityService {
@@ -20,19 +22,27 @@ public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements C
     private final CityMapper mapper;
 
     @Override
-    public City save(City city, CityDto cityDto) {
-        Country country = countryRepository.getById(cityDto.getCountryId());
-        city = mapper.toEntity(cityDto);
+    public CityDto saveDto(CityDto dto) {
+        Country country = countryRepository.getById(dto.getCountryId());
+        City city = mapper.toEntity(dto);
         city.setCountryId(country);
-        return repository.save(city);
+        return mapper.toDto(repository.save(city));
     }
 
     @Override
-    public City update(City city, CityDto cityDto, long id) {
-        city = repository.findById(id).get();
-        if(!cityDto.getName().equals(city.getName()))
-            city.setName(cityDto.getName());
+    public CityDto updateDto(CityDto dto, long id) {
+        Optional<City> isExist = repository.findById(id);
+        if(isExist.isPresent()){
+            City city = isExist.get();
+            checkAndSet(city,dto);
+            return mapper.toDto(repository.save(city));
+        }
+        return null;
+    }
 
-        return repository.save(city);
+    @Override
+    public void checkAndSet(City city, CityDto cityDto) {
+        if(cityDto.getName() != null && !city.getName().equals(cityDto.getName()) && !cityDto.getName().equals("string"))
+            city.setName(cityDto.getName());
     }
 }

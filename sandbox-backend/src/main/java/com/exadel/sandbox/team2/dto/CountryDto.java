@@ -1,14 +1,15 @@
 package com.exadel.sandbox.team2.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import com.exadel.sandbox.team2.domain.base.BaseDto;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CountryDto {
-
-    long id;
+public class CountryDto extends BaseDto {
     String name;
-
 }

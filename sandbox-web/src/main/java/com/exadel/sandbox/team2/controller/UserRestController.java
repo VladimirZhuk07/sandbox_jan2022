@@ -32,15 +32,12 @@ public class UserRestController {
 
     @PostMapping
     public UserDto add(@RequestBody UserDto userDto) {
-        return mapper.toDto(service.save(mapper.toEntity(userDto),null));
+        return service.saveDto(userDto);
     }
 
     @PutMapping("/{id}")
     public UserDto update(@PathVariable Long id, @RequestBody UserDto userDto) {
-        User newUser = mapper.toEntity(userDto);
-        newUser.setId(id);
-        service.update(mapper.toEntity(userDto), null, 0);
-        return mapper.toDto(newUser);
+        return service.updateDto(userDto,id);
     }
 
     @DeleteMapping("/{id}")
