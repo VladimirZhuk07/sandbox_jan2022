@@ -43,7 +43,6 @@ public class TelegramAuthorizationService {
         } else if (Objects.equals(phoneNumber, user.getPhoneNumber())) {
             user.setChatId(chatId);
             user.setStatus(UserState.NEW);
-            user.setTelegramAuthorizationCode(UUID.randomUUID().toString());
             userService.save(user);
             return TelegramResponse.builder()
                     .code(201)
