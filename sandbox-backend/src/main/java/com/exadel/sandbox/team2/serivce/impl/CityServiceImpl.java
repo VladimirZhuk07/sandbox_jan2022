@@ -11,8 +11,6 @@ import com.exadel.sandbox.team2.serivce.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements CityService {
@@ -22,7 +20,7 @@ public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements C
     private final CityMapper mapper;
 
     @Override
-    public CityDto saveDto(CityDto dto) {
+    public CityDto save(CityDto dto) {
         Country country = countryRepository.getById(dto.getCountryId());
         City city = mapper.toEntity(dto);
         city.setCountry(country);
@@ -30,14 +28,12 @@ public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements C
     }
 
     @Override
-    public CityDto updateDto(CityDto dto, long id) {
-        Optional<City> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            City city = isExist.get();
-            checkAndSet(city,dto);
-            return mapper.toDto(repository.save(city));
-        }
-        return null;
+    public CityDto update(CityDto dto, long id) {
+        City city = repository.findById(id).orElse(null);
+        if(city == null)
+            return null;
+        checkAndSet(city,dto);
+        return mapper.toDto(repository.save(city));
     }
 
     @Override

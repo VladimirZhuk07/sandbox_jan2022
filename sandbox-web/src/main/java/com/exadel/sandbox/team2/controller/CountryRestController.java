@@ -30,12 +30,12 @@ public class CountryRestController {
 
     @PostMapping
     public CountryDto save(@RequestBody CountryDto entity) {
-        return service.saveDto(entity);
+        return service.save(entity);
     }
 
     @PutMapping("/{id}")
     public CountryDto update(@PathVariable long id, @RequestBody CountryDto countryDto){
-        return service.updateDto(countryDto,id);
+        return service.update(countryDto,id);
     }
 
     @Transactional

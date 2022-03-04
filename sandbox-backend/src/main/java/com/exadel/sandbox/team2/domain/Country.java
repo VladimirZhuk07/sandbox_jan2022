@@ -22,7 +22,7 @@ public class Country extends BaseEntity {
 
     String name;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<City> cities = new ArrayList<>();
 

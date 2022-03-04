@@ -11,8 +11,6 @@ import com.exadel.sandbox.team2.serivce.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapService {
@@ -32,7 +30,7 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
     }
 
     @Override
-    public MapDto saveDto(MapDto dto) {
+    public MapDto save(MapDto dto) {
         Office office = officeRepository.getById(dto.getOfficeId());
         if(office.getMap() == null) {
             Map map = mapper.toEntity(dto);
@@ -44,14 +42,12 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
     }
 
     @Override
-    public MapDto updateDto(MapDto dto, long id) {
-        Optional<Map> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            Map map = isExist.get();
-            checkAndSet(map,dto);
-            return mapper.toDto(repository.save(map));
-        }
-        return null;
+    public MapDto update(MapDto dto, long id) {
+        Map map = repository.findById(id).orElse(null);
+        if(map == null)
+            return null;
+        checkAndSet(map,dto);
+        return mapper.toDto(repository.save(map));
     }
 
     @Override
@@ -66,7 +62,6 @@ public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapSe
 
     @Override
     public void deleteByOfficeId(long officeId) {
-        Office office = officeRepository.getById(officeId);
-        repository.deleteByOfficeId(office);
+        repository.deleteByOfficeId(officeId);
     }
 }

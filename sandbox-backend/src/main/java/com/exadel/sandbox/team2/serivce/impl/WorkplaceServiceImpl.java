@@ -11,8 +11,6 @@ import com.exadel.sandbox.team2.serivce.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto> implements WorkplaceService {
@@ -22,7 +20,7 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto
     private final WorkplaceMapper mapper;
 
     @Override
-    public WorkplaceDto saveDto(WorkplaceDto dto) {
+    public WorkplaceDto save(WorkplaceDto dto) {
         Workplace workplace = mapper.toEntity(dto);
         Map map = mapRepository.getById(dto.getMapId());
         workplace.setMap(map);
@@ -30,14 +28,12 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto
     }
 
     @Override
-    public WorkplaceDto updateDto(WorkplaceDto dto, long id) {
-        Optional<Workplace> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            Workplace workplace = isExist.get();
-            checkAndSet(workplace,dto);
-            return mapper.toDto(repository.save(workplace));
-        }
-        return null;
+    public WorkplaceDto update(WorkplaceDto dto, long id) {
+        Workplace workplace = repository.findById(id).orElse(null);
+        if(workplace == null)
+            return null;
+        checkAndSet(workplace,dto);
+        return mapper.toDto(repository.save(workplace));
     }
 
     @Override

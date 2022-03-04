@@ -28,7 +28,7 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
     private final BookingMapper mapper;
 
     @Override
-    public BookingDto saveDto(BookingDto dto) {
+    public BookingDto save(BookingDto dto) {
         User user = userRepository.getById(dto.getUserId());
         Workplace workplace = workplaceRepository.getById(dto.getWorkplaceId());
         Booking booking = mapper.toEntity(dto);
@@ -38,14 +38,12 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> imp
     }
 
     @Override
-    public BookingDto updateDto(BookingDto dto, long id) {
-        Optional<Booking> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            Booking booking = isExist.get();
-            checkAndSet(booking, dto);
-            return mapper.toDto(repository.save(booking));
-        }
-        return null;
+    public BookingDto update(BookingDto dto, long id) {
+        Booking booking = repository.findById(id).orElse(null);
+        if(booking == null)
+            return null;
+        checkAndSet(booking, dto);
+        return mapper.toDto(repository.save(booking));
     }
 
     @Override

@@ -12,9 +12,7 @@ import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,19 +25,19 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
     private final RoleRepository roleRepository;
 
     @Override
-    public UserDto saveDto(UserDto dto) {
-        return mapper.toDto(repository.save(mapper.toEntity(dto)));
+    public UserDto save(UserDto dto) {
+        User user = mapper.toEntity(dto);
+        user.setTelegramAuthorizationCode(UUID.randomUUID().toString());
+        return mapper.toDto(repository.save(user));
     }
 
     @Override
-    public UserDto updateDto(UserDto dto, long id) {
-        Optional<User> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            User user = isExist.get();
-            checkAndSet(user,dto);
-            return mapper.toDto(repository.save(user));
-        }
-        return null;
+    public UserDto update(UserDto dto, long id) {
+        User user = repository.findById(id).orElse(null);
+        if(user == null)
+            return null;
+        checkAndSet(user,dto);
+        return mapper.toDto(repository.save(user));
     }
 
     @Override
@@ -100,7 +98,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
 
     @Override
     public List<User> findAllByStatus(UserState state) {
-        return repository.findAllByStatus(state);
+        return new ArrayList<>(repository.findAllByStatus(state));
     }
 
     @Override

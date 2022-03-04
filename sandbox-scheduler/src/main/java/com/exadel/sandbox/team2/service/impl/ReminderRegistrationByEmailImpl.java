@@ -4,11 +4,12 @@ import com.exadel.sandbox.team2.configuration.TelegramProperties;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.MailDto;
-import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
+import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.service.ReminderRegistration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
 
     @Override
     @Scheduled(fixedDelay = 30000)
+    @Async
     public void remindToNewUsers() {
         List<User> newUsers = userService.findAllByStatus(UserState.NEW);
         newUsers.forEach(user -> {
@@ -37,6 +39,7 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
             userInfo.setHeader("Dear " + user.getFirstName() + ", please complete registration in our system");
             emailService.sendMail(userInfo);
             user.setStatus(UserState.INVITED);
+            user.setTelegramAuthorizationCode(null);
             userService.save(user);
         });
     }

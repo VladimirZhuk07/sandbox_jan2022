@@ -29,7 +29,7 @@ public class Map extends BaseEntity{
     int kitchenNum;
     int confRoomsNum;
 
-    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Workplace> workplace = new ArrayList<>();
 

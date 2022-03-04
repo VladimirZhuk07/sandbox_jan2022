@@ -27,7 +27,7 @@ public class City extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     List<Office> offices = new ArrayList<>();
 }

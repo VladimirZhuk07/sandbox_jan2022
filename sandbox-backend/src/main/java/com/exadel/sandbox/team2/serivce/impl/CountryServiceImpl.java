@@ -9,8 +9,6 @@ import com.exadel.sandbox.team2.serivce.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class CountryServiceImpl extends CRUDServiceImpl<Country, CountryDto> implements CountryService {
@@ -19,14 +17,12 @@ public class CountryServiceImpl extends CRUDServiceImpl<Country, CountryDto> imp
     private final CountryMapper mapper;
 
     @Override
-    public CountryDto updateDto(CountryDto dto, long id) {
-        Optional<Country> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            Country country = isExist.get();
-            checkAndSet(country,dto);
-            return mapper.toDto(repository.save(country));
-        }
-        return null;
+    public CountryDto update(CountryDto dto, long id) {
+        Country country = repository.findById(id).orElse(null);
+        if(country == null)
+            return null;
+        checkAndSet(country,dto);
+        return mapper.toDto(repository.save(country));
     }
 
     @Override
@@ -36,7 +32,7 @@ public class CountryServiceImpl extends CRUDServiceImpl<Country, CountryDto> imp
     }
 
     @Override
-    public CountryDto saveDto(CountryDto dto) {
+    public CountryDto save(CountryDto dto) {
         return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 }

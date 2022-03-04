@@ -38,7 +38,7 @@ public class Workplace extends BaseEntity {
 
     private Boolean headset;
 
-    @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplace")
+    @OneToMany( cascade = CascadeType.ALL, mappedBy = "workplace",orphanRemoval = true)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 }

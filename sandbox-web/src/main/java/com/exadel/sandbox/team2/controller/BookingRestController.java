@@ -30,12 +30,12 @@ public class BookingRestController {
 
     @PostMapping
     public BookingDto add(@RequestBody BookingDto bookingDto) {
-        return service.saveDto(bookingDto);
+        return service.save(bookingDto);
     }
 
     @PutMapping("/{id}")
     public BookingDto update(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
-        return service.updateDto(bookingDto,id);
+        return service.update(bookingDto,id);
     }
 
     @DeleteMapping("/{id}")

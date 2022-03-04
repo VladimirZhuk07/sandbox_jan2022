@@ -28,12 +28,12 @@ public class CityRestController {
 
     @PostMapping
     public CityDto save(@RequestBody CityDto entity) {
-        return service.saveDto(entity);
+        return service.save(entity);
     }
 
     @PutMapping("/{id}")
     public CityDto update(@PathVariable Long id, @RequestBody CityDto cityDto){
-        return service.updateDto(cityDto, id);
+        return service.update(cityDto, id);
     }
 
 }

@@ -22,7 +22,7 @@ public class Office extends AuditableEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cityId")
     City city;
-    @OneToOne(mappedBy = "office",cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "office",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     Map map;
     String name;

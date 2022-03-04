@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -25,7 +24,7 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     private final OfficeMapper mapper;
 
     @Override
-    public OfficeDto saveDto(OfficeDto dto) {
+    public OfficeDto save(OfficeDto dto) {
         City city = cityRepository.getById(dto.getCityId());
         Office office = mapper.toEntity(dto);
         office.setCity(city);
@@ -33,14 +32,12 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
     }
 
     @Override
-    public OfficeDto updateDto(OfficeDto dto, long id) {
-        Optional<Office> isExist = repository.findById(id);
-        if(isExist.isPresent()){
-            Office office = isExist.get();
-            checkAndSet(office,dto);
-            return mapper.toDto(repository.save(office));
-        }
-        return null;
+    public OfficeDto update(OfficeDto dto, long id) {
+        Office office = repository.findById(id).orElse(null);
+        if(office == null)
+            return null;
+        checkAndSet(office,dto);
+        return mapper.toDto(repository.save(office));
     }
 
     @Override
@@ -55,13 +52,11 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> imple
 
     @Override
     public void deleteByCity(long id) {
-        City city = cityRepository.getById(id);
-        repository.deleteByCityId(city);
+        repository.deleteByCityId(id);
     }
 
     @Override
     public List<Office> findByCityId(long id) {
-        Optional<City> city = cityRepository.findById(id);
-        return city.map(value -> new ArrayList<>(repository.findByCityId(value)).stream().toList()).orElse(null);
+        return new ArrayList<>(repository.findByCityId(id));
     }
 }
