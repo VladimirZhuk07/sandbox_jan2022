@@ -4,6 +4,7 @@ import com.exadel.sandbox.team2.domain.base.BaseDto;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 public class UserDto extends BaseDto {
 
     private String chatId;
@@ -30,7 +31,7 @@ public class UserDto extends BaseDto {
 
     private LocalDate employmentEnd;
 
-    private Boolean isFired;
+    private Boolean isFired = false;
 
     private String telegramAuthorizationCode;
 
@@ -38,7 +39,7 @@ public class UserDto extends BaseDto {
 
     private TelegramState telegramState;
 
-    private UserState status;
+    private UserState status = UserState.NEW;
 
     private String createdBy;
 

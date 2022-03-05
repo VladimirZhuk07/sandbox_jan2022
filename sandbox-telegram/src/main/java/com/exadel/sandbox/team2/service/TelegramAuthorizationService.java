@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -46,6 +45,7 @@ public class TelegramAuthorizationService {
             User user = current.get();
             user.setChatId(chatId);
             user.setStatus(UserState.WAIT_PHONE_AUTHORIZATION);
+            user.setTelegramAuthorizationCode(null);
             return Optional.of(userService.save(user));
         }
         return Optional.empty();
