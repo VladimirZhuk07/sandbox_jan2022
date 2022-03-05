@@ -39,7 +39,7 @@ public class BeanConfiguration {
   @Bean
   public RestTemplate restTemplate(final RestTemplateBuilder builder) {
     return builder
-      .requestFactory(() -> new BufferingClientHttpRequestFactory(getClientHttpRequestFactory()))
+      //.requestFactory(() -> new BufferingClientHttpRequestFactory(getClientHttpRequestFactory()))
       .errorHandler(new GeneralResponseErrorHandler())
       .build();
   }

@@ -20,8 +20,7 @@ public class TelegramLongPollingBotComponent extends TelegramLongPollingBot {
     private final TelegramProperties telegramProperties;
     private final TelegramMessageService telegramMessageService;
 
-    public TelegramLongPollingBotComponent(TelegramProperties telegramProperties, TelegramMessageService telegramMessageService,DefaultBotOptions options) {
-        super(options);
+    public TelegramLongPollingBotComponent(TelegramProperties telegramProperties, TelegramMessageService telegramMessageService) {
         this.telegramProperties = telegramProperties;
         this.telegramMessageService = telegramMessageService;
     }
