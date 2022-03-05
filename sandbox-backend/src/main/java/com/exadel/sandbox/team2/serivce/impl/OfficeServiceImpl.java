@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OfficeServiceImpl  extends CRUDServiceImpl<Office, OfficeDto> implements OfficeService {
+public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements OfficeService {
 
     private final OfficeRepository repository;
     private final CityRepository cityRepository;

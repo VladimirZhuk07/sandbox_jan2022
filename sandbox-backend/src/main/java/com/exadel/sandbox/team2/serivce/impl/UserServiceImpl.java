@@ -16,7 +16,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements UserService {
+public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
     private final UserRepository repository;
 
@@ -87,12 +87,12 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
     }
 
     @Override
-    public Optional<User> getUserByAuthorizationCode(String code) {
-        return repository.findByTelegramAuthorizationCode(code);
+    public Optional<User> findInvitedUserByAuthorizationCode(String code) {
+        return repository.findByTelegramAuthorizationCodeAndStatus(code,UserState.INVITED);
     }
 
     @Override
-    public Optional<User> getUserByTelegramChatIdOrPhone(String chatId, String phone) {
+    public Optional<User> findUserByChatIdOrPhoneNumber(String chatId, String phone) {
         return repository.findByChatIdOrPhoneNumber(chatId, phone);
     }
 
@@ -104,6 +104,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User, UserDto> implements U
     @Override
     public Optional<User> findByUsername(String username) {
         return repository.findByEmail(username);
+    }
+
+    @Override
+    public Optional<User> findActiveUserByChatId(String chatId) {
+        return repository.findByChatIdAndStatus(chatId,UserState.ACTIVE);
     }
 
 }

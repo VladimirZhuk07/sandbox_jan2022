@@ -14,7 +14,7 @@ import java.util.Optional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public abstract class CRUDServiceImpl<E extends BaseEntity, D> implements CRUDService<E> {
+public abstract class CRUDServiceImpl<E extends BaseEntity> implements CRUDService<E> {
 
     private CrudRepository<E, Long> repository;
 

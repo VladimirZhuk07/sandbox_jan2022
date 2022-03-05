@@ -7,7 +7,9 @@ import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.NotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,7 +23,9 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable Long id) {
-        return mapper.toDto(service.findById(id).get());
+        Optional<User> user = service.findById(id);
+        return user.map(mapper::toDto)
+                .orElseThrow(NotFoundException::new);
     }
 
     @GetMapping

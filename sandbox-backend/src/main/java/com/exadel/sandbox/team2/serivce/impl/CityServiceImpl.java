@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CityServiceImpl extends CRUDServiceImpl<City, CityDto> implements CityService {
+public class CityServiceImpl extends CRUDServiceImpl<City> implements CityService {
 
     private final CityRepository repository;
     private final CountryRepository countryRepository;

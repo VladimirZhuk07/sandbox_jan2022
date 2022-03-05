@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace,WorkplaceDto> implements WorkplaceService {
+public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements WorkplaceService {
 
     private final WorkplaceRepository repository;
     private final MapRepository mapRepository;

@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BookingServiceImpl extends CRUDServiceImpl<Booking, BookingDto> implements BookingService {
+public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements BookingService {
 
     private final BookingRepository repository;
 

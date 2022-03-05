@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MapServiceImpl extends CRUDServiceImpl<Map,MapDto> implements MapService {
+public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
 
     private final OfficeRepository officeRepository;
 

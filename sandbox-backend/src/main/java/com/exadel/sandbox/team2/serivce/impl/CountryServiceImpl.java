@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CountryServiceImpl extends CRUDServiceImpl<Country, CountryDto> implements CountryService {
+public class CountryServiceImpl extends CRUDServiceImpl<Country> implements CountryService {
 
     private final CountryRepository repository;
     private final CountryMapper mapper;
