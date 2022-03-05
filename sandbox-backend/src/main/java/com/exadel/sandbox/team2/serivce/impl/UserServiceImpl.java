@@ -67,6 +67,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
         return userRepository.findByEmail(username);
     }
 
+
     @Override
     public Optional<User> findActiveUserByChatId(String chatId) {
         return userRepository.findByChatIdAndStatus(chatId,UserState.ACTIVE);

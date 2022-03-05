@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.exception.ResourceNotFoundException;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -27,7 +28,7 @@ public class UserRestController {
     public UserDto findById(@PathVariable Long id) {
         Optional<User> user = userService.findById(id);
         return user.map(mapper::toDto)
-                   .orElseThrow(NotFoundException::new);
+                .orElseThrow(NotFoundException::new);
     }
 
     @GetMapping
