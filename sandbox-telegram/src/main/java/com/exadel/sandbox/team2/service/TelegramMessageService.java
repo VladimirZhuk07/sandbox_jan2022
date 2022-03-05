@@ -1,5 +1,10 @@
 package com.exadel.sandbox.team2.service;
 
+import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.exadel.sandbox.team2.handler.CallbackQueryHandler;
+import com.exadel.sandbox.team2.handler.MessageHandler;
+import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -8,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Contact;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -20,106 +22,40 @@ import java.util.List;
 public class TelegramMessageService {
 
     TelegramAuthorizationService authorizationService;
+    CallbackQueryHandler callbackQueryHandler;
+    MessageHandler messageHandler;
+    TelegramUtils utils;
 
     public SendMessage handleUpdate(Update update) {
-        String chatId=update.getMessage().getChatId().toString();
-        if(update.hasCallbackQuery()){
-            return SendMessage.builder()
-                              .chatId(update.getMessage()
-                                            .getChatId()
-                                            .toString())
-                              .text("Please select command")
-                              .build();
+
+        String chatId=utils.getChatId(update);
+        Optional<User> current = authorizationService.findActiveUserByChatId(chatId);
+
+        if(current.isPresent()){
+            return update.hasCallbackQuery() ? callbackQueryHandler.handle(update, current.get()) : messageHandler.handle(update, current.get());
         }
-        else if(update.hasMessage() && !update.getMessage().hasText()){
-            Contact contact=update.getMessage().getContact();
-            var response = authorizationService.saveTelegramUserPhone(chatId, contact.getPhoneNumber());
 
-            if(response.getCode() == 200){
-
-
-                ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-                replyKeyboardMarkup.setSelective(true);
-                replyKeyboardMarkup.setResizeKeyboard(true);
-                replyKeyboardMarkup.setOneTimeKeyboard(true);
-                replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(
-                        createReplyButton("Book place >",false),
-                        createReplyButton("Show my booking >",false),
-                        createReplyButton("Settings >",false)
-                ))));
-                       return SendMessage.builder()
-                               .chatId(chatId)
-                               .text("Select action")
-                               .replyMarkup(replyKeyboardMarkup)
-                               .build();
-
-            }
-
-            if(response.getCode() == 201){
-
-
-            }
-            return SendMessage.builder()
-                              .chatId(update.getMessage()
-                                            .getChatId()
-                                            .toString())
-                              .text("Thanks for your contact: ".concat(response.getMessage()))
-                              .build();
-        }
-        else if (update.hasMessage() && update.getMessage().hasText()) {
-            String command = update.getMessage().getText().trim();
-
-            if(command.equals("/start")){
-                return requestPhoneNumber(chatId, "Please send your phone number");
-            }
-            else if(command.startsWith("/start")){
-                String authorizationCode = command.substring("/start".length()).trim();
-                var response= authorizationService.authorizationTelegramUser(authorizationCode,chatId);
-                if(response.getCode() == 200){
-                    return requestPhoneNumber(chatId,"Please send your phone number "+ authorizationCode);
-                }
-
-                return  SendMessage
-                  .builder()
-                  .chatId(chatId)
-                  .text("You are not Exadel member so you can not use this bot")
-                  .build();
-
-            }
-            return SendMessage
-                            .builder()
-                            .chatId(chatId)
-                            .text("Please select command")
-                            .build();
-        }
-        return null;
+        return update.getMessage().hasText() ?
+               beforeGetContact(chatId,update.getMessage().getText().trim()) :
+               afterGetContact(chatId, update.getMessage().getContact());
     }
 
-
-    private SendMessage requestPhoneNumber(String chatId,String message){
-
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
-
-        replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(createReplyButton("Share your number >",true)))));
-
-        return SendMessage.builder()
-                            .chatId(chatId)
-                            .text(message)
-                            .replyMarkup(replyKeyboardMarkup)
-                            .build();
+    private SendMessage beforeGetContact(String chatId, String command){
+        String authorizationCode = command.substring("/start".length()).trim();
+        if (!authorizationCode.isBlank()) {
+            return  authorizationService.authenticate(chatId, authorizationCode)
+              .map(user ->
+                utils.getMessage(chatId, "Please send your phone number for authentication","\uD83D\uDCF2 Share Phone number"))
+              .orElse(utils.getMessage(chatId,"Sorry you are not use this bot"));
+        }
+        return utils.getMessage(chatId, "Please send your phone number for invitation!", "\uD83D\uDCF2 Share Phone number");
     }
 
-
-
-    private KeyboardButton createReplyButton(String buttonText, boolean requestContact){
-        return KeyboardButton.builder()
-                                .text(buttonText)
-                                .requestContact(requestContact)
-                             .build();
+    private SendMessage afterGetContact(String chatId, Contact contact){
+        return  authorizationService.authenticatePhoneNumber(chatId, contact.getPhoneNumber())
+          .map(user -> user.getStatus() == UserState.NEW?
+            utils.getMessage(chatId,"We sent invitation your email") :
+            utils.getMessage(chatId, "Please select your function", new String[][]{{"\uD83D\uDDD2 Menu","\uD83D\uDC64 Account"}, {"\uD83D\uDCD8 Contact",  "⚙️ Settings"}}))
+          .orElse(null);
     }
-
-
 }

@@ -19,11 +19,13 @@ public interface UserService extends BaseDtoService<User, UserDto> {
 
     void unassignUserRole(Long userId, Long roleId);
 
-    Optional<User> getUserByAuthorizationCode(String code);
+    Optional<User> findInvitedUserByAuthorizationCode(String code);
 
-    Optional<User> getUserByTelegramChatIdOrPhone(String chatId,String phone);
+    Optional<User> findUserByChatIdOrPhoneNumber(String chatId,String phone);
 
     List<User> findAllByStatus(UserState state);
 
     Optional<User> findByUsername(String  username);
+
+    Optional<User> findActiveUserByChatId(String chatId);
 }
