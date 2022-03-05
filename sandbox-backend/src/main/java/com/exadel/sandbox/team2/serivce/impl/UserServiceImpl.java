@@ -48,12 +48,12 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     }
 
     @Override
-    public Optional<User> getUserByAuthorizationCode(String code) {
-        return userRepository.findByTelegramAuthorizationCode(code);
+    public Optional<User> findInvitedUserByAuthorizationCode(String code) {
+        return userRepository.findByTelegramAuthorizationCodeAndStatus(code,UserState.INVITED);
     }
 
     @Override
-    public Optional<User> getUserByTelegramChatIdOrPhone(String chatId, String phone) {
+    public Optional<User> findUserByChatIdOrPhoneNumber(String chatId, String phone) {
         return userRepository.findByChatIdOrPhoneNumber(chatId, phone);
     }
 
@@ -66,4 +66,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     public Optional<User> findByUsername(String username) {
         return userRepository.findByEmail(username);
     }
+
+
+    @Override
+    public Optional<User> findActiveUserByChatId(String chatId) {
+        return userRepository.findByChatIdAndStatus(chatId,UserState.ACTIVE);
+    }
+
 }
