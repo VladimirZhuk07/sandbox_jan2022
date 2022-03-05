@@ -39,7 +39,7 @@ public class User extends AuditableEntity {
 
     private LocalDate employmentEnd;
 
-    private Boolean isFired;
+    private Boolean isFired = false;
 
     private String telegramAuthorizationCode;
 
@@ -51,7 +51,7 @@ public class User extends AuditableEntity {
   
     @Enumerated(EnumType.STRING)
     @Column
-    private UserState status;
+    private UserState status = UserState.NEW;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(

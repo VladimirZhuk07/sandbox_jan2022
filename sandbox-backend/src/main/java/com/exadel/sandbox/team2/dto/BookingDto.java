@@ -2,6 +2,7 @@ package com.exadel.sandbox.team2.dto;
 
 import com.exadel.sandbox.team2.domain.base.BaseDto;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
+@SuperBuilder
 public class BookingDto extends BaseDto {
 
     private long workplaceId;
@@ -21,21 +22,21 @@ public class BookingDto extends BaseDto {
 
     private LocalDateTime endDate;
 
-    private Boolean recurring;
+    private Boolean recurring = false;
 
-    private Boolean monday;
+    private Boolean monday = false;
 
-    private Boolean tuesday;
+    private Boolean tuesday = false;
 
-    private Boolean wednesday;
+    private Boolean wednesday = false;
 
-    private Boolean thursday;
+    private Boolean thursday = false;
 
-    private Boolean friday;
+    private Boolean friday = false;
 
-    private Boolean saturday;
+    private Boolean saturday = false;
 
-    private Boolean sunday;
+    private Boolean sunday = false;
 
     private String createdBy;
 

@@ -25,9 +25,9 @@ public class Map extends BaseEntity{
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "officeId")
     Office office;
-    int floorNum;
-    int kitchenNum;
-    int confRoomsNum;
+    int floorNum = 1;
+    int kitchenNum = 1;
+    int confRoomsNum = 1;
 
     @OneToMany(mappedBy = "map", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
