@@ -21,20 +21,25 @@ public class EmailServiceImpl implements EmailService {
 
     @SneakyThrows
     public void sendMail(MailDto mailDto) {
-        String recipient = mailDto.getRecipient();
-        Properties properties = setSettingsOfProperties();
+        try {
+            log.info("Send email called.");
+            String recipient = mailDto.getRecipient();
+            Properties properties = setSettingsOfProperties();
 
-        Authenticator auth = new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
-                        mailProperties.getPasswordOfMailFormSend());
-            }
-        };
-        Session session = Session.getInstance(properties,auth);
+            Authenticator auth = new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(mailProperties.getUsernameOfMailFromSend(),
+                            mailProperties.getPasswordOfMailFormSend());
+                }
+            };
+            Session session = Session.getInstance(properties,auth);
 
-        Message message = prepareMessage(session, recipient, mailDto);
-        Transport.send(message);
-        log.info("Successfully send to recipient.");
+            Message message = prepareMessage(session, recipient, mailDto);
+            Transport.send(message);
+            log.info("Successfully send to recipient.");
+        } catch (Exception e) {
+            log.error("Error during sending of email.", e);
+        }
     }
 
     private Message prepareMessage(Session session, String recipient, MailDto mailDto) {

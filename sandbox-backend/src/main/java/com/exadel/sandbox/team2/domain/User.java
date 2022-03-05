@@ -10,7 +10,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -37,7 +39,7 @@ public class User extends AuditableEntity {
 
     private LocalDate employmentEnd;
 
-    private boolean isFired;
+    private Boolean isFired;
 
     private String telegramAuthorizationCode;
 
@@ -59,12 +61,12 @@ public class User extends AuditableEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     @JsonIgnore
-    private Vacation vacationId;
+    private Vacation vacation;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
     @JsonIgnore
-    private Booking bookingId;
+    private List<Booking> bookings = new ArrayList<>();
 
 }

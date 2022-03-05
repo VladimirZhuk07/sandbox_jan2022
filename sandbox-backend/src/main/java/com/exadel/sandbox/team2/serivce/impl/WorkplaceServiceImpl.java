@@ -15,37 +15,40 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements WorkplaceService {
 
-    private final WorkplaceRepository workplaceRepository;
+    private final WorkplaceRepository repository;
     private final MapRepository mapRepository;
     private final WorkplaceMapper mapper;
 
     @Override
-    public WorkplaceDto save(WorkplaceDto workplaceDto) {
-        Workplace workplace = mapper.toEntity(workplaceDto);
-        Map map = mapRepository.getOne(workplaceDto.getMapId());
-        workplace.setMapId(map);
-        Workplace newWorkplace = workplaceRepository.save(workplace);
-        return mapper.toDto(newWorkplace);
+    public WorkplaceDto save(WorkplaceDto dto) {
+        Workplace workplace = mapper.toEntity(dto);
+        Map map = mapRepository.getById(dto.getMapId());
+        workplace.setMap(map);
+        return mapper.toDto(repository.save(workplace));
     }
 
     @Override
-    public WorkplaceDto update(Long id, WorkplaceDto workplaceDto) {
-        Workplace workplace = workplaceRepository.findById(id).get();
-        if(workplace.isHeadset() != workplaceDto.isHeadset())
-            workplace.setHeadset(workplaceDto.isHeadset());
-        if(workplace.isKeyboard() != workplaceDto.isKeyboard())
-            workplace.setKeyboard(workplaceDto.isKeyboard());
-        if(workplace.isMonitor() != workplaceDto.isMonitor())
-            workplace.setMonitor(workplaceDto.isMonitor());
-        if(workplace.isMouse() != workplaceDto.isMouse())
-            workplace.setMouse(workplaceDto.isMouse());
-        if(workplace.isNextToWindow() != workplaceDto.isNextToWindow())
-            workplace.setNextToWindow(workplaceDto.isNextToWindow());
-        if(workplace.isPc() != workplaceDto.isPc())
-            workplace.setPc(workplaceDto.isPc());
-        if(workplace.getWorkplaceNumber() == workplaceDto.getWorkplaceNumber())
-            workplace.setWorkplaceNumber(workplaceDto.getWorkplaceNumber());
+    public WorkplaceDto update(WorkplaceDto dto, long id) {
+        Workplace workplace = repository.findById(id).orElse(null);
+        if(workplace == null)
+            return null;
+        checkAndSet(workplace,dto);
+        return mapper.toDto(repository.save(workplace));
+    }
 
-        return mapper.toDto(workplaceRepository.save(workplace));
+    @Override
+    public void checkAndSet(Workplace workplace, WorkplaceDto workplaceDto) {
+        if(workplace.getWorkplaceNumber() != workplaceDto.getWorkplaceNumber() && workplaceDto.getWorkplaceNumber() != 0)
+            workplace.setWorkplaceNumber(workplaceDto.getWorkplaceNumber());
+        if(workplaceDto.getHeadset() != null && workplace.getHeadset() != workplaceDto.getHeadset())
+            workplace.setHeadset(workplaceDto.getHeadset());
+        if(workplaceDto.getKeyboard() != null && workplace.getKeyboard() != workplaceDto.getKeyboard())
+            workplace.setKeyboard(workplaceDto.getKeyboard());
+        if(workplaceDto.getMonitor() != null && workplace.getMonitor() != workplaceDto.getMonitor())
+            workplace.setMonitor(workplaceDto.getMonitor());
+        if(workplaceDto.getMouse() != null && workplace.getMouse() != workplaceDto.getMouse())
+            workplace.setMouse(workplaceDto.getMouse());
+        if(workplaceDto.getNextToWindow() != null && workplace.getNextToWindow() != workplaceDto.getNextToWindow())
+            workplace.setNextToWindow(workplaceDto.getNextToWindow());
     }
 }

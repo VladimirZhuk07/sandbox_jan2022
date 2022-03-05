@@ -13,11 +13,13 @@ import com.exadel.sandbox.team2.serivce.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements BookingService {
 
-    private final BookingRepository bookingRepository;
+    private final BookingRepository repository;
 
     private final UserRepository userRepository;
 
@@ -26,44 +28,68 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     private final BookingMapper mapper;
 
     @Override
-    public BookingDto save(BookingDto bookingDto) {
-        User user = userRepository.getOne(bookingDto.getUserId());
-        Workplace workplace = workplaceRepository.getOne(bookingDto.getWorkplaceId());
-        if(workplace.getBookingId() == null && user.getBookingId() == null) {
-            Booking booking = mapper.toEntity(bookingDto);
-            booking.setWorkplaceId(workplace);
-            booking.setUserId(user);
-            Booking newBooking = bookingRepository.save(booking);
-            return mapper.toDto(newBooking);
-        }
-
-        return null;
+    public BookingDto save(BookingDto dto) {
+        User user = userRepository.getById(dto.getUserId());
+        Workplace workplace = workplaceRepository.getById(dto.getWorkplaceId());
+        Booking booking = mapper.toEntity(dto);
+        booking.setWorkplace(workplace);
+        booking.setUser(user);
+        return mapper.toDto(repository.save(booking));
     }
 
     @Override
-    public BookingDto update(long id, BookingDto bookingDto) {
-        Booking booking = bookingRepository.findById(id).get();
-        if(bookingDto.getStartDate() != null){
-            booking.setStartDate(booking.getStartDate());
-        }if(bookingDto.getEndDate() != null){
+    public BookingDto update(BookingDto dto, long id) {
+        Booking booking = repository.findById(id).orElse(null);
+        if(booking == null)
+            return null;
+        checkAndSet(booking, dto);
+        return mapper.toDto(repository.save(booking));
+    }
+
+    @Override
+    public void checkAndSet(Booking booking, BookingDto bookingDto) {
+        if(bookingDto.getStartDate() != null && booking.getStartDate() != bookingDto.getStartDate()){
+            booking.setStartDate(bookingDto.getStartDate());
+        }
+        if(bookingDto.getEndDate() != null && booking.getEndDate() != bookingDto.getEndDate()){
             booking.setEndDate(bookingDto.getEndDate());
-        }if(bookingDto.isRecurring() != booking.isRecurring()){
-            booking.setRecurring(bookingDto.isRecurring());
         }
-
-        return mapper.toDto(bookingRepository.save(booking));
+        if(bookingDto.getMonday() != null && booking.getMonday() != bookingDto.getMonday()){
+            booking.setMonday(bookingDto.getMonday());
+        }
+        if(bookingDto.getTuesday() != null && booking.getTuesday() != bookingDto.getTuesday()){
+            booking.setTuesday(bookingDto.getTuesday());
+        }
+        if(bookingDto.getWednesday() != null && booking.getWednesday() != bookingDto.getWednesday()){
+            booking.setWednesday(bookingDto.getWednesday());
+        }
+        if(bookingDto.getThursday() != null && booking.getThursday() != bookingDto.getThursday()){
+            booking.setThursday(bookingDto.getThursday());
+        }
+        if(bookingDto.getFriday() != null && booking.getFriday() != bookingDto.getFriday()){
+            booking.setFriday(bookingDto.getFriday());
+        }
+        if(bookingDto.getSaturday() != null && booking.getSaturday() != bookingDto.getSaturday()){
+            booking.setSaturday(bookingDto.getSaturday());
+        }
+        if(bookingDto.getSunday() != null && booking.getSunday() != bookingDto.getSunday()){
+            booking.setSunday(bookingDto.getSunday());
+        }
+        if(bookingDto.getRecurring() != null && booking.getRecurring() != bookingDto.getRecurring()){
+            booking.setRecurring(bookingDto.getRecurring());
+        }
+        if(bookingDto.getWorkplaceId() != 0) {
+            Optional<Workplace> workplace = workplaceRepository.findById(bookingDto.getWorkplaceId());
+            workplace.ifPresent(booking::setWorkplace);
+        }
+        if(bookingDto.getUserId() != 0){
+            Optional<User> user = userRepository.findById(bookingDto.getUserId());
+            user.ifPresent(booking::setUser);
+        }
     }
 
     @Override
-    public void remove(long id) {
-        Booking booking = bookingRepository.findById(id).get();
-        User user = booking.getUserId();
-        user.setBookingId(null);
-        userRepository.save(user);
-        Workplace workplace = booking.getWorkplaceId();
-        workplace.setBookingId(null);
-        workplaceRepository.save(workplace);
-
-        bookingRepository.deleteById(id);
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

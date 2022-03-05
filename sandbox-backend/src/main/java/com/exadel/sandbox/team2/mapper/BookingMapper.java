@@ -11,12 +11,9 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface BookingMapper {
 
-    @Mapping(source = "workplaceId", target = "workplaceId", qualifiedByName = "getWorkplaceId")
-    @Mapping(source = "userId", target = "userId", qualifiedByName = "getUserId")
+    @Mapping(source = "workplace", target = "workplaceId", qualifiedByName = "getWorkplaceId")
+    @Mapping(source = "user", target = "userId", qualifiedByName = "getUserId")
     BookingDto toDto(Booking booking);
-
-    @Mapping(source = "workplaceId", target = "workplaceId", ignore = true)
-    @Mapping(source = "userId", target = "userId", ignore = true)
     Booking toEntity(BookingDto bookingDto);
 
     @Named("getWorkplaceId")

@@ -1,17 +1,15 @@
 package com.exadel.sandbox.team2.dao;
 
-import com.exadel.sandbox.team2.domain.Country;
 import com.exadel.sandbox.team2.domain.Office;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface OfficeRepository  extends CrudRepository<Office, Long>{
+public interface OfficeRepository  extends JpaRepository<Office, Long> {
+    void deleteByCityId(Long city_id);
 
-    void deleteByCountryName(Country country);
-
-    List<Office> findByCountryName(Country country);
+    List<Office> findByCityId(Long city_id);
 
 }

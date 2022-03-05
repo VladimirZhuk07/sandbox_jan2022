@@ -20,28 +20,28 @@ public class Booking extends AuditableEntity {
 
     private LocalDateTime endDate;
 
-    private boolean recurring;
+    private Boolean recurring;
 
-    private boolean monday;
+    private Boolean monday;
 
-    private boolean tuesday;
+    private Boolean tuesday;
 
-    private boolean wednesday;
+    private Boolean wednesday;
 
-    private boolean thursday;
+    private Boolean thursday;
 
-    private boolean friday;
+    private Boolean friday;
 
-    private boolean saturday;
+    private Boolean saturday;
 
-    private boolean sunday;
+    private Boolean sunday;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
-    private User userId;
+    private User user;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "workplaceId")
-    private Workplace workplaceId;
+    private Workplace workplace;
 
 }

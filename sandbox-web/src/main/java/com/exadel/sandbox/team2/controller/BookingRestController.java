@@ -14,32 +14,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookingRestController {
 
-    private final BookingService bookingService;
+    private final BookingService service;
 
     private final BookingMapper mapper;
 
     @GetMapping("/{id}")
     public BookingDto findById(@PathVariable Long id) {
-        return mapper.toDto(bookingService.findById(id).get());
+        return mapper.toDto(service.findById(id).get());
     }
 
     @GetMapping
     public List<BookingDto> findAll() {
-        return bookingService.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
+        return service.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @PostMapping
     public BookingDto add(@RequestBody BookingDto bookingDto) {
-        return bookingService.save(bookingDto);
+        return service.save(bookingDto);
     }
 
     @PutMapping("/{id}")
     public BookingDto update(@PathVariable Long id, @RequestBody BookingDto bookingDto) {
-        return bookingService.update(id, bookingDto);
+        return service.update(bookingDto,id);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookingService.remove(id);
+        service.delete(id);
     }
 }

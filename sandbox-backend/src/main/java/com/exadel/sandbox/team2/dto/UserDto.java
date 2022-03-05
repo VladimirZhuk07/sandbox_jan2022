@@ -1,20 +1,20 @@
 package com.exadel.sandbox.team2.dto;
 
+import com.exadel.sandbox.team2.domain.base.BaseDto;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Builder
-public class UserDto {
+public class UserDto extends BaseDto {
 
     private String chatId;
 
@@ -33,6 +33,8 @@ public class UserDto {
     private Boolean isFired;
 
     private String telegramAuthorizationCode;
+
+    private String password;
 
     private TelegramState telegramState;
 

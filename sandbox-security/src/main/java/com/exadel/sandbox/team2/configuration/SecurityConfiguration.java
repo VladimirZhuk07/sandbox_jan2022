@@ -32,7 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final String [] NO_SECURITY_PATH_LIST ={
       "/authorization/sign-in",
-      "/telegram"
+      "/telegram",
+      "/**"
     };
 
     public SecurityConfiguration(JwtAuthenticationEntryPoint unauthorizedHandler, JwtTokenProvider tokenProvider, UserDetailsServiceImpl userService) {
