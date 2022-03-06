@@ -16,7 +16,8 @@ public class ResourceNotFoundExceptionInterceptor {
             throwing = "e")
     public void errorInterceptorForWebRestControllers(JoinPoint thisJoinPoint, Throwable e) {
         if (e instanceof EntityNotFoundException) {
-            throw new ResourceNotFoundException("Resource was not found: " + thisJoinPoint.getTarget().getClass());
+            throw new ResourceNotFoundException("Resource was not found: "
+                    + thisJoinPoint.getTarget().getClass());
         }
     }
 }
