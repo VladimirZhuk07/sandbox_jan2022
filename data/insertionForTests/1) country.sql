@@ -1,5 +1,5 @@
-insert into country(name) value ('UZBEKISTAN');
-insert into country(name) value ('BELARUS');
-insert into country(name) value ('TURKEY');
-insert into country(name) value ('INDIA');
-insert into country(name) value ('SWEDEN');
+insert into country(id, name) value (1, 'UZBEKISTAN');
+insert into country(id, name) value (2, 'BELARUS');
+insert into country(id, name) value (3, 'TURKEY');
+insert into country(id, name) value (4, 'INDIA');
+insert into country(id, name) value (5, 'SWEDEN');
