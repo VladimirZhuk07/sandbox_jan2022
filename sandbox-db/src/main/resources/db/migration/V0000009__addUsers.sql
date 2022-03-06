@@ -1,1 +1,0 @@
-INSERT INTO User(firstname, lastname, email, phonenumber, status, password, createdDate, modifiedDate, createdBy, modifiedBy) VALUES ('Nurmukhammad', 'Sunatullaev', 'nurmukhammad.sunatullaev@gmail.com', '+998998756090', 'NEW','nur123456', NOW(), NOW(),'SYSTEM','SYSTEM');

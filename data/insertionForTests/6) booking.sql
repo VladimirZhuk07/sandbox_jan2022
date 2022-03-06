@@ -1,3 +1,4 @@
+-- возможно не нужен
 INSERT INTO booking (id, workplaceId, userId,
                      startDate, endDate, recurring,
                      monday, tuesday, wednesday,
