@@ -27,7 +27,7 @@ public class MessageHandler implements BaseHandler {
 
     return switch (text) {
       case "\uD83D\uDDD2 Menu" -> utils.getMessage(chatId, "Please select functionality", new String[][]{{"Booking", "Last Information"}, {"Cancel Booking", "Change Booking"}}, new String[][]{{"BOOK", "INFO"}, {"CANCEL", "CHANGE"}});
-      case "\uD83D\uDC64 Account" -> utils.getMessage(chatId, String.format("First Name: %s\nLast Name: %s\nPhone Number: %s", user.getFirstName(), user.getLastName(), user.getPhoneNumber()));
+      case "\uD83D\uDC64 Account" -> utils.getMessage(chatId, String.format("\uD83C\uDF1D First Name: %s\n\uD83C\uDF1A Last Name: %s\n\uD83D\uDCDE Phone Number: %s\n\uD83D\uDCE7 Email: %s", user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail()));
       case "\uD83D\uDCD8 Contact" -> utils.getMessage(chatId, "Contact: @nurmukhammadsunatullaev");
       case "⚙️ Settings" -> utils.getMessage(chatId, "Please select action", new String[][]{{"Change Phone Number", "Edit Account Information"}, {"Change Language", "Report"}}, new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}});
       default -> utils.getMessage(chatId, "Command not found");

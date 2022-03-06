@@ -38,3 +38,9 @@ notification:
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
    expiration: 3600
+
+language:
+  english: en_EN
+  belarusian: by_BY
+  uzbek: uz_UZ
+  russian: ru_RU
