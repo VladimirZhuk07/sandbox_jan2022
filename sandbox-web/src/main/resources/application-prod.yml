@@ -8,4 +8,4 @@ telegram:
     webhook:
       setWebhookPath: '/setWebhook'
       webhookInfoPath: '/getWebhookinfo'
-      path: 'https://9937-94-158-61-201.ngrok.io/api/telegram'
+      path: 'https://b035-94-158-61-201.ngrok.io/api/telegram'
