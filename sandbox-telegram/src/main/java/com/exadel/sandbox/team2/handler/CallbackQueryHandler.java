@@ -51,7 +51,7 @@ public class CallbackQueryHandler implements BaseHandler {
                         new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}});
             }
             case "LANGUAGE" -> {
-                sendMessage = utils.getMessage(chatId, lms.getMessage("settings.pleaseSelectAction"),
+                sendMessage = utils.getMessage(chatId, lms.getMessage("settings.pleaseSelectLanguage"),
                         new String[][]{{lms.getMessage("language.belarusian"), lms.getMessage("language.english")},
                                 {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
                         new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
