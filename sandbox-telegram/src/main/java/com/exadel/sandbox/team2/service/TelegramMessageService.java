@@ -57,11 +57,11 @@ public class TelegramMessageService {
         return authorizationService.authenticatePhoneNumber(chatId, contact.getPhoneNumber())
                 .map(user -> user.getStatus() == UserState.NEW ?
                         utils.getMessage(chatId, lms.getMessage("reply.weSentInvitationToYourEmail")) :
-                        utils.getMessage(chatId, lms.getMessage("reply.pleaseSelectYourFunction"),
-                                new String[][]{
-                                        {lms.getMessage("menu.menu"), lms.getMessage("menu.account")},
-                                        {lms.getMessage("menu.contact"), lms.getMessage("menu.settings")}
-                                }))
-                .orElse(null);
+                        utils.getMessage(chatId, "Please select action",
+                                new String[][]{{lms.getMessage("menu.menu"), lms.getMessage("menu.account")},
+                                        {lms.getMessage("menu.contact"), lms.getMessage("menu.settings")}},
+                                new String[][]{{"\uD83D\uDDD2 Menu", "\uD83D\uDC64 Account"},
+                                        {"\uD83D\uDCD8 Contact", "⚙️ Settings"}})
+                ).orElse(null);
     }
 }

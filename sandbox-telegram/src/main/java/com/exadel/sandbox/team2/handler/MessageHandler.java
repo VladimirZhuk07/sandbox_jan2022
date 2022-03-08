@@ -3,7 +3,7 @@ package com.exadel.sandbox.team2.handler;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.handler.base.BaseHandler;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
-import com.exadel.sandbox.team2.serivce.service.UserService;
+import com.exadel.sandbox.team2.service.LocaleMessageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,23 +15,46 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MessageHandler implements BaseHandler {
 
-  TelegramUtils utils;
+    TelegramUtils utils;
+    LocaleMessageService lms;
 
-  @Override
-  public SendMessage handle(Update update, User user) {
-    String chatId = utils.getChatId(update);
-    String text = update.getMessage().getText();
+    @Override
+    public SendMessage handle(Update update, User user) {
+        String chatId = utils.getChatId(update);
+        String text = update.getMessage().getText();
+        SendMessage sendMessage;
 
-    return switch (text) {
-      case "\uD83D\uDDD2 Menu" -> utils.getMessage(chatId, "Please select functionality", new String[][]{{"Booking", "Last Information"}, {"Cancel Booking", "Change Booking"}}, new String[][]{{"BOOK", "INFO"}, {"CANCEL", "CHANGE"}});
-      case "\uD83D\uDC64 Account" -> utils.getMessage(chatId, String.format("\uD83C\uDF1D First Name: %s\n\uD83C\uDF1A Last Name: %s\n\uD83D\uDCDE Phone Number: %s\n\uD83D\uDCE7 Email: %s", user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail()));
-      case "\uD83D\uDCD8 Contact" -> utils.getMessage(chatId, "Contact: @nurmukhammadsunatullaev");
-      case "⚙️ Settings" -> utils.getMessage(chatId, "Please select action", new String[][]{{"Change Phone Number", "Edit Account Information"}, {"Change Language", "Report"}}, new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}});
-      default -> utils.getMessage(chatId, "Command not found");
-    };
-
-  }
+        switch (text) {
+            case "\uD83D\uDDD2 Menu" -> {
+                sendMessage = utils.getMessage(chatId, "Please select functionality",
+                        new String[][]{{lms.getMessage("menu.booking"), lms.getMessage("menu.lastInformation")},
+                                {lms.getMessage("menu.cancelBooking"), lms.getMessage("menu.changeBooking")}},
+                        new String[][]{{"BOOK", "INFO"}, {"CANCEL", "CHANGE"}});
+            }
+            case "\uD83D\uDC64 Account" -> {
+                sendMessage = utils.getMessage(chatId,
+                        String.format("\uD83C\uDF1D " + lms.getMessage("account.firstName") + ": %s"
+                                        + "\n\uD83C\uDF1A " + lms.getMessage("account.lastName") + ": %s"
+                                        + "\n\uD83D\uDCDE " + lms.getMessage("account.phoneNumber") + ": %s"
+                                        + "\n\uD83D\uDCE7 " + lms.getMessage("account.email") + ": %s",
+                                user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail()));
+            }
+            case "\uD83D\uDCD8 Contact" -> {
+                sendMessage = utils.getMessage(chatId, lms.getMessage("contact.contact"));
+            }
+            case "⚙️ Settings" -> {
+                sendMessage = utils.getMessage(chatId, lms.getMessage("settings.pleaseSelectAction"),
+                        new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
+                                {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}},
+                        new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}});
+            }
+            default -> {
+                sendMessage = utils.getMessage(chatId, lms.getMessage("mH.commandNotFound"));
+            }
+        }
+        return sendMessage;
+    }
 }
