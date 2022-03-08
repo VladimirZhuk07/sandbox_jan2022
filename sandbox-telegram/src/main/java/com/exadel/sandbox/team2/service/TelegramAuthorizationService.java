@@ -19,13 +19,13 @@ public class TelegramAuthorizationService {
         this.userService = userService;
     }
 
-    public Optional<User> findActiveUserByChatId(String chatId){
+    public Optional<User> findActiveUserByChatId(String chatId) {
         return userService.findActiveUserByChatId(chatId);
     }
 
     public Optional<User> authenticatePhoneNumber(String chatId, String phoneNumber) {
         Optional<User> current = userService.findUserByChatIdOrPhoneNumber(chatId, phoneNumber);
-        if(current.isPresent()){
+        if (current.isPresent()) {
             User user = current.get();
             if (Objects.equals(chatId, user.getChatId()) && user.getStatus() == UserState.WAIT_PHONE_AUTHORIZATION) {
                 user.setStatus(UserState.ACTIVE);
@@ -41,7 +41,7 @@ public class TelegramAuthorizationService {
 
     public Optional<User> authenticate(String chatId, String code) {
         Optional<User> current = userService.findInvitedUserByAuthorizationCode(code);
-        if(current.isPresent()){
+        if (current.isPresent()) {
             User user = current.get();
             user.setChatId(chatId);
             user.setStatus(UserState.WAIT_PHONE_AUTHORIZATION);
