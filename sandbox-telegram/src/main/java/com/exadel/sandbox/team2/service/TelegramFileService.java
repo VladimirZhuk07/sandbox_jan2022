@@ -9,10 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,7 +28,7 @@ public class TelegramFileService {
     TelegramProperties telegramProperties;
 
     public boolean sendDocument(String chatId, String filePath){
-        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("document", new FileSystemResource(filePath));
         parameters.add("chat_id",chatId);
 
@@ -32,11 +36,11 @@ public class TelegramFileService {
         headers.set("Content-Type", "multipart/form-data");
         headers.set("Accept", "text/plain");
 
-        TelegramFileResponse result = restTemplate.postForObject(
+        ResponseEntity<TelegramFileResponse> result = restTemplate.postForEntity(
                 new StringBuilder().append(telegramProperties.getApi().getBase().getPath()).append(telegramProperties.getBot().getToken()).append("/sendDocument").toString(),
                 new HttpEntity<>(parameters, headers),
                 TelegramFileResponse.class);
 
-        return result.isOk();
+        return result.getStatusCode() == HttpStatus.OK && Optional.ofNullable(result.getBody()).map(TelegramFileResponse::isOk).orElse(false);
     }
 }
