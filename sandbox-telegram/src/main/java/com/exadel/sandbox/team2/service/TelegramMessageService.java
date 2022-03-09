@@ -28,6 +28,7 @@ public class TelegramMessageService {
     CallbackQueryHandler callbackQueryHandler;
     MessageHandler messageHandler;
     TelegramUtils utils;
+    LocaleMessageService lms;
 
     public BotApiMethod<?> handleUpdate(Update update) {
 
@@ -57,17 +58,20 @@ public class TelegramMessageService {
         if (!authorizationCode.isBlank()) {
             return  authorizationService.authenticate(chatId, authorizationCode)
               .map(user ->
-                utils.getSendMessage(chatId, "Please send your phone number for authentication","\uD83D\uDCF2 Share Phone number"))
-              .orElse(utils.getSendMessage(chatId,"Sorry you are not user of this bot"));
+                utils.getSendMessage(chatId, lms.getMessage("reply.askPhoneForAuthentication"), lms.getMessage("reply.askToSharePhoneNumber")))
+              .orElse(utils.getSendMessage(chatId, lms.getMessage("error.youAreNotAbleToUseThisBot")));
         }
-        return utils.getSendMessage(chatId, "Please send your phone number for invitation!", "\uD83D\uDCF2 Share Phone number");
+        return utils.getSendMessage(chatId, lms.getMessage("reply.askPhoneForInvitation"), lms.getMessage("reply.askToSharePhoneNumber"));
     }
 
     private SendMessage afterGetContact(String chatId, Contact contact){
         return  authorizationService.authenticatePhoneNumber(chatId, contact.getPhoneNumber())
           .map(user -> user.getStatus() == UserState.NEW?
-            utils.getSendMessage(chatId,"We sent invitation your email") :
-            utils.getSendMessage(chatId, "Please select your function", new String[][]{{"\uD83D\uDDD2 Menu","\uD83D\uDC64 Account"}, {"\uD83D\uDCD8 Contact",  "⚙️ Settings"}}))
+            utils.getSendMessage(chatId, lms.getMessage("reply.weSentInvitationToYourEmail")) :
+            utils.getSendMessage(chatId, "Please select your function", new String[][]{{lms.getMessage("menu.menu"), lms.getMessage("menu.account")},
+                    {lms.getMessage("menu.contact"), lms.getMessage("menu.settings")}},
+                    new String[][]{{"\uD83D\uDDD2 Menu", "\uD83D\uDC64 Account"},
+                            {"\uD83D\uDCD8 Contact", "⚙️ Settings"}}))
           .orElse(null);
     }
 
@@ -85,6 +89,7 @@ public class TelegramMessageService {
             case "One day" -> telegramState = TelegramState.ONE_DAY_SELECT_DATE;
             case "Continuous" -> telegramState = TelegramState.CONTINUOUS_SELECT_DATE;
             case "Recurring" -> telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
+            case "LANGUAGE" -> telegramState = TelegramState.CHOOSE_LANGUAGE;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
@@ -93,6 +98,7 @@ public class TelegramMessageService {
                 case ONE_DAY_SELECT_DATE -> telegramState = TelegramState.SHOW_OFFICES_BY_CITY;
                 case SHOW_OFFICES_BY_CITY -> telegramState = TelegramState.SHOW_WORKPLACES_BY_OFFICE;
                 case SHOW_WORKPLACES_BY_OFFICE -> telegramState = TelegramState.BOOK_ONE_DAY_WORKPLACE;
+                case CHOOSE_LANGUAGE -> telegramState = TelegramState.SET_LANGUAGE;
             }
         }
         if(telegramState != null)
