@@ -16,36 +16,33 @@
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-db</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-telegram</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-security</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-email</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.exadel.sandbox</groupId>
             <artifactId>sandbox-scheduler</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
+
+
 
         <dependency>
             <groupId>org.springdoc</groupId>
