@@ -25,30 +25,29 @@ import java.util.Optional;
 @Profile("prod")
 public class TelegramWebhookService {
 
-  private final RestTemplate restTemplate;
-  private final TelegramProperties telegramProperties;
+    private final RestTemplate restTemplate;
+    private final TelegramProperties telegramProperties;
 
-  public Optional<TelegramGetInfoResponseDto> getWebhookInfo(){
-    String url= telegramProperties.getApi().getBase().getPath().concat(telegramProperties.getBot().getToken()).concat(telegramProperties.getBot().getWebhook().getWebhookInfoPath());
+    public Optional<TelegramGetInfoResponseDto> getWebhookInfo() {
+        String url = telegramProperties.getApi().getBase().getPath().concat(telegramProperties.getBot().getToken()).concat(telegramProperties.getBot().getWebhook().getWebhookInfoPath());
 
-    ResponseEntity<TelegramGetInfoResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, TelegramGetInfoResponseDto.class);
+        ResponseEntity<TelegramGetInfoResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, TelegramGetInfoResponseDto.class);
 
-    if(response.getStatusCode() == HttpStatus.OK ){
-      return Optional.ofNullable(response.getBody());
-    }
-    return Optional.empty();
-  }
-
-  public Optional<TelegramSetWebhookResponseDto> setWebhookInfo(){
-    String url =  telegramProperties.getApi().getBase().getPath().concat(telegramProperties.getBot().getToken()).concat(telegramProperties.getBot().getWebhook().getSetWebhookPath().concat("?url=")).concat(telegramProperties.getBot().getWebhook().getPath());
-
-    ResponseEntity<TelegramSetWebhookResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, TelegramSetWebhookResponseDto.class);
-
-    if(response.getStatusCode() == HttpStatus.OK ){
-      return Optional.ofNullable(response.getBody());
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return Optional.ofNullable(response.getBody());
+        }
+        return Optional.empty();
     }
 
-    return Optional.empty();
-  }
+    public Optional<TelegramSetWebhookResponseDto> setWebhookInfo() {
+        String url = telegramProperties.getApi().getBase().getPath().concat(telegramProperties.getBot().getToken()).concat(telegramProperties.getBot().getWebhook().getSetWebhookPath().concat("?url=")).concat(telegramProperties.getBot().getWebhook().getPath());
 
+        ResponseEntity<TelegramSetWebhookResponseDto> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, TelegramSetWebhookResponseDto.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return Optional.ofNullable(response.getBody());
+        }
+
+        return Optional.empty();
+    }
 }
