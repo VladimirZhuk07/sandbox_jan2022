@@ -1,19 +1,19 @@
-package com.exadel.sandbox.team2.dto;
+package com.exadel.sandbox.team2.dto.telegramDto;
 
-import com.exadel.sandbox.team2.domain.base.BaseDto;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@SuperBuilder
-public class BookingDto extends BaseDto {
+public class CreateBookingDto {
+
+    private String cityName;
 
     private long workplaceId;
 
@@ -39,11 +39,4 @@ public class BookingDto extends BaseDto {
 
     private Boolean sunday = false;
 
-    private String createdBy;
-
-    private LocalDateTime createdDate;
-
-    private String modifiedBy;
-
-    private LocalDateTime modifiedDate;
 }
