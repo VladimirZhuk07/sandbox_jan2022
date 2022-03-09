@@ -11,6 +11,9 @@ import com.exadel.sandbox.team2.serivce.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements WorkplaceService {
@@ -50,5 +53,15 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
             workplace.setMouse(workplaceDto.getMouse());
         if(workplaceDto.getNextToWindow() != null && workplace.getNextToWindow() != workplaceDto.getNextToWindow())
             workplace.setNextToWindow(workplaceDto.getNextToWindow());
+    }
+
+    @Override
+    public List<Workplace> findByMapId(long id) {
+        return repository.findByMapId(id);
+    }
+
+    @Override
+    public List<Workplace> findByMapIdAndNotStartDate(long mapId, LocalDate startDate) {
+        return repository.findByMapIdAndNotStartDate(mapId, startDate);
     }
 }

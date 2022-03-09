@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.handler.utils;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -20,27 +21,63 @@ public class TelegramUtils {
     return update.getMessage().getChatId().toString();
   }
 
-  public  SendMessage getMessage(String chatId, String message){
+  public  SendMessage getSendMessage(String chatId, String message){
     return SendMessage.builder()
                         .chatId(chatId)
                         .text(message)
                       .build();
   }
 
-  public   SendMessage getMessage(String chatId, String message, String  title){
+  public   SendMessage getSendMessage(String chatId, String message, String  title){
     return requestPhoneNumber(chatId, message,title);
   }
 
-  public   SendMessage getMessage(String chatId, String message, String [][] titles){
-    SendMessage sendMessage = getMessage(chatId,message);
+  public   SendMessage getSendMessage(String chatId, String message, String [][] titles){
+    SendMessage sendMessage = getSendMessage(chatId,message);
     sendMessage.setReplyMarkup(createReplyKeyboardMarkup(titles));
     return sendMessage;
   }
 
-  public   SendMessage getMessage(String chatId, String message, String [][] titles, String [][] commands ){
-    SendMessage sendMessage = getMessage(chatId,message);
+  public   SendMessage getSendMessage(String chatId, String message, String [][] titles, String [][] commands ){
+    SendMessage sendMessage = getSendMessage(chatId,message);
     sendMessage.setReplyMarkup(createInlineKeyboardMarkup(titles,commands));
     return sendMessage;
+  }
+
+  public EditMessageText getEditMessage(String chatId, Integer messageId, String message){
+    return EditMessageText.builder()
+            .chatId(chatId)
+            .messageId(messageId)
+            .text(message).build();
+  }
+
+  public EditMessageText getEditMessage(String chatId, int messageId, String message, String [][] titles, String [][] commands){
+    EditMessageText editMessage = getEditMessage(chatId, messageId, message);
+    editMessage.setReplyMarkup(createInlineKeyboardMarkup(titles, commands));
+    return editMessage;
+  }
+
+  public SendMessage showOptions(String chatId, String message, List<List<String>> rows){
+    SendMessage sendMessage = getSendMessage(chatId, message);
+    InlineKeyboardMarkup markup = createMarkup(rows);
+    sendMessage.setReplyMarkup(markup);
+    return sendMessage;
+  }
+
+  private InlineKeyboardMarkup  createMarkup(List<List<String>> rows){
+    List<List<InlineKeyboardButton>> rowList=new ArrayList<>();
+    for (List<String> row : rows) {
+      List<InlineKeyboardButton> dRow=new ArrayList<>();
+      for (String word : row) {
+        InlineKeyboardButton button;
+        button=new InlineKeyboardButton(word);
+        button.setCallbackData(word);
+        dRow.add(button);
+      }
+      rowList.add(dRow);
+    }
+
+    return new InlineKeyboardMarkup(rowList);
   }
 
   private  SendMessage requestPhoneNumber(String chatId, String message, String title){
@@ -52,7 +89,7 @@ public class TelegramUtils {
 
     replyKeyboardMarkup.setKeyboard(List.of(new KeyboardRow(List.of(createReplyButton(title,true)))));
 
-    SendMessage sendMessage = getMessage(chatId, message);
+    SendMessage sendMessage = getSendMessage(chatId, message);
     sendMessage.setReplyMarkup(replyKeyboardMarkup);
 
     return sendMessage;
@@ -79,10 +116,10 @@ public class TelegramUtils {
     replyKeyboardMarkup.setResizeKeyboard(true);
     replyKeyboardMarkup.setOneTimeKeyboard(true);
     List<KeyboardRow> rows=new ArrayList<>();
-    for (int i = 0; i < titles.length; i++) {
-      List<KeyboardButton> buttons=new ArrayList<>();
-      for (int j = 0; j < titles[i].length; j++) {
-        buttons.add(createReplyButton(titles[i][j],false));
+    for (String[] title : titles) {
+      List<KeyboardButton> buttons = new ArrayList<>();
+      for (String s : title) {
+        buttons.add(createReplyButton(s, false));
       }
       rows.add(new KeyboardRow(buttons));
     }

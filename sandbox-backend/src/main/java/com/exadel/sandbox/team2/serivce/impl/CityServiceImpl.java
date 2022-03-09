@@ -11,6 +11,8 @@ import com.exadel.sandbox.team2.serivce.service.CityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CityServiceImpl extends CRUDServiceImpl<City> implements CityService {
@@ -40,5 +42,10 @@ public class CityServiceImpl extends CRUDServiceImpl<City> implements CityServic
     public void checkAndSet(City city, CityDto cityDto) {
         if(cityDto.getName() != null && !city.getName().equals(cityDto.getName()) && !cityDto.getName().equals("string"))
             city.setName(cityDto.getName());
+    }
+
+    @Override
+    public List<City> findByCountryName(String countryName) {
+        return repository.findByCountryName(countryName);
     }
 }

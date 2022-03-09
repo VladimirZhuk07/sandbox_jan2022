@@ -7,6 +7,7 @@ import com.exadel.sandbox.team2.domain.Booking;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.Workplace;
 import com.exadel.sandbox.team2.dto.BookingDto;
+import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
 import com.exadel.sandbox.team2.mapper.BookingMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.BookingService;
@@ -91,5 +92,17 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public boolean save(CreateBookingDto dto, User user) {
+        Workplace workplace = workplaceRepository.findById(dto.getWorkplaceId()).orElse(null);
+        if(workplace == null)
+            return false;
+        Booking booking = mapper.CreatedBookingDtoToEntity(dto);
+        booking.setUser(user);
+        booking.setWorkplace(workplace);
+        repository.save(booking);
+        return true;
     }
 }

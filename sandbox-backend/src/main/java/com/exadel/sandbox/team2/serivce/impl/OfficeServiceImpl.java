@@ -59,4 +59,9 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     public List<Office> findByCityId(long id) {
         return new ArrayList<>(repository.findByCityId(id));
     }
+
+    @Override
+    public List<Office> findByCityName(String cityName) {
+        return repository.findByCityName(cityName);
+    }
 }

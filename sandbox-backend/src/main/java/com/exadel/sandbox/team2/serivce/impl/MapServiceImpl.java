@@ -11,6 +11,8 @@ import com.exadel.sandbox.team2.serivce.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
@@ -63,5 +65,10 @@ public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
     @Override
     public void deleteByOfficeId(long officeId) {
         repository.deleteByOfficeId(officeId);
+    }
+
+    @Override
+    public Map findByOfficeId(Long id) {
+        return repository.findByOfficeId(id).orElse(null);
     }
 }
