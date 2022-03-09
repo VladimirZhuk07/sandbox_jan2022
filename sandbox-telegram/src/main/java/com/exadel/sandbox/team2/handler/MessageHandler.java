@@ -43,7 +43,8 @@ public class MessageHandler implements BaseHandler {
       case MENU -> sendMessage = utils.getSendMessage(chatId, "Please select functionality", new String[][]{{lms.getMessage("menu.booking"),lms.getMessage("menu.lastInformation")},
               {lms.getMessage("menu.cancelBooking"), lms.getMessage("menu.changeBooking")}, {"Back"}}, new String[][]{{"BOOK", "INFO"}, {"CANCEL", "CHANGE"}, {"Back"}});
       case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
-              {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}}, new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+              {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}},
+              new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
       case SHOW_OFFICES_BY_CITY -> {
         String date = update.getMessage().getText();
         sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", date, user);

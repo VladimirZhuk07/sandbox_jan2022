@@ -90,6 +90,7 @@ public class TelegramMessageService {
             case "Continuous" -> telegramState = TelegramState.CONTINUOUS_SELECT_DATE;
             case "Recurring" -> telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
             case "LANGUAGE" -> telegramState = TelegramState.CHOOSE_LANGUAGE;
+            case "REPORT" -> telegramState = TelegramState.REPORT;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
