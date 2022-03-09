@@ -1,6 +1,8 @@
 package com.exadel.sandbox.team2.handler;
 
+import com.exadel.sandbox.team2.domain.Booking;
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.dto.UsersPOJO;
 import com.exadel.sandbox.team2.handler.base.BaseHandler;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.report.PdfReportServiceImpl;
@@ -18,6 +20,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,8 +37,24 @@ public class CallbackQueryHandler implements BaseHandler {
   TelegramUtils utils;
 
   @SneakyThrows
-  private SendMessage sendMessage(String chatId, User user){
-    String filePath = reportService.getReport(userService.findAll(),"users.jrxml", user.getChatId());
+  private SendMessage sendMessage(String chatId, User user) {
+    List<UsersPOJO> usersPOJOS = new ArrayList<>();
+    List<User> users = userService.findAll();
+    // TODO дата начала букинга и даата конца букинга \
+    // TODO Users POJO в ReportDTO
+    users.forEach(u -> {
+      List<Booking> bookings = u.getBookings();
+      bookings.forEach(b -> {
+        UsersPOJO user1= new UsersPOJO();
+        user1.setFirstName(u.getFirstName());
+        user1.setLastName(u.getLastName());
+        user1.setTimeStart(b.getStartDate());
+        user1.setTimeEnd(b.getEndDate());
+        user1.setWorkplaceID(b.getWorkplace().getId());
+        usersPOJOS.add(user1);
+      });
+    });
+    String filePath = reportService.getReport(usersPOJOS,"users.jrxml", user.getChatId());
     fileService.sendDocument(chatId,filePath);
     return utils.getSendMessage(chatId,"Report Successfully Sent!");
   }
