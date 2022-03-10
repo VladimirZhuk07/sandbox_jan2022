@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
 public class ReportServiceImpl {
     @PersistenceContext
     private EntityManager entityManager;
-
+/*
     public List<UsersPOJO> getUsersWhoBooked() {
         Session session = entityManager.unwrap(Session.class);
-        String hql = "SELECT u.firstName, u.lastName, b.user " +
-                "FROM User as u left join Booking as b";
+        String hql = "SELECT u.id, u.firstName, u.lastName, b.startDate, b.endDate, b.workplace.id" +
+                " FROM User u left join Booking as b ON u.id = b.user.id";
         List<?> list = session.createQuery(hql).list();
         List<UsersPOJO> users = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -30,10 +31,12 @@ public class ReportServiceImpl {
             pojoes.setId((Long) row[0]);
             pojoes.setFirstName((String) row[1]);
             pojoes.setLastName((String) row[2]);
-            pojoes.setWorkplaceID((Long) row[3]);
+            pojoes.setTimeStart((LocalDate) row[3]);
+            pojoes.setTimeEnd((LocalDate) row[4]);
+            pojoes.setWorkplaceID((String) row[5]);
             users.add(pojoes);
         }
         session.close();
         return users;
-    }
+    }*/
 }

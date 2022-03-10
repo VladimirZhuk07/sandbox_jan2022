@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.controller;
 
+import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
 import com.exadel.sandbox.team2.dto.UsersPOJO;
@@ -25,6 +26,7 @@ public class UserRestController {
     private final UserService service;
     private final ReportService reportService;
     private final ReportServiceImpl rp;
+    private final UserRepository userRepository;
 
     private final UserMapper mapper;
 
@@ -60,6 +62,9 @@ public class UserRestController {
 
     @GetMapping("/getPojoes")
     public List<UsersPOJO> getPojoesPlease() {
-        return rp.getUsersWhoBooked();
+        return userRepository.dayMneResultat();
     }
+    /*public List<UsersPOJO> getPojoesPlease() {
+        return rp.getUsersWhoBooked();
+    }*/
 }

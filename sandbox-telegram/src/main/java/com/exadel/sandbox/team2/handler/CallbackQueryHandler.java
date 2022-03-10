@@ -36,7 +36,7 @@ public class CallbackQueryHandler implements BaseHandler {
   TelegramService telegramService;
   TelegramUtils utils;
 
-  @SneakyThrows
+  /*@SneakyThrows
   private SendMessage sendMessage(String chatId, User user) {
     List<UsersPOJO> usersPOJOS = new ArrayList<>();
     List<User> users = userService.findAll();
@@ -57,7 +57,7 @@ public class CallbackQueryHandler implements BaseHandler {
     String filePath = reportService.getReport(usersPOJOS,"users.jrxml", user.getChatId());
     fileService.sendDocument(chatId,filePath);
     return utils.getSendMessage(chatId,"Report Successfully Sent!");
-  }
+  }*/
 
   @Override
   public SendMessage handleSendMessage(Update update, User user) {
@@ -77,7 +77,7 @@ public class CallbackQueryHandler implements BaseHandler {
                       {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
               new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
       case SET_LANGUAGE -> sendMessage = setLang(data, chatId);
-      case REPORT -> sendMessage = this.sendMessage(chatId,user);
+     // case REPORT -> sendMessage = this.sendMessage(chatId,user);
       default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
     }
     userService.save(user);
