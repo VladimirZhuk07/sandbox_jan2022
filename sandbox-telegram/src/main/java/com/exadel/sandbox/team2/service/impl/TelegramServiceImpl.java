@@ -4,7 +4,7 @@ import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.*;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
-import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
+import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.report.ReportService;
 import com.exadel.sandbox.team2.serivce.service.*;
