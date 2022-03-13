@@ -3,6 +3,8 @@ package com.exadel.sandbox.team2.service.service;
 import com.exadel.sandbox.team2.domain.User;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import java.util.Date;
+
 public interface TelegramService {
 
     SendMessage getCountries(String chatId, String message, String data);
@@ -18,4 +20,6 @@ public interface TelegramService {
     SendMessage getWorkplaceByMapId(String chatId, String message, String officeId);
 
     SendMessage bookOneDayWorkplace(String chatId, String message, String workplaceId, User user);
+
+    SendMessage sendReportByEmployees(String chatId, User user, Date dateFrom, Date dateTo);
 }

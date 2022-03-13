@@ -45,14 +45,13 @@ public class PdfReportServiceImpl implements ReportService {
     }
 
     @Override
-    public <T> String constructReport(List<T> data, String jrxmlPath, String reportPath, Map<String, Object> parameters, String reportName) throws JRException, IOException {
+    public <T> String constructReport(List<T> data, String jrxmlPath, Map<String, Object> parameters, String nameOfReportFile) throws JRException, IOException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(data, false);
         JasperReport compileReport = JasperCompileManager.compileReport(
                 new FileInputStream(JRXML_FOLDER + "/" + jrxmlPath));
         JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, parameters, beanCollectionDataSource);
-        jasperPrint.setName(reportName);
-        String fileName = REPORT_FOLDER + "/" + reportPath + ".pdf";
-        JasperExportManager.exportReportToPdfFile(jasperPrint, fileName);
-        return fileName;
+        String filePath = REPORT_FOLDER + "/" + nameOfReportFile + ".pdf";
+        JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
+        return filePath;
     }
 }

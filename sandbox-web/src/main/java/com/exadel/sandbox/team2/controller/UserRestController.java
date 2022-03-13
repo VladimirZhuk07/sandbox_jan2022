@@ -2,18 +2,19 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
 import com.exadel.sandbox.team2.dto.UserDto;
-import com.exadel.sandbox.team2.dto.UsersPOJO;
 import com.exadel.sandbox.team2.mapper.UserMapper;
-import com.exadel.sandbox.team2.report.PdfReportServiceImpl;
 import com.exadel.sandbox.team2.report.ReportService;
 import com.exadel.sandbox.team2.serivce.impl.ReportServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.NotFoundException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public class UserRestController {
     @GetMapping
     public List<UserDto> findAll() {
         List<User> list = service.findAll();
-       // System.out.println(reportService.getReport(list,"users.jrxml","123456789"));
+        //System.out.println(reportService.getReport(list,"users.jrxml","123456789"));
         return list.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
@@ -60,11 +61,10 @@ public class UserRestController {
         service.delete(id);
     }
 
-    @GetMapping("/getPojoes")
-    public List<UsersPOJO> getPojoesPlease() {
-        return userRepository.dayMneResultat();
+    @GetMapping("/getDataForEmployeesReport")
+    public List<ReportByEmployeesDto> getDataForEmployeesReport(
+            @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateFrom,
+            @RequestParam("To") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateTo) {
+        return userRepository.getDataForEmployeesReport(userCreationDateFrom, userCreationDateTo);
     }
-    /*public List<UsersPOJO> getPojoesPlease() {
-        return rp.getUsersWhoBooked();
-    }*/
 }

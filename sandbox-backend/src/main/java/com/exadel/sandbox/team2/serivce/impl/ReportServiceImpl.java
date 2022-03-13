@@ -1,16 +1,12 @@
 package com.exadel.sandbox.team2.serivce.impl;
 
-import com.exadel.sandbox.team2.dto.UsersPOJO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Component
 @AllArgsConstructor
@@ -18,8 +14,9 @@ import java.util.List;
 public class ReportServiceImpl {
     @PersistenceContext
     private EntityManager entityManager;
-/*
-    public List<UsersPOJO> getUsersWhoBooked() {
+
+    //TODO Убрать класс если всё получится
+   /* public List<UsersPOJO> getUsersWhoBooked() {
         Session session = entityManager.unwrap(Session.class);
         String hql = "SELECT u.id, u.firstName, u.lastName, b.startDate, b.endDate, b.workplace.id" +
                 " FROM User u left join Booking as b ON u.id = b.user.id";
@@ -31,9 +28,9 @@ public class ReportServiceImpl {
             pojoes.setId((Long) row[0]);
             pojoes.setFirstName((String) row[1]);
             pojoes.setLastName((String) row[2]);
-            pojoes.setTimeStart((LocalDate) row[3]);
+          *//*  pojoes.setTimeStart((LocalDate) row[3]);
             pojoes.setTimeEnd((LocalDate) row[4]);
-            pojoes.setWorkplaceID((String) row[5]);
+            pojoes.setWorkplaceID((String) row[5]);*//*
             users.add(pojoes);
         }
         session.close();

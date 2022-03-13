@@ -8,5 +8,6 @@ import java.util.Map;
 
 public interface ReportService {
     <T> String getReport(List<T> data, String jrxmlPath, String reportPath) throws JRException, IOException;
-    <T> String constructReport(List<T> data, String jrxmlPath, String reportPath, Map<String, Object> parameters, String reportName) throws JRException, IOException;
+
+    <T> String constructReport(List<T> data, String jrxmlPath, Map<String, Object> parameters, String nameOfReportFile) throws JRException, IOException;
 }

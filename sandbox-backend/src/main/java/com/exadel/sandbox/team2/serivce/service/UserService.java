@@ -4,9 +4,10 @@ import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
 import com.exadel.sandbox.team2.serivce.base.BaseDtoService;
-import com.exadel.sandbox.team2.serivce.base.CRUDService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -21,11 +22,13 @@ public interface UserService extends BaseDtoService<User, UserDto> {
 
     Optional<User> findInvitedUserByAuthorizationCode(String code);
 
-    Optional<User> findUserByChatIdOrPhoneNumber(String chatId,String phone);
+    Optional<User> findUserByChatIdOrPhoneNumber(String chatId, String phone);
 
     List<User> findAllByStatus(UserState state);
 
-    Optional<User> findByUsername(String  username);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findActiveUserByChatId(String chatId);
+
+    List<ReportByEmployeesDto> getDataForReportByEmployees(Date userCreationDateFrom, Date userCreationDateTo);
 }
