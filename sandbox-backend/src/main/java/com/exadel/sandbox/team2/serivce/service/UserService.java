@@ -4,7 +4,7 @@ import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
-import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.serivce.base.BaseDtoService;
 
 import java.util.Date;
@@ -30,5 +30,5 @@ public interface UserService extends BaseDtoService<User, UserDto> {
 
     Optional<User> findActiveUserByChatId(String chatId);
 
-    List<ReportByEmployeesDto> getDataForReportByEmployees(Date userCreationDateFrom, Date userCreationDateTo);
+    List<ReportOnEmployeesDto> getDataForReportByEmployees(Date userCreationDateFrom, Date userCreationDateTo);
 }

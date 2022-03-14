@@ -5,6 +5,7 @@ import com.exadel.sandbox.team2.handler.base.BaseHandler;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import com.exadel.sandbox.team2.service.LocaleMessageService;
+import com.exadel.sandbox.team2.service.service.TelegramReportService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class CallbackQueryHandler implements BaseHandler {
 
     LocaleMessageService lms;
     TelegramService telegramService;
+    TelegramReportService telegramReportService;
     TelegramUtils utils;
     UserService userService;
 
@@ -47,7 +49,7 @@ public class CallbackQueryHandler implements BaseHandler {
                             {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
                     new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
             case SET_LANGUAGE -> sendMessage = setLang(data, chatId);
-            case REPORT -> sendMessage = telegramService.sendReportByEmployees(chatId, user, new Date(), new Date());
+            case REPORT -> sendMessage = telegramReportService.sendReportOnEmployees(chatId, user, null, null);
             default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
         }
         userService.save(user);

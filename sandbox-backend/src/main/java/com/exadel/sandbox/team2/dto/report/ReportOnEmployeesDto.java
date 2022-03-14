@@ -3,7 +3,7 @@ package com.exadel.sandbox.team2.dto.report;
 import java.time.LocalDate;
 import java.util.Date;
 
-public interface ReportByEmployeesDto {
+public interface ReportOnEmployeesDto {
     Long getId();
 
     Date getCreatedDate();

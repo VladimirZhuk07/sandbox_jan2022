@@ -2,7 +2,7 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.dto.UserDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.report.ReportService;
@@ -62,7 +62,7 @@ public class UserRestController {
     }
 
     @GetMapping("/getDataForEmployeesReport")
-    public List<ReportByEmployeesDto> getDataForEmployeesReport(
+    public List<ReportOnEmployeesDto> getDataForEmployeesReport(
             @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateFrom,
             @RequestParam("To") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateTo) {
         return userRepository.getDataForEmployeesReport(userCreationDateFrom, userCreationDateTo);

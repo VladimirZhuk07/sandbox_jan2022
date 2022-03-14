@@ -6,7 +6,7 @@ import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
-import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
@@ -113,7 +113,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     }
 
     @Override
-    public List<ReportByEmployeesDto> getDataForReportByEmployees(Date userCreationDateFrom, Date userCreationDateTo) {
+    public List<ReportOnEmployeesDto> getDataForReportByEmployees(Date userCreationDateFrom, Date userCreationDateTo) {
         return repository.getDataForEmployeesReport(userCreationDateFrom, userCreationDateTo);
     }
 }

@@ -3,15 +3,11 @@ package com.exadel.sandbox.team2.service.impl;
 import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.*;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
-import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
 import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
-import com.exadel.sandbox.team2.report.ReportService;
 import com.exadel.sandbox.team2.serivce.service.*;
-import com.exadel.sandbox.team2.service.TelegramFileService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -31,9 +27,8 @@ public class TelegramServiceImpl implements TelegramService {
     private final MapService mapService;
     private final WorkplaceService workplaceService;
     private final BookingService bookingService;
-    private final TelegramFileService telegramFileService;
     private final UserService userService;
-    private final ReportService reportService;
+
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -166,31 +161,5 @@ public class TelegramServiceImpl implements TelegramService {
             return null;
         }
         return startDate;
-    }
-
-    @SneakyThrows
-    @Override
-    public SendMessage sendReportByEmployees(String chatId, User user, Date dateFrom, Date dateTo) {
-        dateFrom = new GregorianCalendar(2021, Calendar.FEBRUARY, 11).getTime();
-        dateTo = new GregorianCalendar(2025, Calendar.FEBRUARY, 11).getTime();
-        List<ReportByEmployeesDto> reportData = userService.getDataForReportByEmployees(dateFrom, dateTo);
-        if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + dateFrom
-                    + " to "
-                    + dateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
-        } else {
-            java.util.Map<String, Object> parameters = new HashMap<>();
-            parameters.put("total", reportData.size());
-            String filePath = reportService.constructReport(reportData, "users.jrxml", parameters,
-                    "ReportByEmployees".concat("_")
-                            .concat(user.getFirstName())
-                            .concat(user.getLastName())
-                            .concat("_")
-                            .concat(user.getChatId()));
-            telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
-        }
     }
 }

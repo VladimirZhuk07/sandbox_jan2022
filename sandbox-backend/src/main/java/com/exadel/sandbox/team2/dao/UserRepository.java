@@ -2,7 +2,7 @@ package com.exadel.sandbox.team2.dao;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
-import com.exadel.sandbox.team2.dto.report.ReportByEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,5 +30,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " u.createdDate as createdDate,  b.startDate as startDate, b.endDate as endDate"
             + " FROM User u left join Booking as b ON u.id = b.user.id WHERE u.createdDate"
             + " BETWEEN ?1 AND ?2")
-    List<ReportByEmployeesDto> getDataForEmployeesReport(Date userCreationDateFrom, Date userCreationDateTo);
+    List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreationDateFrom, Date userCreationDateTo);
 }

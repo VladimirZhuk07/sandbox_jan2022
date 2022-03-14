@@ -20,6 +20,4 @@ public interface TelegramService {
     SendMessage getWorkplaceByMapId(String chatId, String message, String officeId);
 
     SendMessage bookOneDayWorkplace(String chatId, String message, String workplaceId, User user);
-
-    SendMessage sendReportByEmployees(String chatId, User user, Date dateFrom, Date dateTo);
 }
