@@ -27,8 +27,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
     private final String JRXML_PATH_FOR_SINGLE_OFFICE_REPORT = "single_office_pattern.jrxml";
     private final String JRXML_PATH_FOR_ALL_OFFICES_REPORT = "all_offices_pattern.jrxml";
 
-    private final Date defaultDateFrom = new GregorianCalendar(1990, Calendar.JANUARY, 01).getTime();
-    private final Date defaultDateTo = new GregorianCalendar(2050, Calendar.DECEMBER, 01).getTime();
+    private final Date defaultDateFrom = new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime();
+    private final Date defaultDateTo = new GregorianCalendar(2050, Calendar.DECEMBER, 1).getTime();
 
     @SneakyThrows
     @Override

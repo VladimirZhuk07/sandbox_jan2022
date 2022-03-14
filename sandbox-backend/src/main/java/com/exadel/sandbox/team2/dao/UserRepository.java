@@ -6,6 +6,7 @@ import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -26,9 +27,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByChatIdAndStatus(String chatId, UserState state);
 
     @Modifying
-    @Query("SELECT u.id as id, u.firstName as firstName, u.lastName as lastName,"
+    @Query(value = "SELECT u.id as id, u.firstName as firstName, u.lastName as lastName,"
             + " u.createdDate as createdDate,  b.startDate as startDate, b.endDate as endDate"
             + " FROM User u left join Booking as b ON u.id = b.user.id WHERE u.createdDate"
-            + " BETWEEN ?1 AND ?2")
-    List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreationDateFrom, Date userCreationDateTo);
+            + " BETWEEN :userCreationDateFrom AND :userCreationDateTo")
+    List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreationDateFrom") Date userCreationDateFrom,
+                                                         @Param("userCreationDateTo") Date userCreationDateTo);
 }
