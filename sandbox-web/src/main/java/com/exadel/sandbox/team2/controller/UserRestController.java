@@ -26,8 +26,8 @@ public class UserRestController {
 
     private final UserService service;
     private final ReportService reportService;
-    private final ReportServiceImpl rp;
-    private final UserRepository userRepository;
+
+
 
     private final UserMapper mapper;
 
@@ -42,7 +42,6 @@ public class UserRestController {
     @GetMapping
     public List<UserDto> findAll() {
         List<User> list = service.findAll();
-        //System.out.println(reportService.getReport(list,"users.jrxml","123456789"));
         return list.stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
@@ -65,6 +64,6 @@ public class UserRestController {
     public List<ReportOnEmployeesDto> getDataForEmployeesReport(
             @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateFrom,
             @RequestParam("To") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateTo) {
-        return userRepository.getDataForEmployeesReport(userCreationDateFrom, userCreationDateTo);
+        return service.getDataForReportByEmployees(userCreationDateFrom, userCreationDateTo);
     }
 }

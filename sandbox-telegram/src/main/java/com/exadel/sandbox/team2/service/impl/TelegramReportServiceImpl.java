@@ -15,6 +15,10 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -29,19 +33,20 @@ public class TelegramReportServiceImpl implements TelegramReportService {
     private final MapService mapService;
     private final CityService cityService;
 
-
     private final String JRXML_PATH_FOR_EMPLOYEES_REPORT = "users_pattern.jrxml";
     private final String JRXML_PATH_FOR_SINGLE_OFFICE_REPORT = "single_office_pattern.jrxml";
     private final String JRXML_PATH_FOR_ALL_OFFICES_REPORT = "all_offices_pattern.jrxml";
     private final String JRXML_PATH_FOR_CITY_REPORT = "city_pattern.jrxml";
     private final String JRXML_PATH_FOR_FLOOR_REPORT = "floor_pattern.jrxml";
 
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final Date defaultDateFrom = new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime();
-    private final Date defaultDateTo = new GregorianCalendar(2050, Calendar.DECEMBER, 1).getTime();
+    private final Date defaultDateTo = Date.from((LocalDate.now().plusYears(50)).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnSingleOffice(String chatId, User user, Long idOfOffice, Date modifiedDateFrom, Date modifiedDateTo) {
+    public SendMessage sendReportOnSingleOffice(User user, Long idOfOffice, Date modifiedDateFrom, Date modifiedDateTo) {
         modifiedDateFrom = (null == modifiedDateFrom) ? defaultDateFrom : modifiedDateFrom;
         modifiedDateTo = (null == modifiedDateTo) ? defaultDateTo : modifiedDateTo;
 
@@ -55,6 +60,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
+            parameters.put("modifiedDateFrom", dateFormat.format(modifiedDateFrom));
+            parameters.put("modifiedDateTo", dateFormat.format(modifiedDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_SINGLE_OFFICE_REPORT, parameters,
                     "ReportBySingleOffice".concat("_")
                             .concat(user.getFirstName())
@@ -68,7 +75,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnAllOffices(String chatId, User user, Date modifiedDateFrom, Date modifiedDateTo) {
+    public SendMessage sendReportOnAllOffices(User user, Date modifiedDateFrom, Date modifiedDateTo) {
         modifiedDateFrom = (null == modifiedDateFrom) ? defaultDateFrom : modifiedDateFrom;
         modifiedDateTo = (null == modifiedDateTo) ? defaultDateTo : modifiedDateTo;
 
@@ -82,6 +89,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
+            parameters.put("modifiedDateFrom", dateFormat.format(modifiedDateFrom));
+            parameters.put("modifiedDateTo", dateFormat.format(modifiedDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_ALL_OFFICES_REPORT, parameters,
                     "ReportOnAllOffices".concat("_")
                             .concat(user.getFirstName())
@@ -96,7 +105,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnEmployees(String chatId, User user, Date dateFrom, Date dateTo) {
+    public SendMessage sendReportOnEmployees(User user, Date dateFrom, Date dateTo) {
         dateFrom = (null == dateFrom) ? defaultDateFrom : dateFrom;
         dateTo = (null == dateTo) ? defaultDateTo : dateTo;
 
@@ -110,6 +119,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
+            parameters.put("userCreationDateFrom", dateFormat.format(dateFrom));
+            parameters.put("userCreationDateTo", dateFormat.format(dateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_EMPLOYEES_REPORT, parameters,
                     "ReportByEmployees".concat("_")
                             .concat(user.getFirstName())
@@ -123,7 +134,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnCity(String chatId, User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo) {
+    public SendMessage sendReportOnCity(User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo) {
         bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
         bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
 
@@ -137,6 +148,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         } else {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
+            parameters.put("bookedDateFrom", dateFormat.format(bookedDateFrom));
+            parameters.put("bookedDateTo", dateFormat.format(bookedDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_CITY_REPORT, parameters,
                     "ReportOnCity".concat("_")
                             .concat(user.getFirstName())
@@ -150,7 +163,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnFloor(String chatId, User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo) {
+    public SendMessage sendReportOnFloor(User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo) {
         bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
         bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
 
@@ -165,6 +178,8 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
             parameters.put("idOfFloor", idOfFloor);
+            parameters.put("bookedDateFrom", dateFormat.format(bookedDateFrom));
+            parameters.put("bookedDateTo", dateFormat.format(bookedDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_FLOOR_REPORT, parameters,
                     "ReportOnFloor".concat("_")
                             .concat(user.getFirstName())

@@ -20,7 +20,6 @@ import java.util.List;
 public class OfficeRestController {
 
     private final OfficeService service;
-    private final OfficeRepository officeRepository;
 
     @GetMapping("/{id}")
     public Office get(@PathVariable Long id) {
@@ -63,14 +62,14 @@ public class OfficeRestController {
             @RequestParam("idOfOffice") Long idOfOffice,
             @RequestParam("modifiedFrom") @DateTimeFormat(pattern = "yyyy-MM-dd") Date modifiedDateFrom,
             @RequestParam("modifiedTo") @DateTimeFormat(pattern = "yyyy-MM-dd") Date modifiedDateTo) {
-        return officeRepository.getDataForReportOnSingleOffice(idOfOffice, modifiedDateFrom, modifiedDateTo);
+        return service.getDataForReportBySingleOffice(idOfOffice, modifiedDateFrom, modifiedDateTo);
     }
 
     @GetMapping("/getDataForReportByAllOffices")
     public List<ReportOnAllOfficesDto> getDataForReportOnAllOffices(
             @RequestParam("modifiedFrom") @DateTimeFormat(pattern = "yyyy-MM-dd") Date modifiedDateFrom,
             @RequestParam("modifiedTo") @DateTimeFormat(pattern = "yyyy-MM-dd") Date modifiedDateTo) {
-        return officeRepository.getDataForReportOnAllOffices(modifiedDateFrom, modifiedDateTo);
+        return service.getDataForReportByAllOffices(modifiedDateFrom, modifiedDateTo);
     }
 
 }

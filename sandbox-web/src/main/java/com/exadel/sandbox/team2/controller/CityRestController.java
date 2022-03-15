@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import java.util.Optional;
 public class CityRestController {
 
     private final CityService service;
-    private final CityRepository cityRepository;
 
     @GetMapping("/{id}")
     public Optional<City> getById(@PathVariable Long id) {
@@ -46,11 +44,6 @@ public class CityRestController {
     public List<ReportOnCityDto> getDataForReportOnCity(@RequestParam("idOfCity") Long idOfCity,
                                                         @RequestParam("DateFrom") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
                                                         @RequestParam("DateTo") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo) {
-        return cityRepository.getDataForReportOnCity(idOfCity, dateFrom.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate(),
-                dateTo.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate());
+        return service.getDataForReportOnCity(idOfCity, dateFrom, dateTo);
     }
 }

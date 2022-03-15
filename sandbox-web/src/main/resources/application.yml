@@ -17,8 +17,12 @@ spring:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
   profiles:
     active: dev
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
 logging:
   level:
@@ -44,3 +48,4 @@ language:
   belarusian: by_BY
   uzbek: uz_UZ
   russian: ru_RU
+

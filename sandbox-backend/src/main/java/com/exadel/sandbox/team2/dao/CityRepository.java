@@ -19,7 +19,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
             + " join Map m on o.id = m.officeId "
             + " join Workplace w on m.id = w.mapId"
             + " left join Booking b on w.id = b.workplaceId"
-            + " where ci.id = :idOfCity AND IF(b.startDate IS null, 1, b.startDate between :dateFrom AND :dateTo)"
+            + " where ci.id IN (:idOfCity) AND IF(b.startDate IS null, 1, b.startDate between :dateFrom AND :dateTo)"
             + " GROUP BY ci.name, o.name, o.address", nativeQuery = true)
     List<ReportOnCityDto> getDataForReportOnCity(@Param("idOfCity") Long idOfCity,
                                                  @Param("dateFrom") LocalDate bookedDateFrom,

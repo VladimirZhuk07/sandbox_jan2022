@@ -12,6 +12,12 @@ public interface ReportOnEmployeesDto {
 
     String getLastName();
 
+    String getCountryName();
+
+    String getCityName();
+
+    String getOfficeName();
+
     LocalDate getStartDate();
 
     LocalDate getEndDate();

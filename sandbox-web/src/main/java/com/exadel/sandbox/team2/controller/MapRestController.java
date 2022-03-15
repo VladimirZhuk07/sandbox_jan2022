@@ -18,7 +18,6 @@ import java.util.List;
 public class MapRestController {
 
     private final MapService service;
-    private final MapRepository mapRepository;
 
     @GetMapping("/{id}")
     public Map get(@PathVariable Long id) {
@@ -54,7 +53,7 @@ public class MapRestController {
     public List<ReportOnFloorDto> getDataForReportOnFloor(@RequestParam("numberOfFloor") Long numberOfFloor,
                                                           @RequestParam("bookingDateFrom") @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingDateFrom,
                                                           @RequestParam("bookingDateTo") @DateTimeFormat(pattern = "yyyy-MM-dd") Date bookingDateTo) {
-        return mapRepository.getDataForReportOnFloor(numberOfFloor, bookingDateFrom, bookingDateTo);
+        return service.getDataForReportOnFloor(numberOfFloor, bookingDateFrom, bookingDateTo);
     }
 
 }

@@ -6,6 +6,8 @@
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="total" class="java.lang.Integer"/>
 	<parameter name="idOfFloor" class="java.lang.Long"/>
+	<parameter name="bookedDateFrom" class="java.lang.String"/>
+	<parameter name="bookedDateTo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -74,6 +76,11 @@
 					<font size="26"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{idOfFloor} + " Floor"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="69" width="346" height="30" uuid="7b4463b6-f6a9-4f33-a154-35c1e8083892"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Date of start booking:  " + $P{bookedDateFrom} + " - " + $P{bookedDateTo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

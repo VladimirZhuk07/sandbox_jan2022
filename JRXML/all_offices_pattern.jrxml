@@ -5,6 +5,8 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="total" class="java.lang.Integer"/>
+	<parameter name="modifiedDateFrom" class="java.lang.String"/>
+	<parameter name="modifiedDateTo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -73,6 +75,11 @@
 					<font size="26"/>
 				</textElement>
 				<textFieldExpression><![CDATA["All ANVAV Offices"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="69" width="356" height="30" uuid="04835c69-6be3-4cd7-a90b-28c5f0b5f15b"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Offices modified date:  " + $P{modifiedDateFrom} + " - " + $P{modifiedDateTo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
