@@ -6,7 +6,6 @@ import com.exadel.sandbox.team2.dto.CityDto;
 import com.exadel.sandbox.team2.dto.report.ReportOnCityDto;
 import com.exadel.sandbox.team2.serivce.service.CityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,10 +47,10 @@ public class CityRestController {
                                                         @RequestParam("DateFrom") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateFrom,
                                                         @RequestParam("DateTo") @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo) {
         return cityRepository.getDataForReportOnCity(idOfCity, dateFrom.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate(), dateTo.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate());
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate(),
+                dateTo.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate());
     }
-
 }

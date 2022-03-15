@@ -49,7 +49,7 @@ public class CallbackQueryHandler implements BaseHandler {
                             {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
                     new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
             case SET_LANGUAGE -> sendMessage = setLang(data, chatId);
-            case REPORT -> sendMessage = telegramReportService.sendReportOnEmployees(chatId, user, null, null);
+            case REPORT -> sendMessage = telegramReportService.sendReportOnFloor(chatId, user, 1L, null, null);
             default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
         }
         userService.save(user);

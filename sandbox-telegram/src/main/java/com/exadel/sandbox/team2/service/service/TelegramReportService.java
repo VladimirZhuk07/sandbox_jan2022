@@ -11,4 +11,8 @@ public interface TelegramReportService {
     SendMessage sendReportOnSingleOffice(String chatId, User user, Long idOfOffice, Date modifiedDateFrom, Date modifiedDateTo);
 
     SendMessage sendReportOnAllOffices(String chatId, User user, Date modifiedDateFrom, Date modifiedDateTo);
+
+    SendMessage sendReportOnCity(String chatId, User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo);
+
+    SendMessage sendReportOnFloor(String chatId, User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo);
 }

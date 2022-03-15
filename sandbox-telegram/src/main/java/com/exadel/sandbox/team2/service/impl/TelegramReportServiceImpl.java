@@ -1,10 +1,11 @@
 package com.exadel.sandbox.team2.service.impl;
 
 import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
-import com.exadel.sandbox.team2.dto.report.ReportOnSingleOfficeDto;
+import com.exadel.sandbox.team2.dto.report.*;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.report.ReportService;
+import com.exadel.sandbox.team2.serivce.service.CityService;
+import com.exadel.sandbox.team2.serivce.service.MapService;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import com.exadel.sandbox.team2.service.TelegramFileService;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
 import java.util.*;
 
 @Service
@@ -20,12 +22,19 @@ import java.util.*;
 public class TelegramReportServiceImpl implements TelegramReportService {
     private final TelegramUtils utils;
     private final TelegramFileService telegramFileService;
+
     private final ReportService reportService;
     private final UserService userService;
     private final OfficeService officeService;
+    private final MapService mapService;
+    private final CityService cityService;
+
+
     private final String JRXML_PATH_FOR_EMPLOYEES_REPORT = "users_pattern.jrxml";
     private final String JRXML_PATH_FOR_SINGLE_OFFICE_REPORT = "single_office_pattern.jrxml";
     private final String JRXML_PATH_FOR_ALL_OFFICES_REPORT = "all_offices_pattern.jrxml";
+    private final String JRXML_PATH_FOR_CITY_REPORT = "city_pattern.jrxml";
+    private final String JRXML_PATH_FOR_FLOOR_REPORT = "floor_pattern.jrxml";
 
     private final Date defaultDateFrom = new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime();
     private final Date defaultDateTo = new GregorianCalendar(2050, Calendar.DECEMBER, 1).getTime();
@@ -53,7 +62,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return utils.getSendMessage(user.getChatId(), "There is your report on office, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
         }
     }
 
@@ -63,7 +72,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         modifiedDateFrom = (null == modifiedDateFrom) ? defaultDateFrom : modifiedDateFrom;
         modifiedDateTo = (null == modifiedDateTo) ? defaultDateTo : modifiedDateTo;
 
-        List<ReportOnEmployeesDto> reportData = userService.getDataForReportByEmployees(modifiedDateFrom, modifiedDateTo);
+        List<ReportOnAllOfficesDto> reportData = officeService.getDataForReportByAllOffices(modifiedDateFrom, modifiedDateTo);
         if (reportData.isEmpty()) {
             return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
                     + modifiedDateFrom
@@ -74,15 +83,16 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_ALL_OFFICES_REPORT, parameters,
-                    "ReportByEmployees".concat("_")
+                    "ReportOnAllOffices".concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return utils.getSendMessage(user.getChatId(), "There is your report on all offices, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
         }
     }
+
 
     @SneakyThrows
     @Override
@@ -107,7 +117,62 @@ public class TelegramReportServiceImpl implements TelegramReportService {
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return utils.getSendMessage(user.getChatId(), "There is your report on employees, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public SendMessage sendReportOnCity(String chatId, User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo) {
+        bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
+        bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
+
+        List<ReportOnCityDto> reportData = cityService.getDataForReportOnCity(idOfCity, bookedDateFrom, bookedDateTo);
+        if (reportData.isEmpty()) {
+            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
+                    + bookedDateFrom
+                    + " to "
+                    + bookedDateTo
+                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+        } else {
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("total", reportData.size());
+            String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_CITY_REPORT, parameters,
+                    "ReportOnCity".concat("_")
+                            .concat(user.getFirstName())
+                            .concat(user.getLastName())
+                            .concat("_")
+                            .concat(user.getChatId()));
+            telegramFileService.sendDocument(user.getChatId(), filePath);
+            return utils.getSendMessage(user.getChatId(), "There is your report on city, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public SendMessage sendReportOnFloor(String chatId, User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo) {
+        bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
+        bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
+
+        List<ReportOnFloorDto> reportData = mapService.getDataForReportOnFloor(idOfFloor, bookedDateFrom, bookedDateTo);
+        if (reportData.isEmpty()) {
+            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
+                    + bookedDateFrom
+                    + " to "
+                    + bookedDateTo
+                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+        } else {
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("total", reportData.size());
+            parameters.put("idOfFloor", idOfFloor);
+            String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_FLOOR_REPORT, parameters,
+                    "ReportOnFloor".concat("_")
+                            .concat(user.getFirstName())
+                            .concat(user.getLastName())
+                            .concat("_")
+                            .concat(user.getChatId()));
+            telegramFileService.sendDocument(user.getChatId(), filePath);
+            return utils.getSendMessage(user.getChatId(), "There is your report on floor, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
         }
     }
 }
