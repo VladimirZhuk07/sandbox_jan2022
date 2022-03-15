@@ -82,6 +82,7 @@ public class TelegramMessageService {
             case "/start" -> telegramState = TelegramState.MAIN_MENU;
             case "PHONE" -> telegramState = TelegramState.UPDATE_PHONE_NUMBER;
             case "BOOK" -> telegramState = TelegramState.CHOOSE_COUNTRY;
+            case "INFO" -> telegramState = TelegramState.GET_USER_BOOKINGS;
             case "\uD83D\uDDD2 Menu" -> telegramState = TelegramState.MENU;
             case "\uD83D\uDC64 Account" -> telegramState = TelegramState.GET_ACCOUNT_INFO;
             case "\uD83D\uDCD8 Contact" -> telegramState = TelegramState.GET_CONTACT;
@@ -90,15 +91,25 @@ public class TelegramMessageService {
             case "Continuous" -> telegramState = TelegramState.CONTINUOUS_SELECT_DATE;
             case "Recurring" -> telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
             case "LANGUAGE" -> telegramState = TelegramState.CHOOSE_LANGUAGE;
+            case "CANCEL_BOOKING" -> telegramState = TelegramState.CANCEL_BOOKING;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
                 case CHOOSE_COUNTRY -> telegramState = TelegramState.CHOOSE_CITY;
                 case CHOOSE_CITY -> telegramState = TelegramState.ASSIGN_BOOKING_TYPE;
                 case ONE_DAY_SELECT_DATE -> telegramState = TelegramState.SHOW_OFFICES_BY_CITY;
+                case CONTINUOUS_SELECT_DATE -> telegramState = TelegramState.SELECT_END_DATE;
+                case RECURRING_SELECT_WEEK_DAY -> telegramState = TelegramState.RECURRING_DEFINE_WEEKDAYS;
+                case RECURRING_DEFINE_WEEKDAYS -> telegramState = TelegramState.RECURRING_DEFINE_WEEKS;
+                case RECURRING_DEFINE_WEEKS -> telegramState = TelegramState.RECURRING_ASSIGN_START_WEEKDAY;
+                case RECURRING_ASSIGN_START_WEEKDAY -> telegramState = TelegramState.RECURRING_ASSIGN_END_WEEKDAY;
+                case RECURRING_ASSIGN_END_WEEKDAY -> telegramState = TelegramState.RECURRING_SHOW_WORKPLACES;
+                case SELECT_END_DATE -> telegramState = TelegramState.SHOW_OFFICES_CONTINUOUS;
                 case SHOW_OFFICES_BY_CITY -> telegramState = TelegramState.SHOW_WORKPLACES_BY_OFFICE;
-                case SHOW_WORKPLACES_BY_OFFICE -> telegramState = TelegramState.BOOK_ONE_DAY_WORKPLACE;
+                case SHOW_OFFICES_CONTINUOUS -> telegramState = TelegramState.SHOW_WORKPLACES_CONTINUOUS;
+                case SHOW_WORKPLACES_BY_OFFICE, SHOW_WORKPLACES_CONTINUOUS, RECURRING_SHOW_WORKPLACES -> telegramState = TelegramState.BOOK_ONE_DAY_WORKPLACE;
                 case CHOOSE_LANGUAGE -> telegramState = TelegramState.SET_LANGUAGE;
+                case CANCEL_BOOKING -> telegramState = TelegramState.DELETE_USER_BOOKING;
             }
         }
         if(telegramState != null)
@@ -110,10 +121,24 @@ public class TelegramMessageService {
     private void backAndUserState(User user){
         TelegramState telegramState;
         telegramState = switch (user.getTelegramState()){
-            case ASSIGN_BOOKING_TYPE -> TelegramState.BACK_TO_MENU;
             case MENU,GET_ACCOUNT_INFO,GET_CONTACT,SETTINGS -> TelegramState.MAIN_MENU;
+            case CHOOSE_COUNTRY,GET_USER_BOOKINGS,BOOK_ONE_DAY_WORKPLACE,DELETE_USER_BOOKING -> TelegramState.MENU;
+            case CHOOSE_CITY -> TelegramState.CHOOSE_COUNTRY;
+            case ASSIGN_BOOKING_TYPE -> TelegramState.CHOOSE_CITY;
+            case ONE_DAY_SELECT_DATE, CONTINUOUS_SELECT_DATE, RECURRING_SELECT_WEEK_DAY -> TelegramState.ASSIGN_BOOKING_TYPE;
+            case SHOW_OFFICES_BY_CITY -> TelegramState.ONE_DAY_SELECT_DATE;
+            case SHOW_WORKPLACES_BY_OFFICE -> TelegramState.SHOW_OFFICES_BY_CITY;
+            case SELECT_END_DATE -> TelegramState.CONTINUOUS_SELECT_DATE;
+            case SHOW_OFFICES_CONTINUOUS -> TelegramState.SELECT_END_DATE;
+            case SHOW_WORKPLACES_CONTINUOUS -> TelegramState.SHOW_OFFICES_CONTINUOUS;
+            case RECURRING_DEFINE_WEEKDAYS -> TelegramState.RECURRING_SELECT_WEEK_DAY;
+            case RECURRING_DEFINE_WEEKS -> TelegramState.RECURRING_DEFINE_WEEKDAYS;
+            case RECURRING_ASSIGN_START_WEEKDAY -> TelegramState.RECURRING_DEFINE_WEEKS;
+            case RECURRING_ASSIGN_END_WEEKDAY -> TelegramState.RECURRING_ASSIGN_START_WEEKDAY;
+            case RECURRING_SHOW_WORKPLACES -> TelegramState.RECURRING_ASSIGN_END_WEEKDAY;
             default -> null;
         };
-        user.setTelegramState(telegramState);
+        if(telegramState != null)
+            user.setTelegramState(telegramState);
     }
 }

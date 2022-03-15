@@ -6,6 +6,12 @@ import com.exadel.sandbox.team2.dto.BookingDto;
 import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
 import com.exadel.sandbox.team2.serivce.base.BaseDtoService;
 
+import java.util.List;
+
 public interface BookingService extends BaseDtoService<Booking, BookingDto> {
     boolean save(CreateBookingDto dto, User user);
+
+    List<Booking> getBookingByUserId(Long id);
+
+    boolean deleteBooking(Long id, Long userId);
 }

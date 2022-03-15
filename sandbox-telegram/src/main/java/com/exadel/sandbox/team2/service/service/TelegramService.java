@@ -9,13 +9,29 @@ public interface TelegramService {
 
     SendMessage getCities(String chatId, String message, String country);
 
-    SendMessage getOfficesByCity(String chatId, String message, String city);
-
-    SendMessage getOfficesByCityForOneDay(String chatId, String message, String date, User user);
-
     SendMessage setBookingType(String chatId, String message, String[][] titles, String[][] commands, String city);
 
-    SendMessage getWorkplaceByMapId(String chatId, String message, String officeId);
+    SendMessage setEndDateForContinuousBooking(String chatId, String message, String startDate, User user, String[][] titles, String[][] commands);
 
-    SendMessage bookOneDayWorkplace(String chatId, String message, String workplaceId, User user);
+    SendMessage defineRecurringWeekdays(String chatId, String message, String weekdays, String[][] titles, String[][] commands, User user);
+
+    SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands);
+
+    SendMessage defineRecurringStartDate(String chatId, String message, String startDate, User user, String[][] titles, String[][] commands);
+
+    SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands);
+
+    SendMessage getOfficesByCityForOneDay(String chatId, String message, String date, User user, String[][] titles, String[][] commands);
+
+    SendMessage showRecurringOffices(String chatId, String message, String endWeekday, String[][] titles, String[][] commands, User user);
+
+    SendMessage getOfficesByCityForContinuous(String chatId, String message, String date, User user, String[][] titles, String[][] commands);
+
+    SendMessage getWorkplaceByMapId(String chatId, String message, String officeId, User user, String[][] titles, String[][] commands);
+
+    SendMessage bookWorkplace(String chatId, String message, String workplaceId, User user, String[][] titles, String[][] commands);
+
+    SendMessage getUserBookings(String chatId, String message, Long userId, String[][] titles, String[][] commands);
+
+    SendMessage deleteUserBooking(String chatId, String message, String bookingId, User user, String[][] titles, String[][] commands);
 }

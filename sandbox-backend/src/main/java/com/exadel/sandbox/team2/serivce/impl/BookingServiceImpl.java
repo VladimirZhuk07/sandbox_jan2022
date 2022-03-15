@@ -14,6 +14,7 @@ import com.exadel.sandbox.team2.serivce.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -104,5 +105,20 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
         booking.setWorkplace(workplace);
         repository.save(booking);
         return true;
+    }
+
+    @Override
+    public List<Booking> getBookingByUserId(Long id) {
+        return repository.findByUserId(id);
+    }
+
+    @Override
+    public boolean deleteBooking(Long id, Long userId) {
+        Booking booking = repository.findById(id).orElse(null);
+        if(booking != null && booking.getUser().getId().equals(userId)){
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

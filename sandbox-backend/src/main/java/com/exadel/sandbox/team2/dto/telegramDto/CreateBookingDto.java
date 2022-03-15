@@ -15,6 +15,8 @@ public class CreateBookingDto {
 
     private String cityName;
 
+    private String countryName;
+
     private long workplaceId;
 
     private long userId;
@@ -25,18 +27,19 @@ public class CreateBookingDto {
 
     private Boolean recurring = false;
 
-    private Boolean monday = false;
+    private Boolean monday;
 
-    private Boolean tuesday = false;
+    private Boolean tuesday;
 
-    private Boolean wednesday = false;
+    private Boolean wednesday;
 
-    private Boolean thursday = false;
+    private Boolean thursday;
 
-    private Boolean friday = false;
+    private Boolean friday;
 
-    private Boolean saturday = false;
+    private Boolean saturday;
 
-    private Boolean sunday = false;
+    private Boolean sunday;
 
+    private int weekTimes;
 }
