@@ -21,23 +21,29 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class TelegramFileService {
 
     RestTemplate restTemplate;
     TelegramProperties telegramProperties;
 
-    public boolean sendDocument(String chatId, String filePath){
+    public boolean sendDocument(String chatId, String filePath) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("document", new FileSystemResource(filePath));
-        parameters.add("chat_id",chatId);
+        parameters.add("chat_id", chatId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "multipart/form-data");
         headers.set("Accept", "text/plain");
 
         ResponseEntity<TelegramFileResponse> result = restTemplate.postForEntity(
-                new StringBuilder().append(telegramProperties.getApi().getBase().getPath()).append(telegramProperties.getBot().getToken()).append("/sendDocument").toString(),
+                new StringBuilder().append(telegramProperties.getApi()
+                        .getBase()
+                        .getPath())
+                        .append(telegramProperties.getBot()
+                                .getToken())
+                        .append("/sendDocument")
+                        .toString(),
                 new HttpEntity<>(parameters, headers),
                 TelegramFileResponse.class);
 

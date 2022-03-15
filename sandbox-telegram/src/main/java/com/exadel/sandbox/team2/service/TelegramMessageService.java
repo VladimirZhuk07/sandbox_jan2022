@@ -92,6 +92,7 @@ public class TelegramMessageService {
             case "Recurring" -> telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
             case "LANGUAGE" -> telegramState = TelegramState.CHOOSE_LANGUAGE;
             case "CANCEL_BOOKING" -> telegramState = TelegramState.CANCEL_BOOKING;
+            case "REPORT" -> telegramState = TelegramState.REPORT;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
