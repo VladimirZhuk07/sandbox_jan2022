@@ -55,9 +55,28 @@ public class CallbackQueryHandler implements BaseHandler {
       case CHOOSE_COUNTRY -> sendMessage = telegramService.getCountries(chatId, "Please select country", data);
       case CHOOSE_CITY -> sendMessage = telegramService.getCities(chatId, "Please select city", data);
       case ASSIGN_BOOKING_TYPE -> sendMessage = telegramService.setBookingType(chatId, "Please, select booking type", new String[][] {{"One day"},{"Continuous"},{"Recurring"},{"Back"}}, new String[][] {{"One day"},{"Continuous"},{"Recurring"},{"Back"}}, data);
+      case ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED, CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED, RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED -> sendMessage = telegramService.isWorkplaceNeedBeDefine(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}}, data);
+      case ONE_DAY_IS_KITCHEN_NEED, CONTINUOUS_IS_KITCHEN_NEED, RECURRING_IS_KITCHEN_NEED -> sendMessage = telegramService.isKitchenNeed(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"Back","Next"}}, new String[][]{{"Yes"},{"Back","Next"}}, user, data);
+      case BACK_TO_IS_KITCHEN_NEED -> sendMessage = telegramService.backToIsKitchenNeed(chatId, user);
+      case IS_CONFERENCE_HALL_NEED -> sendMessage = telegramService.isConferenceHallNeed(chatId, "Should there be conference hall?\nIf not, then please press Next",
+              new String[][]{{"Yes"},{"Back","Next"}}, new String[][]{{"Yes"},{"Back","Next"}}, data);
+      case IS_NEXT_TO_WINDOWS_NEED_BE -> sendMessage = telegramService.isNextToWindowNeedBe(chatId, "Should it be next to window?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case IS_PC_NEED_BE -> sendMessage = telegramService.isPcNeedBe(chatId, "Should there be pc?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case IS_MONITOR_NEED_BE -> sendMessage = telegramService.isMonitorNeedBe(chatId, "Should there be monitor?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case IS_KEYBOARD_NEED_BE -> sendMessage = telegramService.isKeyboardNeedBe(chatId, "Should there be keyboard?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case IS_MOUSE_NEED_BE -> sendMessage = telegramService.isMouseNeedBe(chatId, "Should there be mouse?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case IS_HEADSET_NEED_BE -> sendMessage = telegramService.isHeadsetNeedBe(chatId, "Should there be headset?\nIf no, then please press No.\nIf does not matter then press Next",
+              new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, data);
+      case FINISH_DEFINE_WORKPLACE_ATTRIBUTES -> sendMessage = telegramService.finishDefineWorkplaceAttributes(chatId, user, data);
+      case BACK_FROM_SELECT_ONE_DAY_DATE,BACK_FROM_SELECT_CONTINUOUS_DATE,BACK_FROM_SELECT_RECURRING_DATE -> sendMessage = telegramService.backFromSelectDateOrSelectWeekDay(chatId, user, data);
       case ONE_DAY_SELECT_DATE, CONTINUOUS_SELECT_DATE -> sendMessage = utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
-      case SHOW_OFFICES_BY_CITY -> sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case RECURRING_SELECT_WEEK_DAY -> sendMessage = utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+      case SHOW_OFFICES_BY_CITY -> sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
       case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}});
       case CHOOSE_LANGUAGE -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("settings.pleaseSelectLanguage"),

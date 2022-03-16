@@ -87,17 +87,43 @@ public class TelegramMessageService {
             case "\uD83D\uDC64 Account" -> telegramState = TelegramState.GET_ACCOUNT_INFO;
             case "\uD83D\uDCD8 Contact" -> telegramState = TelegramState.GET_CONTACT;
             case "⚙️ Settings" -> telegramState = TelegramState.SETTINGS;
-            case "One day" -> telegramState = TelegramState.ONE_DAY_SELECT_DATE;
-            case "Continuous" -> telegramState = TelegramState.CONTINUOUS_SELECT_DATE;
-            case "Recurring" -> telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
+            case "One day" -> telegramState = TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case "Continuous" -> telegramState = TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case "Recurring" -> telegramState = TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED;
             case "LANGUAGE" -> telegramState = TelegramState.CHOOSE_LANGUAGE;
             case "CANCEL_BOOKING" -> telegramState = TelegramState.CANCEL_BOOKING;
+            case "DEFINE_WORKPLACE_ATTRIBUTES" -> {
+                if(user.getTelegramState() == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED){
+                    telegramState = TelegramState.ONE_DAY_IS_KITCHEN_NEED;
+                }else if(user.getTelegramState() == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
+                    telegramState = TelegramState.CONTINUOUS_IS_KITCHEN_NEED;
+                }else{
+                    telegramState = TelegramState.RECURRING_IS_KITCHEN_NEED;
+                }
+            }
+            case "NOT_DEFINE_WORKPLACE_ATTRIBUTES" ->{
+                if(user.getTelegramState() == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED){
+                    telegramState = TelegramState.ONE_DAY_SELECT_DATE;
+                }else if(user.getTelegramState() == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
+                    telegramState = TelegramState.CONTINUOUS_SELECT_DATE;
+                }else{
+                    telegramState = TelegramState.RECURRING_SELECT_WEEK_DAY;
+                }
+            }
             case "REPORT" -> telegramState = TelegramState.REPORT;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
                 case CHOOSE_COUNTRY -> telegramState = TelegramState.CHOOSE_CITY;
                 case CHOOSE_CITY -> telegramState = TelegramState.ASSIGN_BOOKING_TYPE;
+                case ONE_DAY_IS_KITCHEN_NEED, CONTINUOUS_IS_KITCHEN_NEED, RECURRING_IS_KITCHEN_NEED -> telegramState = TelegramState.IS_CONFERENCE_HALL_NEED;
+                case IS_CONFERENCE_HALL_NEED -> telegramState = TelegramState.IS_NEXT_TO_WINDOWS_NEED_BE;
+                case IS_NEXT_TO_WINDOWS_NEED_BE -> telegramState = TelegramState.IS_PC_NEED_BE;
+                case IS_PC_NEED_BE -> telegramState = TelegramState.IS_MONITOR_NEED_BE;
+                case IS_MONITOR_NEED_BE -> telegramState = TelegramState.IS_KEYBOARD_NEED_BE;
+                case IS_KEYBOARD_NEED_BE -> telegramState = TelegramState.IS_MOUSE_NEED_BE;
+                case IS_MOUSE_NEED_BE -> telegramState = TelegramState.IS_HEADSET_NEED_BE;
+                case IS_HEADSET_NEED_BE -> telegramState = TelegramState.FINISH_DEFINE_WORKPLACE_ATTRIBUTES;
                 case ONE_DAY_SELECT_DATE -> telegramState = TelegramState.SHOW_OFFICES_BY_CITY;
                 case CONTINUOUS_SELECT_DATE -> telegramState = TelegramState.SELECT_END_DATE;
                 case RECURRING_SELECT_WEEK_DAY -> telegramState = TelegramState.RECURRING_DEFINE_WEEKDAYS;
@@ -126,7 +152,20 @@ public class TelegramMessageService {
             case CHOOSE_COUNTRY,GET_USER_BOOKINGS,BOOK_ONE_DAY_WORKPLACE,DELETE_USER_BOOKING -> TelegramState.MENU;
             case CHOOSE_CITY -> TelegramState.CHOOSE_COUNTRY;
             case ASSIGN_BOOKING_TYPE -> TelegramState.CHOOSE_CITY;
-            case ONE_DAY_SELECT_DATE, CONTINUOUS_SELECT_DATE, RECURRING_SELECT_WEEK_DAY -> TelegramState.ASSIGN_BOOKING_TYPE;
+            case ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED, CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED, RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED -> TelegramState.ASSIGN_BOOKING_TYPE;
+            case ONE_DAY_IS_KITCHEN_NEED -> TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case CONTINUOUS_IS_KITCHEN_NEED -> TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case RECURRING_IS_KITCHEN_NEED -> TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case IS_CONFERENCE_HALL_NEED -> TelegramState.BACK_TO_IS_KITCHEN_NEED;
+            case IS_NEXT_TO_WINDOWS_NEED_BE -> TelegramState.IS_CONFERENCE_HALL_NEED;
+            case IS_PC_NEED_BE -> TelegramState.IS_NEXT_TO_WINDOWS_NEED_BE;
+            case IS_MONITOR_NEED_BE -> TelegramState.IS_PC_NEED_BE;
+            case IS_KEYBOARD_NEED_BE -> TelegramState.IS_MONITOR_NEED_BE;
+            case IS_MOUSE_NEED_BE -> TelegramState.IS_KEYBOARD_NEED_BE;
+            case IS_HEADSET_NEED_BE -> TelegramState.IS_MOUSE_NEED_BE;
+            case ONE_DAY_SELECT_DATE -> TelegramState.BACK_FROM_SELECT_ONE_DAY_DATE;
+            case CONTINUOUS_SELECT_DATE -> TelegramState.BACK_FROM_SELECT_CONTINUOUS_DATE;
+            case RECURRING_SELECT_WEEK_DAY -> TelegramState.BACK_FROM_SELECT_RECURRING_DATE;
             case SHOW_OFFICES_BY_CITY -> TelegramState.ONE_DAY_SELECT_DATE;
             case SHOW_WORKPLACES_BY_OFFICE -> TelegramState.SHOW_OFFICES_BY_CITY;
             case SELECT_END_DATE -> TelegramState.CONTINUOUS_SELECT_DATE;
