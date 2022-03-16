@@ -16,8 +16,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.Date;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -49,7 +47,14 @@ public class CallbackQueryHandler implements BaseHandler {
                             {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
                     new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
             case SET_LANGUAGE -> sendMessage = setLang(data, chatId);
-            case REPORT -> sendMessage = telegramReportService.sendReportOnCity(user,  1L,null, null);
+            case REPORT -> {
+                sendMessage =
+                        // telegramReportService.sendReportOnCity(user,  1L,null, null);
+                        // telegramReportService.sendReportOnEmployees(user, null, null);
+                        // telegramReportService.sendReportOnSingleOffice(user, 1L,null, null);
+                        // telegramReportService.sendReportOnFloor(user, 1L,null, null);
+                        telegramReportService.sendReportOnAllOffices(user, null, null);
+            }
             default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
         }
         userService.save(user);

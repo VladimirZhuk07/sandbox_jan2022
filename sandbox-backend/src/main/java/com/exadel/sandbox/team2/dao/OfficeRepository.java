@@ -21,31 +21,31 @@ public interface OfficeRepository extends JpaRepository<Office, Long> {
     List<Office> findByCityName(String cityName);
 
     @Modifying
-    @Query("select o.name as officeName, co.name as countryName, ci.name as cityName,"
-            + " o.address as officeAddress, o.parking as isParking, o.createdDate as createdDate, COUNT(b.user.id) as numberOfBooked"
+    @Query(value = "select o.name as officeName, co.name as countryName, ci.name as cityName,"
+            + " o.address as officeAddress, o.parking as isParking, o.createdDate as createdDate, COUNT(b.userId) as numberOfBooked"
             + " from Office as o"
-            + " join Map m on o.map.id = m.office.id"
-            + " join Workplace w on m.id = w.map.id"
-            + " left join Booking b on w.id = b.workplace.id"
-            + " join City ci on o.city.id = ci.id"
-            + " join Country co on co.id = ci.country.id"
-            + " WHERE o.id = :idOfOffice AND o.modifiedDate BETWEEN :modifiedDateFrom AND :modifiedDateTo"
-            + " GROUP BY o.address")
+            + " join Map m on o.id = m.officeId"
+            + " join Workplace w on m.id = w.mapId"
+            + " left join Booking b on w.id = b.workplaceId"
+            + " join City ci on o.cityId = ci.id"
+            + " join Country co on co.id = ci.countryId"
+            + " WHERE o.id = :idOfOffice AND IF(b.startDate IS null, 1, b.startDate between :bookDateFrom AND :bookDateTo)"
+            + " GROUP BY o.address", nativeQuery = true)
     List<ReportOnSingleOfficeDto> getDataForReportOnSingleOffice(@Param("idOfOffice") Long idOfOffice,
-                                                                 @Param("modifiedDateFrom") Date modifiedDateFrom,
-                                                                 @Param("modifiedDateTo") Date modifiedDateTo);
+                                                                 @Param("bookDateFrom") Date bookDateFrom,
+                                                                 @Param("bookDateTo") Date bookDateTo);
 
     @Modifying
-    @Query("select o.id as id, o.name as officeName, co.name as countryName, ci.name as cityName,"
-            + " o.address as officeAddress, o.parking as isParking, o.createdDate as createdDate, COUNT(b.user.id) as numberOfBooked"
+    @Query(value = "select o.id as id, o.name as officeName, co.name as countryName, ci.name as cityName,"
+            + " o.address as officeAddress, o.parking as isParking, o.createdDate as createdDate, COUNT(b.userId) as numberOfBooked"
             + " from Office o "
-            + " left join Map m on o.id = m.office.id"
-            + " left join Workplace w on m.id = w.map.id"
-            + " left join Booking b on w.id = b.workplace.id"
-            + " left join City ci on o.city.id = ci.id"
-            + " left join Country co on co.id = ci.country.id"
-            + " WHERE o.modifiedDate BETWEEN :modifiedDateFrom AND :modifiedDateTo"
-            + " GROUP BY o.address")
-    List<ReportOnAllOfficesDto> getDataForReportOnAllOffices(@Param("modifiedDateFrom") Date modifiedDateFrom,
-                                                             @Param("modifiedDateTo") Date modifiedDateTo);
+            + " left join Map m on o.id = m.officeId"
+            + " left join Workplace w on m.id = w.mapId"
+            + " left join Booking b on w.id = b.workplaceId"
+            + " left join City ci on o.cityId = ci.id"
+            + " left join Country co on co.id = ci.countryId"
+            + " WHERE IF(b.startDate IS null, 1, b.startDate between :bookDateFrom AND :bookDateTo)"
+            + " GROUP BY o.address", nativeQuery = true)
+    List<ReportOnAllOfficesDto> getDataForReportOnAllOffices(@Param("bookDateFrom") Date bookDateFrom,
+                                                             @Param("bookDateTo") Date bookDateTo);
 }

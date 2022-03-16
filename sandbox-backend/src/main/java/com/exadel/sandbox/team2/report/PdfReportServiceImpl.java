@@ -23,11 +23,14 @@ public class PdfReportServiceImpl implements ReportService {
     @SneakyThrows
     @PostConstruct
     public void initialize() {
-        if (!Files.exists(Path.of(JRXML_FOLDER))) {
-            Files.createDirectories(Path.of(JRXML_FOLDER));
-        }
-        if (!Files.exists(Path.of(REPORT_FOLDER))) {
-            Files.createDirectories(Path.of(REPORT_FOLDER));
+        checkOrCreateFolders(JRXML_FOLDER);
+        checkOrCreateFolders(REPORT_FOLDER);
+    }
+
+    @SneakyThrows
+    private void checkOrCreateFolders(String nameOfFolder) {
+        if (!Files.exists(Path.of(nameOfFolder))) {
+            Files.createDirectories(Path.of(nameOfFolder));
         }
     }
 
@@ -54,4 +57,5 @@ public class PdfReportServiceImpl implements ReportService {
         JasperExportManager.exportReportToPdfFile(jasperPrint, filePath);
         return filePath;
     }
+
 }

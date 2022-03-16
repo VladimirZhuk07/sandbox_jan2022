@@ -1,12 +1,10 @@
 package com.exadel.sandbox.team2.controller;
 
-import com.exadel.sandbox.team2.dao.UserRepository;
 import com.exadel.sandbox.team2.domain.User;
-import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.report.ReportService;
-import com.exadel.sandbox.team2.serivce.impl.ReportServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -26,7 +24,6 @@ public class UserRestController {
 
     private final UserService service;
     private final ReportService reportService;
-
 
 
     private final UserMapper mapper;
@@ -52,7 +49,7 @@ public class UserRestController {
 
     @PutMapping("/{id}")
     public UserDto update(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return service.update(userDto,id);
+        return service.update(userDto, id);
     }
 
     @DeleteMapping("/{id}")

@@ -15,6 +15,9 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import javax.annotation.PostConstruct;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -39,155 +42,192 @@ public class TelegramReportServiceImpl implements TelegramReportService {
     private final String JRXML_PATH_FOR_CITY_REPORT = "city_pattern.jrxml";
     private final String JRXML_PATH_FOR_FLOOR_REPORT = "floor_pattern.jrxml";
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final String REPORT_ON_SINGLE_OFFICE_FOLDER = "ReportOnSingleOffice";
+    private final String REPORT_ON_ALL_OFFICES_FOLDER = "ReportOnAllOffices";
+    private final String REPORT_ON_CITY_FOLDER = "ReportOnCity";
+    private final String REPORT_ON_FLOOR_FOLDER = "ReportOnFloor";
+    private final String REPORT_ON_USERS_FOLDER = "ReportOnUsers";
+    private final String PREFIX_FOR_REPORT_FOLDER = "./REPORT/";
+
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private final Date defaultDateFrom = new GregorianCalendar(1990, Calendar.JANUARY, 1).getTime();
     private final Date defaultDateTo = Date.from((LocalDate.now().plusYears(50)).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
 
     @SneakyThrows
-    @Override
-    public SendMessage sendReportOnSingleOffice(User user, Long idOfOffice, Date modifiedDateFrom, Date modifiedDateTo) {
-        modifiedDateFrom = (null == modifiedDateFrom) ? defaultDateFrom : modifiedDateFrom;
-        modifiedDateTo = (null == modifiedDateTo) ? defaultDateTo : modifiedDateTo;
+    @PostConstruct
+    public void initialize() {
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_SINGLE_OFFICE_FOLDER);
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_ALL_OFFICES_FOLDER);
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_CITY_FOLDER);
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_FLOOR_FOLDER);
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_USERS_FOLDER);
+    }
 
-        List<ReportOnSingleOfficeDto> reportData = officeService.getDataForReportBySingleOffice(idOfOffice, modifiedDateFrom, modifiedDateTo);
+    @SneakyThrows
+    private void checkOrCreateFolder(String nameOfFolder) {
+        if (!Files.exists(Path.of(nameOfFolder))) {
+            Files.createDirectories(Path.of(nameOfFolder));
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public SendMessage sendReportOnSingleOffice(User user, Long idOfOffice, Date bookDateFrom, Date bookDateTo) {
+        bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
+        bookDateTo = setDefaultDateToIfNull(bookDateTo);
+
+        List<ReportOnSingleOfficeDto> reportData = officeService.getDataForReportBySingleOffice(idOfOffice, bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + modifiedDateFrom
-                    + " to "
-                    + modifiedDateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+            return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
-            parameters.put("modifiedDateFrom", dateFormat.format(modifiedDateFrom));
-            parameters.put("modifiedDateTo", dateFormat.format(modifiedDateTo));
+            parameters.put("bookDateFrom", dateFormat.format(bookDateFrom));
+            parameters.put("bookDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_SINGLE_OFFICE_REPORT, parameters,
-                    "ReportBySingleOffice".concat("_")
+                    REPORT_ON_SINGLE_OFFICE_FOLDER.concat("/")
+                            .concat("ReportOnSingleOffice")
+                            .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report on office, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return byeMessage(user.getChatId(), "single office");
         }
     }
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnAllOffices(User user, Date modifiedDateFrom, Date modifiedDateTo) {
-        modifiedDateFrom = (null == modifiedDateFrom) ? defaultDateFrom : modifiedDateFrom;
-        modifiedDateTo = (null == modifiedDateTo) ? defaultDateTo : modifiedDateTo;
+    public SendMessage sendReportOnAllOffices(User user, Date bookDateFrom, Date bookDateTo) {
+        bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
+        bookDateTo = setDefaultDateToIfNull(bookDateTo);
 
-        List<ReportOnAllOfficesDto> reportData = officeService.getDataForReportByAllOffices(modifiedDateFrom, modifiedDateTo);
+        List<ReportOnAllOfficesDto> reportData = officeService.getDataForReportByAllOffices(bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + modifiedDateFrom
-                    + " to "
-                    + modifiedDateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+            return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
-            parameters.put("modifiedDateFrom", dateFormat.format(modifiedDateFrom));
-            parameters.put("modifiedDateTo", dateFormat.format(modifiedDateTo));
+            parameters.put("bookDateFrom", dateFormat.format(bookDateFrom));
+            parameters.put("bookDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_ALL_OFFICES_REPORT, parameters,
-                    "ReportOnAllOffices".concat("_")
+                    REPORT_ON_ALL_OFFICES_FOLDER.concat("/")
+                            .concat("ReportOnAllOffices")
+                            .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report on all offices, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return byeMessage(user.getChatId(), "all offices");
         }
     }
 
-
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnEmployees(User user, Date dateFrom, Date dateTo) {
-        dateFrom = (null == dateFrom) ? defaultDateFrom : dateFrom;
-        dateTo = (null == dateTo) ? defaultDateTo : dateTo;
+    public SendMessage sendReportOnEmployees(User user, Date bookDateFrom, Date bookDateTo) {
+        bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
+        bookDateTo = setDefaultDateToIfNull(bookDateTo);
 
-        List<ReportOnEmployeesDto> reportData = userService.getDataForReportByEmployees(dateFrom, dateTo);
+        List<ReportOnEmployeesDto> reportData = userService.getDataForReportByEmployees(bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + dateFrom
-                    + " to "
-                    + dateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+            return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
             java.util.Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
-            parameters.put("userCreationDateFrom", dateFormat.format(dateFrom));
-            parameters.put("userCreationDateTo", dateFormat.format(dateTo));
+            parameters.put("bookDateFrom", dateFormat.format(bookDateFrom));
+            parameters.put("bookDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_EMPLOYEES_REPORT, parameters,
-                    "ReportByEmployees".concat("_")
+                    REPORT_ON_USERS_FOLDER.concat("/")
+                            .concat("ReportOnEmployees")
+                            .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report on employees, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return byeMessage(user.getChatId(), "users");
         }
     }
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnCity(User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo) {
-        bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
-        bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
+    public SendMessage sendReportOnCity(User user, Long idOfCity, Date bookDateFrom, Date bookDateTo) {
+        bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
+        bookDateTo = setDefaultDateToIfNull(bookDateTo);
 
-        List<ReportOnCityDto> reportData = cityService.getDataForReportOnCity(idOfCity, bookedDateFrom, bookedDateTo);
+        List<ReportOnCityDto> reportData = cityService.getDataForReportOnCity(idOfCity, bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + bookedDateFrom
-                    + " to "
-                    + bookedDateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+            return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
-            parameters.put("bookedDateFrom", dateFormat.format(bookedDateFrom));
-            parameters.put("bookedDateTo", dateFormat.format(bookedDateTo));
+            parameters.put("bookedDateFrom", dateFormat.format(bookDateFrom));
+            parameters.put("bookedDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_CITY_REPORT, parameters,
-                    "ReportOnCity".concat("_")
+                    REPORT_ON_CITY_FOLDER.concat("/")
+                            .concat("ReportOnCity")
+                            .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report on city, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return byeMessage(user.getChatId(), "city");
         }
     }
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnFloor(User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo) {
-        bookedDateFrom = (null == bookedDateFrom) ? defaultDateFrom : bookedDateFrom;
-        bookedDateTo = (null == bookedDateTo) ? defaultDateTo : bookedDateTo;
+    public SendMessage sendReportOnFloor(User user, Long idOfFloor, Date bookDateFrom, Date bookDateTo) {
+        bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
+        bookDateTo = setDefaultDateToIfNull(bookDateTo);
 
-        List<ReportOnFloorDto> reportData = mapService.getDataForReportOnFloor(idOfFloor, bookedDateFrom, bookedDateTo);
+        List<ReportOnFloorDto> reportData = mapService.getDataForReportOnFloor(idOfFloor, bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
-            return utils.getSendMessage(user.getChatId(), "Sorry, but for the period from  "
-                    + bookedDateFrom
-                    + " to "
-                    + bookedDateTo
-                    + " there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+            return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("total", reportData.size());
             parameters.put("idOfFloor", idOfFloor);
-            parameters.put("bookedDateFrom", dateFormat.format(bookedDateFrom));
-            parameters.put("bookedDateTo", dateFormat.format(bookedDateTo));
+            parameters.put("bookedDateFrom", dateFormat.format(bookDateFrom));
+            parameters.put("bookedDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_FLOOR_REPORT, parameters,
-                    "ReportOnFloor".concat("_")
+                    REPORT_ON_FLOOR_FOLDER.concat("/")
+                            .concat("ReportOnFloor")
+                            .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
                             .concat("_")
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
-            return utils.getSendMessage(user.getChatId(), "There is your report on floor, you are welcome! Have a nice day to you \uD83C\uDF1D\uD83C\uDF1D\uD83C\uDF1D");
+            return byeMessage(user.getChatId(), "floor");
         }
+    }
+
+    private SendMessage messageIfNullQuery(String chatId, Date bookDateFrom, Date bookDateTo) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Sorry, but for the period from  ")
+                .append(bookDateFrom)
+                .append(" to ")
+                .append(bookDateTo)
+                .append(" there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
+        return utils.getSendMessage(chatId, builder.toString());
+    }
+
+    private Date setDefaultDateFromIfNull(Date dateFrom) {
+        return (null == dateFrom) ? defaultDateFrom : dateFrom;
+    }
+
+    private Date setDefaultDateToIfNull(Date dateTo) {
+        return (null == dateTo) ? defaultDateTo : dateTo;
+    }
+
+    private SendMessage byeMessage(String chatId, String typeOfReport) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("There is your report on ").append(typeOfReport).append(", you are welcome!\nHave a nice day to you \uD83E\uDDF8☘️");
+        return utils.getSendMessage(chatId, builder.toString());
     }
 }

@@ -1,24 +1,20 @@
 package com.exadel.sandbox.team2.dto.report;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public interface ReportOnEmployeesDto {
-    Long getId();
-
-    Date getCreatedDate();
 
     String getFirstName();
 
     String getLastName();
 
-    String getCountryName();
+    Date getCreatedDate();
 
-    String getCityName();
+    String getEmail();
 
     String getOfficeName();
 
-    LocalDate getStartDate();
+    String getCountryName();
 
-    LocalDate getEndDate();
+    Long getNumberOfBooked();
 }
