@@ -2,9 +2,11 @@ package com.exadel.sandbox.team2.service.impl;
 
 import com.exadel.sandbox.team2.domain.*;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
+import com.exadel.sandbox.team2.dto.MailDto;
 import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.*;
+import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ public class TelegramServiceImpl implements TelegramService {
     private final MapService mapService;
     private final WorkplaceService workplaceService;
     private final BookingService bookingService;
+    private final EmailService emailService;
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -232,7 +235,11 @@ public class TelegramServiceImpl implements TelegramService {
         if(map == null){
             return utils.getSendMessage(chatId, "Wrong id");
         }
+        Office office = officeService.findById(Long.valueOf(officeId)).orElse(null);
         CreateBookingDto dto = bookingList.get(chatId);
+        assert office != null;
+        dto.setOfficeName(office.getName());
+        dto.setOfficeAddress(office.getAddress());
         List<Workplace> list = workplaceService.findByMapIdAndNotStartDate(map.getId(), dto);
         return showWorkplaces(chatId, message, map, list, titles, commands);
     }
@@ -246,6 +253,11 @@ public class TelegramServiceImpl implements TelegramService {
             user.setTelegramState(TelegramState.SHOW_WORKPLACES_BY_OFFICE);
             return utils.getSendMessage(chatId, "Wrong id");
         }
+        MailDto mailDto = new MailDto();
+        mailDto.setRecipient(user.getEmail());
+        mailDto.setHeader("Your booking is approved");
+        mailDto.putTextForBooking(dto.getCountryName(), dto.getCityName(), dto.getOfficeName(), dto.getOfficeAddress(), 1);
+        emailService.sendMail(mailDto);
         bookingList.remove(chatId);
         return utils.getSendMessage(chatId, message, titles, commands);
     }

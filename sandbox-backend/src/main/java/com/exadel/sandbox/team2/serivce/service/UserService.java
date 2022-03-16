@@ -28,4 +28,6 @@ public interface UserService extends BaseDtoService<User, UserDto> {
     Optional<User> findByUsername(String  username);
 
     Optional<User> findActiveUserByChatId(String chatId);
+
+    List<User> findByIsFiredTrue();
 }

@@ -5,10 +5,14 @@ import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -65,7 +69,7 @@ public class User extends AuditableEntity {
     @JsonIgnore
     private Vacation vacation;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 

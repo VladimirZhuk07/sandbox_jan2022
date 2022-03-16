@@ -111,4 +111,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
         return repository.findByChatIdAndStatus(chatId,UserState.ACTIVE);
     }
 
+    @Override
+    public List<User> findByIsFiredTrue() {
+        return repository.findAllByIsFiredTrueAndStatusNotContains();
+    }
+
 }

@@ -17,6 +17,10 @@ public class CreateBookingDto {
 
     private String countryName;
 
+    private String officeName;
+
+    private String officeAddress;
+
     private long workplaceId;
 
     private long userId;

@@ -17,6 +17,11 @@
             <artifactId>sandbox-backend</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.exadel.sandbox</groupId>
+            <artifactId>sandbox-email</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

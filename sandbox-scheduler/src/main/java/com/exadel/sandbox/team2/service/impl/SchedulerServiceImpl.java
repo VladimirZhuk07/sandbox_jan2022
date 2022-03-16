@@ -6,7 +6,7 @@ import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.MailDto;
 import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
 import com.exadel.sandbox.team2.service.EmailService;
-import com.exadel.sandbox.team2.service.ReminderRegistration;
+import com.exadel.sandbox.team2.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Async;
@@ -14,13 +14,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 @Configuration
 @EnableScheduling
 @RequiredArgsConstructor
-public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
+public class SchedulerServiceImpl implements SchedulerService {
 
     private final UserServiceImpl userService;
     private final EmailService emailService;
@@ -41,5 +42,23 @@ public class ReminderRegistrationByEmailImpl implements ReminderRegistration {
             user.setStatus(UserState.INVITED);
             userService.save(user);
         });
+    }
+
+    @Override
+    @Scheduled(fixedDelay = 100000)
+    @Async
+    public void cancelBookings() {
+        List<User> list = userService.findByIsFiredTrue();
+        for(User user: list){
+            MailDto mail = new MailDto();
+            mail.setHeader("Your bookings were canceled since");
+            mail.setRecipient(user.getEmail());
+            mail.setBody("Dear" + user.getFirstName() + "\nYour bookings were canceled, since you was fired from the company");
+            emailService.sendMail(mail);
+            user.getBookings().clear();
+            user.setBookings(new ArrayList<>());
+            user.setStatus(UserState.BLOCKED);
+            userService.save(user);
+        }
     }
 }
