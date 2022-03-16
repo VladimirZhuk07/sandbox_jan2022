@@ -43,17 +43,3 @@ public interface UserRepository extends JpaRepository<User, Long> {
                                                          @Param("bookDateTo") Date bookDateTo);
 
 }
-/*
-@Modifying
-@Query(value = "SELECT u.id as id, u.firstName as firstName, u.lastName as lastName,"
-        + " co.name as countryName, o.name as officeName, ci.name as cityName,"
-        + " u.createdDate as createdDate, b.startDate as startDate, b.endDate as endDate"
-        + " FROM User u "
-        + " left join Booking as b ON u.id = b.user.id "
-        + " left join Workplace w on w.id = b.workplace.id"
-        + " left join Map m on m.id = w.map.id"
-        + " left join Office o on o.id = m.office.id"
-        + " left join City ci on ci.id = o.city.id"
-        + " left join Country co on co.id = ci.country.id"
-        + " WHERE u.createdDate"
-        + " BETWEEN :userCreationDateFrom AND :userCreationDateTo")*/
