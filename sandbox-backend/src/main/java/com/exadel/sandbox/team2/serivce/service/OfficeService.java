@@ -14,4 +14,5 @@ public interface OfficeService extends BaseDtoService<Office, OfficeDto> {
 
     List<Office> findByCityName(String cityName);
 
+    List<Office> findByParameters(Integer kitchenNum, Integer confNum, String cityName);
 }

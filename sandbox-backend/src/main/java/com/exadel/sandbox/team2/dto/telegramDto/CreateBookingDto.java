@@ -34,9 +34,9 @@ public class CreateBookingDto {
 
     private Boolean headset;
 
-    private int kitchenNum = 1;
+    private Integer kitchenNum;
 
-    private int confRoomsNum = 1;
+    private Integer confRoomsNum;
 
     private long workplaceId;
 

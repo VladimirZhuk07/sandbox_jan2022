@@ -72,7 +72,7 @@ public class TelegramMessageService {
                     {lms.getMessage("menu.contact"), lms.getMessage("menu.settings")}},
                     new String[][]{{"\uD83D\uDDD2 Menu", "\uD83D\uDC64 Account"},
                             {"\uD83D\uDCD8 Contact", "⚙️ Settings"}}))
-          .orElse(null);
+          .orElse(utils.getSendMessage(chatId, "Sorry, but your account is blocked"));
     }
 
     private boolean commandToTelegramState(String command, User user){

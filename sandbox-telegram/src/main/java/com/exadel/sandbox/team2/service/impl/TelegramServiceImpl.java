@@ -216,7 +216,7 @@ public class TelegramServiceImpl implements TelegramService {
             user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
             return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
         }else {
-            user.setTelegramState(TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED);
+            user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
             return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"Back"}}, new String[][]{{"Back"}});
         }
     }
@@ -280,11 +280,17 @@ public class TelegramServiceImpl implements TelegramService {
         return utils.getSendMessage(chatId, message, titles, commands);
     }
 
+    //Need check times
     @Override
-    public SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands) {
+    public SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands, User user) {
         if(!weekTimes.equals("Back")) {
             CreateBookingDto dto = bookingList.get(chatId);
-            dto.setWeekTimes(Integer.parseInt(weekTimes));
+            int times = Integer.parseInt(weekTimes);
+            if(times > 8){
+                user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKDAYS);
+                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"Back"}}, new String[][] {{"Back"}});
+            }
+            dto.setWeekTimes(times);
             bookingList.put(chatId, dto);
         }
         return utils.getSendMessage(chatId, message, titles, commands);
@@ -295,9 +301,11 @@ public class TelegramServiceImpl implements TelegramService {
         if(!startDate.equals("Back")) {
             CreateBookingDto dto = bookingList.get(chatId);
             LocalDate localDate = checkDateAndSet(startDate, null, dto);
+            if(localDate.plusWeeks(dto.getWeekTimes()).isAfter(LocalDate.now().plusMonths(2)))
+                localDate = null;
             if (localDate == null) {
                 user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKS);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", titles, commands);
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, or date exceeds 2 months, please write date in form of `2022-03-10`", titles, commands);
             }
             localDate = checkRecurringStartDate(localDate, dto);
             dto.setStartDate(localDate);
@@ -307,8 +315,13 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
     @Override
-    public SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands) {
-        List<Office> list = officeService.findByCityName(city);
+    public SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands, CreateBookingDto dto) {
+        List<Office> list;
+        if(dto.getBookingTypeBeforeDefineWorkplaceAttributes() == null) {
+            list = officeService.findByCityName(city);
+        }else {
+            list = officeService.findByParameters(dto.getKitchenNum(), dto.getConfRoomsNum(), dto.getCityName());
+        }
         StringBuilder builder = new StringBuilder();
         builder.append(message);
         for(Office office: list){
@@ -340,7 +353,7 @@ public class TelegramServiceImpl implements TelegramService {
             bookingList.put(chatId, dto);
         }
 
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     @Override
@@ -357,7 +370,7 @@ public class TelegramServiceImpl implements TelegramService {
             bookingList.put(chatId, dto);
         }
 
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     @Override
@@ -380,7 +393,7 @@ public class TelegramServiceImpl implements TelegramService {
             dto.setRecurring(true);
             bookingList.put(chatId, dto);
         }
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     public SendMessage getWorkplaceByMapId(String chatId, String message, String officeId, User user, String[][] titles, String[][] commands){
@@ -453,7 +466,7 @@ public class TelegramServiceImpl implements TelegramService {
         if(localDate.isBefore(LocalDate.now()) || localDate.isEqual(LocalDate.now())){
             return null;
         }
-        if(localDate.isAfter(localDate.plusMonths(2)))
+        if(localDate.isAfter(LocalDate.now().plusMonths(2)))
             return null;
         if(endDate != null && dto.getStartDate() != null){
             if(!localDate.isAfter(dto.getStartDate()))

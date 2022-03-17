@@ -78,7 +78,7 @@ public class CallbackQueryHandler implements BaseHandler {
       case RECURRING_SELECT_WEEK_DAY -> sendMessage = utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case SHOW_OFFICES_BY_CITY -> sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
-      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}});
+      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
       case CHOOSE_LANGUAGE -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("settings.pleaseSelectLanguage"),
               new String[][]{{lms.getMessage("language.belarusian"), lms.getMessage("language.english")},
                       {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},

@@ -28,9 +28,23 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
             "   AND (CASE WHEN (?9 = true) THEN (b.saturday) ELSE true END) = true" +
             "   AND (CASE WHEN (?10 = true) THEN (b.sunday) ELSE true END) = true" +
             " ) ELSE (true = true) END)" +
-            " WHERE b.id IS NULL AND w.mapId = ?1", nativeQuery = true)
-    List<Workplace> findByMapIdAndNotStartDate(Long mapId, LocalDate startDate, LocalDate endDate,
+            " WHERE b.id IS NULL AND w.mapId = ?1" +
+            " AND CASE WHEN (?12 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?12 = true) THEN (w.nextToWindow = TRUE) ELSE (w.nextToWindow = FALSE) END)) ELSE (TRUE = TRUE) END" +
+            " AND CASE WHEN (?13 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?13 = true) THEN (w.pc = TRUE) ELSE (w.pc = FALSE) END)) ELSE (TRUE = TRUE) END" +
+            " AND CASE WHEN (?14 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?14 = true) THEN (w.monitor = TRUE) ELSE (w.monitor = FALSE) END)) ELSE (TRUE = TRUE) END" +
+            " AND CASE WHEN (?15 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?15 = true) THEN (w.keyboard = TRUE) ELSE (w.keyboard = FALSE) END)) ELSE (TRUE = TRUE) END" +
+            " AND CASE WHEN (?16 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?16 = true) THEN (w.mouse = TRUE) ELSE (w.mouse = FALSE) END)) ELSE (TRUE = TRUE) END" +
+            " AND CASE WHEN (?17 IS NOT NULL) THEN (" +
+            "   (CASE WHEN(?17 = true) THEN (w.headset = TRUE) ELSE (w.headset = FALSE) END)) ELSE (TRUE = TRUE) END", nativeQuery = true)
+    List<Workplace> findByMapIdAndNotStartDate1(Long mapId, LocalDate startDate, LocalDate endDate,
                                                Boolean monday, Boolean tuesday, Boolean wednesday,
                                                Boolean thursday, Boolean friday, Boolean saturday,
-                                               Boolean sunday, Boolean isRecurring);
+                                               Boolean sunday, Boolean isRecurring, Boolean nextToWindows,
+                                               Boolean pc, Boolean monitor, Boolean keyboard, Boolean mouse,
+                                               Boolean headset);
 }

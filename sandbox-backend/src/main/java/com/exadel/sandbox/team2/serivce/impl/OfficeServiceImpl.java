@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -63,5 +64,11 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     @Override
     public List<Office> findByCityName(String cityName) {
         return repository.findByCityName(cityName);
+    }
+
+    @Override
+    public List<Office> findByParameters(Integer kitchenNum, Integer confNum, String cityName){
+        Optional<City> city = cityRepository.findByName(cityName);
+        return repository.findByParameters(kitchenNum, confNum, city.get().getId());
     }
 }

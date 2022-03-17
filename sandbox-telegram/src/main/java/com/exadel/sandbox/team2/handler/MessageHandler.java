@@ -49,7 +49,7 @@ public class MessageHandler implements BaseHandler {
               {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}},
               new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
       case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
-      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}});
+      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
       case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"Back"}}, new String[][] {{"Back"}});
       case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"Back"}}, new String[][]{{"Back"}}, user);
       case SELECT_END_DATE -> sendMessage = telegramService.setEndDateForContinuousBooking(chatId, "Please enter end date of your booking in the form of `2022-03-10`", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
