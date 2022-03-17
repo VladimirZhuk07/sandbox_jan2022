@@ -26,7 +26,7 @@ public class MapRestController {
     }
 
     @PutMapping("/{id}")
-    public MapDto update(@PathVariable Long id, @RequestBody MapDto mapDto){
+    public MapDto update(@PathVariable Long id, @RequestBody MapDto mapDto) {
         return service.update(mapDto, id);
     }
 
@@ -41,7 +41,7 @@ public class MapRestController {
     }
 
     @DeleteMapping("/office/{officeId}")
-    public void deleteByOfficeId(@PathVariable long officeId){
+    public void deleteByOfficeId(@PathVariable long officeId) {
         service.deleteByOfficeId(officeId);
     }
 

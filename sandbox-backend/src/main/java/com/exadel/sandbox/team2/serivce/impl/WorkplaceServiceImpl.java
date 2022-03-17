@@ -26,6 +26,9 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
     public WorkplaceDto save(WorkplaceDto dto) {
         Workplace workplace = mapper.toEntity(dto);
         Map map = mapRepository.getById(dto.getMapId());
+        if (workplace.getFloor() > map.getFloorNum() && workplace.getFloor() < 0) {
+            return null;
+        }
         workplace.setMap(map);
         return mapper.toDto(repository.save(workplace));
     }
@@ -33,25 +36,26 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
     @Override
     public WorkplaceDto update(WorkplaceDto dto, long id) {
         Workplace workplace = repository.findById(id).orElse(null);
-        if(workplace == null)
+        if (workplace == null) {
             return null;
-        checkAndSet(workplace,dto);
+        }
+        checkAndSet(workplace, dto);
         return mapper.toDto(repository.save(workplace));
     }
 
     @Override
     public void checkAndSet(Workplace workplace, WorkplaceDto workplaceDto) {
-        if(workplace.getWorkplaceNumber() != workplaceDto.getWorkplaceNumber() && workplaceDto.getWorkplaceNumber() != 0)
+        if (workplace.getWorkplaceNumber() != workplaceDto.getWorkplaceNumber() && workplaceDto.getWorkplaceNumber() != 0)
             workplace.setWorkplaceNumber(workplaceDto.getWorkplaceNumber());
-        if(workplaceDto.getHeadset() != null && workplace.getHeadset() != workplaceDto.getHeadset())
+        if (workplaceDto.getHeadset() != null && workplace.getHeadset() != workplaceDto.getHeadset())
             workplace.setHeadset(workplaceDto.getHeadset());
-        if(workplaceDto.getKeyboard() != null && workplace.getKeyboard() != workplaceDto.getKeyboard())
+        if (workplaceDto.getKeyboard() != null && workplace.getKeyboard() != workplaceDto.getKeyboard())
             workplace.setKeyboard(workplaceDto.getKeyboard());
-        if(workplaceDto.getMonitor() != null && workplace.getMonitor() != workplaceDto.getMonitor())
+        if (workplaceDto.getMonitor() != null && workplace.getMonitor() != workplaceDto.getMonitor())
             workplace.setMonitor(workplaceDto.getMonitor());
-        if(workplaceDto.getMouse() != null && workplace.getMouse() != workplaceDto.getMouse())
+        if (workplaceDto.getMouse() != null && workplace.getMouse() != workplaceDto.getMouse())
             workplace.setMouse(workplaceDto.getMouse());
-        if(workplaceDto.getNextToWindow() != null && workplace.getNextToWindow() != workplaceDto.getNextToWindow())
+        if (workplaceDto.getNextToWindow() != null && workplace.getNextToWindow() != workplaceDto.getNextToWindow())
             workplace.setNextToWindow(workplaceDto.getNextToWindow());
     }
 

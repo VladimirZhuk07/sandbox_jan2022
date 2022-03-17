@@ -6,6 +6,8 @@ import com.exadel.sandbox.team2.domain.Role;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.UserDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnUsersDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.UserService;
@@ -34,30 +36,30 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     @Override
     public UserDto update(UserDto dto, long id) {
         User user = repository.findById(id).orElse(null);
-        if(user == null)
+        if (user == null)
             return null;
-        checkAndSet(user,dto);
+        checkAndSet(user, dto);
         return mapper.toDto(repository.save(user));
     }
 
     @Override
     public void checkAndSet(User user, UserDto userDto) {
-        if(userDto.getFirstName() != null && !user.getFirstName().equals(userDto.getFirstName()) && !userDto.getFirstName().equals("string")){
+        if (userDto.getFirstName() != null && !user.getFirstName().equals(userDto.getFirstName()) && !userDto.getFirstName().equals("string")) {
             user.setFirstName(userDto.getFirstName());
         }
-        if(userDto.getLastName() != null && !user.getLastName().equals(userDto.getLastName()) && !userDto.getLastName().equals("string")){
+        if (userDto.getLastName() != null && !user.getLastName().equals(userDto.getLastName()) && !userDto.getLastName().equals("string")) {
             user.setLastName(userDto.getLastName());
         }
-        if(userDto.getEmail() != null && !user.getEmail().equals(userDto.getEmail()) && !userDto.getEmail().equals("string")){
+        if (userDto.getEmail() != null && !user.getEmail().equals(userDto.getEmail()) && !userDto.getEmail().equals("string")) {
             user.setEmail(userDto.getEmail());
         }
-        if(userDto.getPhoneNumber() != null && !user.getPhoneNumber().equals(userDto.getPhoneNumber()) && !userDto.getPhoneNumber().equals("string")){
+        if (userDto.getPhoneNumber() != null && !user.getPhoneNumber().equals(userDto.getPhoneNumber()) && !userDto.getPhoneNumber().equals("string")) {
             user.setPhoneNumber(userDto.getPhoneNumber());
         }
-        if(userDto.getIsFired() != null && user.getIsFired() != userDto.getIsFired()){
+        if (userDto.getIsFired() != null && user.getIsFired() != userDto.getIsFired()) {
             user.setIsFired(userDto.getIsFired());
         }
-        if(userDto.getPassword() != null && !user.getPassword().equals(userDto.getPassword()) && !userDto.getPassword().equals("string")){
+        if (userDto.getPassword() != null && !user.getPassword().equals(userDto.getPassword()) && !userDto.getPassword().equals("string")) {
             user.setPassword(userDto.getPassword());
         }
     }
@@ -88,7 +90,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public Optional<User> findInvitedUserByAuthorizationCode(String code) {
-        return repository.findByTelegramAuthorizationCodeAndStatus(code,UserState.INVITED);
+        return repository.findByTelegramAuthorizationCodeAndStatus(code, UserState.INVITED);
     }
 
     @Override
@@ -108,7 +110,16 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public Optional<User> findActiveUserByChatId(String chatId) {
-        return repository.findByChatIdAndStatus(chatId,UserState.ACTIVE);
+        return repository.findByChatIdAndStatus(chatId, UserState.ACTIVE);
     }
 
+    @Override
+    public List<ReportOnUsersDto> getDataForReportOnUsers(Date userBookDateFrom, Date userBookDateTo) {
+        return repository.getDataForUsersReport(userBookDateFrom, userBookDateTo);
+    }
+
+    @Override
+    public List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreateDateFrom, Date userCreateDateTo) {
+        return repository.getDataForEmployeesReport(userCreateDateFrom, userCreateDateTo);
+    }
 }

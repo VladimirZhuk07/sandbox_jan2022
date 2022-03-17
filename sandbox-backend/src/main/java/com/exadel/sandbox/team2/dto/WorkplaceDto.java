@@ -16,6 +16,8 @@ public class WorkplaceDto extends BaseDto {
 
     private long mapId;
 
+    private Integer floor;
+
     private Boolean nextToWindow = false;
 
     private Boolean pc = false;

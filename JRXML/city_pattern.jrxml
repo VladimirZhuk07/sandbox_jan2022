@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="users" pageWidth="595" pageHeight="847" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd9d5cd8-31e3-4da9-bcde-8938d873b657">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="sandbox"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="total" class="java.lang.Integer"/>
+	<parameter name="bookedDateFrom" class="java.lang.String"/>
+	<parameter name="bookedDateTo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="officeName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="officeName"/>
+		<property name="com.jaspersoft.studio.field.label" value="officeName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="user"/>
+	</field>
+	<field name="cityName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cityName"/>
+		<property name="com.jaspersoft.studio.field.label" value="cityName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="user"/>
+	</field>
+	<field name="officeAddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="officeAddress"/>
+		<property name="com.jaspersoft.studio.field.label" value="officeAddress"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="user"/>
+	</field>
+	<field name="numberOfBooked" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="numberOfBooked"/>
+		<property name="com.jaspersoft.studio.field.label" value="numberOfBooked"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="user"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="99" splitType="Stretch">
+			<staticText>
+				<reportElement x="468" y="0" width="87" height="14" forecolor="rgba(160, 191, 171, 0.6117647)" uuid="9f98d921-5a88-440b-b82f-a143ae3be7bc"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[ANVAV Team]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="80" height="14" uuid="6978aef1-653e-4152-87e6-690cdb3d03f4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["./JRXML/img/exadel_logo.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="99" uuid="5d603005-c39b-43ea-9b61-a0d640e3d7b5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="26"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cityName} + " City"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="68" width="354" height="30" uuid="55d3931a-3409-4144-9ed9-730e9a727832"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Date of start booking:  " + $P{bookedDateFrom} + " - " + $P{bookedDateTo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="29" y="0" width="101" height="41" forecolor="#125C2A" uuid="d73fecdb-c31a-469a-a8f9-94ad1bea2c65"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[City]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="29" height="41" forecolor="#125C2A" uuid="97cfd0be-6700-4c61-9574-c9ceb8f53f44"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="170" height="41" forecolor="#125C2A" uuid="35732d89-4e2f-4ed3-a6ba-d4643989a6da"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Office]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="138" height="41" forecolor="#125C2A" uuid="b4a5430b-2c5d-4047-b5d2-4a9b0209cce2"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="0" width="117" height="41" forecolor="#125C2A" uuid="5e245c66-1b93-45b6-99b7-9b28d360b863"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Number of People]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="29" height="20" forecolor="#245E35" uuid="1f78aa3c-0bc8-4603-9d36-fdfe132ecefb"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="29" y="0" width="101" height="20" forecolor="#245E35" uuid="3ce98ed0-12d4-4f83-9f72-86c5af354813"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cityName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="170" height="20" forecolor="#245E35" uuid="01010f38-edd5-4658-abb4-f3ea588c502f"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{officeName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="138" height="20" forecolor="#245E35" uuid="1baec0cb-5f9f-4624-be47-8a897cdfbf2d"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{officeAddress}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="0" width="117" height="20" forecolor="#245E35" uuid="f0ee3062-a85f-4d29-bf57-c897e2977ee0"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numberOfBooked}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="79"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="73" splitType="Prevent">
+			<rectangle>
+				<reportElement x="315" y="41" width="240" height="32" forecolor="#FFFFFF" backcolor="rgba(76, 135, 96, 0.5294118)" uuid="db44b360-f869-4138-bc46-ad1346376fe9"/>
+			</rectangle>
+			<textField>
+				<reportElement x="315" y="43" width="135" height="30" forecolor="#1A0B0A" backcolor="#FF9900" uuid="9e37ecde-2c05-4b40-ae8a-45ddcdb5c8c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL: "  + $P{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd.MM.YYYY">
+				<reportElement key="" positionType="FixRelativeToBottom" x="0" y="47" width="159" height="20" uuid="28fe3e29-a778-43c9-a9a0-8566b3df2286"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA["Date: " + new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="51" width="94" height="20" uuid="7f7a5e82-9c11-4572-b9ef-8586f886603c"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} +" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -26,6 +26,8 @@ public class Workplace extends BaseEntity {
     @JoinColumn(name = "mapId")
     private Map map;
 
+    private Integer floor;
+
     private Boolean nextToWindow = false;
 
     private Boolean pc = false;
