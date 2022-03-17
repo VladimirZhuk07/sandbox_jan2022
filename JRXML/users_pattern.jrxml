@@ -64,7 +64,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial Black" size="26" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Employees of Sandbox Telegram Bot]]></text>
+				<text><![CDATA[Users of Sandbox Telegram Bot]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="490" y="0" width="65" height="30" forecolor="rgba(160, 191, 171, 0.6117647)" uuid="9f98d921-5a88-440b-b82f-a143ae3be7bc"/>

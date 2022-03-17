@@ -74,7 +74,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="26"/>
 				</textElement>
-				<textFieldExpression><![CDATA[ "Employees of Sandbox Telegram"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[ "Employees of Sandbox Telegram Bot"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="69" width="376" height="30" uuid="7b4463b6-f6a9-4f33-a154-35c1e8083892"/>
