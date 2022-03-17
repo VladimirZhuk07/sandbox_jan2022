@@ -3,6 +3,7 @@ package com.exadel.sandbox.team2.dao;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnUsersDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,7 +40,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " WHERE IF(b.startDate IS null, 1, b.startDate between :bookDateFrom AND :bookDateTo)"
             + " GROUP BY u.id, o.name, co.name "
             + " ORDER BY u.firstName", nativeQuery = true)
-    List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("bookDateFrom") Date bookDateFrom,
-                                                         @Param("bookDateTo") Date bookDateTo);
+    List<ReportOnUsersDto> getDataForUsersReport(@Param("bookDateFrom") Date bookDateFrom,
+                                                 @Param("bookDateTo") Date bookDateTo);
+
+    @Modifying
+    @Query(value = "select u.firstName as firstName, u.lastName as lastName, "
+            + " u.createdDate as createdDate, u.createdBy as createdBy,"
+            + " u.modifiedBy as modifiedBy, u.modifiedDate as modifiedDate,"
+            + " role.name as roleName, u.email as email"
+            + " from User u join UserRole url on u.id = url.userId"
+            + " join Role role on url.roleId = role.id "
+            + " where role.name NOT IN ('USER') "
+            + " AND u.createdDate between :userCreateDateFrom AND :userCreateDateTo "
+            + " ORDER BY role.name ASC", nativeQuery = true)
+    List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,
+                                                         @Param("userCreateDateTo") Date userCreateDateTo);
+
 
 }

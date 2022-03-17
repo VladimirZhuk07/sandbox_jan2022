@@ -36,17 +36,19 @@ public class TelegramReportServiceImpl implements TelegramReportService {
     private final MapService mapService;
     private final CityService cityService;
 
-    private final String JRXML_PATH_FOR_EMPLOYEES_REPORT = "users_pattern.jrxml";
+    private final String JRXML_PATH_FOR_USERS_REPORT = "users_pattern.jrxml";
     private final String JRXML_PATH_FOR_SINGLE_OFFICE_REPORT = "single_office_pattern.jrxml";
     private final String JRXML_PATH_FOR_ALL_OFFICES_REPORT = "all_offices_pattern.jrxml";
     private final String JRXML_PATH_FOR_CITY_REPORT = "city_pattern.jrxml";
     private final String JRXML_PATH_FOR_FLOOR_REPORT = "floor_pattern.jrxml";
+    private final String JRXML_PATH_FOR_EMPLOYEES_REPORT = "employees_pattern.jrxml";
 
     private final String REPORT_ON_SINGLE_OFFICE_FOLDER = "ReportOnSingleOffice";
     private final String REPORT_ON_ALL_OFFICES_FOLDER = "ReportOnAllOffices";
     private final String REPORT_ON_CITY_FOLDER = "ReportOnCity";
     private final String REPORT_ON_FLOOR_FOLDER = "ReportOnFloor";
     private final String REPORT_ON_USERS_FOLDER = "ReportOnUsers";
+    private final String REPORT_ON_EMPLOYEES_FOLDER = "ReportOnEmployees";
     private final String PREFIX_FOR_REPORT_FOLDER = "./REPORT/";
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -62,6 +64,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
         checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_CITY_FOLDER);
         checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_FLOOR_FOLDER);
         checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_USERS_FOLDER);
+        checkOrCreateFolder(PREFIX_FOR_REPORT_FOLDER + REPORT_ON_EMPLOYEES_FOLDER);
     }
 
     @SneakyThrows
@@ -87,7 +90,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             parameters.put("bookDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_SINGLE_OFFICE_REPORT, parameters,
                     REPORT_ON_SINGLE_OFFICE_FOLDER.concat("/")
-                            .concat("ReportOnSingleOffice")
+                            .concat(REPORT_ON_SINGLE_OFFICE_FOLDER)
                             .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
@@ -114,7 +117,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             parameters.put("bookDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_ALL_OFFICES_REPORT, parameters,
                     REPORT_ON_ALL_OFFICES_FOLDER.concat("/")
-                            .concat("ReportOnAllOffices")
+                            .concat(REPORT_ON_ALL_OFFICES_FOLDER)
                             .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
@@ -127,11 +130,11 @@ public class TelegramReportServiceImpl implements TelegramReportService {
 
     @SneakyThrows
     @Override
-    public SendMessage sendReportOnEmployees(User user, Date bookDateFrom, Date bookDateTo) {
+    public SendMessage sendReportOnUsers(User user, Date bookDateFrom, Date bookDateTo) {
         bookDateFrom = setDefaultDateFromIfNull(bookDateFrom);
         bookDateTo = setDefaultDateToIfNull(bookDateTo);
 
-        List<ReportOnEmployeesDto> reportData = userService.getDataForReportByEmployees(bookDateFrom, bookDateTo);
+        List<ReportOnUsersDto> reportData = userService.getDataForReportOnUsers(bookDateFrom, bookDateTo);
         if (reportData.isEmpty()) {
             return messageIfNullQuery(user.getChatId(), bookDateFrom, bookDateTo);
         } else {
@@ -139,9 +142,9 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             parameters.put("total", reportData.size());
             parameters.put("bookDateFrom", dateFormat.format(bookDateFrom));
             parameters.put("bookDateTo", dateFormat.format(bookDateTo));
-            String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_EMPLOYEES_REPORT, parameters,
+            String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_USERS_REPORT, parameters,
                     REPORT_ON_USERS_FOLDER.concat("/")
-                            .concat("ReportOnEmployees")
+                            .concat(REPORT_ON_USERS_FOLDER)
                             .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
@@ -168,7 +171,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             parameters.put("bookedDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_CITY_REPORT, parameters,
                     REPORT_ON_CITY_FOLDER.concat("/")
-                            .concat("ReportOnCity")
+                            .concat(REPORT_ON_CITY_FOLDER)
                             .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
@@ -196,7 +199,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
             parameters.put("bookedDateTo", dateFormat.format(bookDateTo));
             String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_FLOOR_REPORT, parameters,
                     REPORT_ON_FLOOR_FOLDER.concat("/")
-                            .concat("ReportOnFloor")
+                            .concat("REPORT_ON_FLOOR_FOLDER")
                             .concat("_")
                             .concat(user.getFirstName())
                             .concat(user.getLastName())
@@ -204,6 +207,33 @@ public class TelegramReportServiceImpl implements TelegramReportService {
                             .concat(user.getChatId()));
             telegramFileService.sendDocument(user.getChatId(), filePath);
             return byeMessage(user.getChatId(), "floor");
+        }
+    }
+
+    @SneakyThrows
+    @Override
+    public SendMessage sendReportOnEmployees(User user, Date userCreateDateFrom, Date userCreateDateTo) {
+        userCreateDateFrom = setDefaultDateFromIfNull(userCreateDateFrom);
+        userCreateDateTo = setDefaultDateToIfNull(userCreateDateTo);
+
+        List<ReportOnEmployeesDto> reportData = userService.getDataForEmployeesReport(userCreateDateFrom, userCreateDateTo);
+        if (reportData.isEmpty()) {
+            return messageIfNullQuery(user.getChatId(), userCreateDateFrom, userCreateDateTo);
+        } else {
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("total", reportData.size());
+            parameters.put("userCreateDateFrom", dateFormat.format(userCreateDateFrom));
+            parameters.put("userCreateDateTo", dateFormat.format(userCreateDateTo));
+            String filePath = reportService.constructReport(reportData, JRXML_PATH_FOR_EMPLOYEES_REPORT, parameters,
+                    REPORT_ON_EMPLOYEES_FOLDER.concat("/")
+                            .concat(REPORT_ON_EMPLOYEES_FOLDER)
+                            .concat("_")
+                            .concat(user.getFirstName())
+                            .concat(user.getLastName())
+                            .concat("_")
+                            .concat(user.getChatId()));
+            telegramFileService.sendDocument(user.getChatId(), filePath);
+            return byeMessage(user.getChatId(), "employees");
         }
     }
 

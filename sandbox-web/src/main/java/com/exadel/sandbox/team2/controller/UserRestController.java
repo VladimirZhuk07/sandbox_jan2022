@@ -2,17 +2,13 @@ package com.exadel.sandbox.team2.controller;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.UserDto;
-import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.mapper.UserMapper;
-import com.exadel.sandbox.team2.report.ReportService;
 import com.exadel.sandbox.team2.serivce.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.NotFoundException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,8 +19,6 @@ import java.util.stream.Collectors;
 public class UserRestController {
 
     private final UserService service;
-    private final ReportService reportService;
-
 
     private final UserMapper mapper;
 
@@ -55,12 +49,5 @@ public class UserRestController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
-    }
-
-    @GetMapping("/getDataForEmployeesReport")
-    public List<ReportOnEmployeesDto> getDataForEmployeesReport(
-            @RequestParam("from") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateFrom,
-            @RequestParam("To") @DateTimeFormat(pattern = "yyyy-MM-dd") Date userCreationDateTo) {
-        return service.getDataForReportByEmployees(userCreationDateFrom, userCreationDateTo);
     }
 }

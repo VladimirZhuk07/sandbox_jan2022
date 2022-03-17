@@ -53,7 +53,8 @@ public class CallbackQueryHandler implements BaseHandler {
                         // telegramReportService.sendReportOnEmployees(user, null, null);
                         // telegramReportService.sendReportOnSingleOffice(user, 1L,null, null);
                         // telegramReportService.sendReportOnFloor(user, 1L,null, null);
-                        telegramReportService.sendReportOnAllOffices(user, null, null);
+                        telegramReportService.sendReportOnEmployees(user, null, null);
+                // telegramReportService.sendReportOnAllOffices(user, null, null);
             }
             default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
         }

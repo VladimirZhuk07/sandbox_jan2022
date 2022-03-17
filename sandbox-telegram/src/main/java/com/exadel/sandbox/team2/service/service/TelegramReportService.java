@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import java.util.Date;
 
 public interface TelegramReportService {
-    SendMessage sendReportOnEmployees(User user, Date dateFrom, Date dateTo);
+    SendMessage sendReportOnUsers(User user, Date dateFrom, Date dateTo);
 
     SendMessage sendReportOnSingleOffice(User user, Long idOfOffice, Date modifiedDateFrom, Date modifiedDateTo);
 
@@ -15,4 +15,6 @@ public interface TelegramReportService {
     SendMessage sendReportOnCity(User user, Long idOfCity, Date bookedDateFrom, Date bookedDateTo);
 
     SendMessage sendReportOnFloor(User user, Long idOfFloor, Date bookedDateFrom, Date bookedDateTo);
+
+    SendMessage sendReportOnEmployees(User user, Date userCreateDateFrom, Date userCreateDateTo);
 }
