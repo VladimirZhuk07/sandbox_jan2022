@@ -31,6 +31,8 @@ public interface UserService extends BaseDtoService<User, UserDto> {
 
     Optional<User> findActiveUserByChatId(String chatId);
 
+    List<User> findByIsFiredTrue();
+
     List<ReportOnUsersDto> getDataForReportOnUsers(Date userBookDateFrom, Date userBookDateTo);
 
     List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreateDateFrom, Date userCreateDateTo);

@@ -5,13 +5,13 @@ import com.exadel.sandbox.team2.dao.WorkplaceRepository;
 import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.Workplace;
 import com.exadel.sandbox.team2.dto.WorkplaceDto;
+import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.mapper.WorkplaceMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -65,7 +65,8 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
     }
 
     @Override
-    public List<Workplace> findByMapIdAndNotStartDate(long mapId, LocalDate startDate) {
-        return repository.findByMapIdAndNotStartDate(mapId, startDate);
+    public List<Workplace> findByMapIdAndNotStartDate(long mapId, CreateBookingDto dto) {
+        return repository.findByMapIdAndNotStartDate(mapId, dto.getStartDate(), dto.getEndDate(), dto.getMonday(),
+                dto.getTuesday(), dto.getWednesday(), dto.getThursday(), dto.getFriday(), dto.getSaturday(), dto.getSunday(), dto.getRecurring());
     }
 }
