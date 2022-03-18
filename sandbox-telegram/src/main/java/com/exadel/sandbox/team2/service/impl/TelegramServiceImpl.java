@@ -3,7 +3,7 @@ package com.exadel.sandbox.team2.service.impl;
 import com.exadel.sandbox.team2.domain.*;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.MailDto;
-import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
+import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.*;
 import com.exadel.sandbox.team2.service.EmailService;

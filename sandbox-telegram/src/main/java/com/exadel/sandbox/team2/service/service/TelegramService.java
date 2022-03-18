@@ -4,6 +4,8 @@ import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import java.util.Date;
+
 public interface TelegramService {
 
     SendMessage getCountries(String chatId, String message, String data);

@@ -5,6 +5,8 @@ import com.exadel.sandbox.team2.dao.OfficeRepository;
 import com.exadel.sandbox.team2.domain.City;
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.OfficeDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnAllOfficesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnSingleOfficeDto;
 import com.exadel.sandbox.team2.mapper.OfficeMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.OfficeService;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +38,9 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     @Override
     public OfficeDto update(OfficeDto dto, long id) {
         Office office = repository.findById(id).orElse(null);
-        if(office == null)
+        if (office == null)
             return null;
-        checkAndSet(office,dto);
+        checkAndSet(office, dto);
         return mapper.toDto(repository.save(office));
     }
 
@@ -70,5 +73,15 @@ public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements Offic
     public List<Office> findByParameters(Integer kitchenNum, Integer confNum, String cityName){
         Optional<City> city = cityRepository.findByName(cityName);
         return repository.findByParameters(kitchenNum, confNum, city.get().getId());
+    }
+
+    @Override
+    public List<ReportOnSingleOfficeDto> getDataForReportBySingleOffice(Long idOfOffice, Date creationDateFrom, Date creationDateTo) {
+        return repository.getDataForReportOnSingleOffice(idOfOffice, creationDateFrom, creationDateTo);
+    }
+
+    @Override
+    public List<ReportOnAllOfficesDto> getDataForReportByAllOffices(Date creationDateFrom, Date creationDateTo) {
+        return repository.getDataForReportOnAllOffices(creationDateFrom, creationDateTo);
     }
 }
