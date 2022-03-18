@@ -116,9 +116,7 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
     @Override
     public boolean deleteBooking(Long id, Long userId) {
         Booking booking = repository.findById(id).orElse(null);
-        assert booking != null;
-        Long bookingUserId = booking.getUser().getId();
-        if(bookingUserId.equals(userId)){
+        if(booking != null) {
             repository.deleteById(id);
             return true;
         }

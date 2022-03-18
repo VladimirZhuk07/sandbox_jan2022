@@ -280,7 +280,6 @@ public class TelegramServiceImpl implements TelegramService {
         return utils.getSendMessage(chatId, message, titles, commands);
     }
 
-    //Need check times
     @Override
     public SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands, User user) {
         if(!weekTimes.equals("Back")) {

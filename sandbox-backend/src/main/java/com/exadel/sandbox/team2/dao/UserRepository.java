@@ -16,7 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByTelegramAuthorizationCodeAndStatus(String authorizationCode,UserState status);
 
-    @Query("select u from User u where (u.chatId = ?1 or u.phoneNumber = ?2) and u.status <> 'BLOCKED'")
     Optional<User> findByChatIdOrPhoneNumber(String chatId, String phone);
 
     List<User> findAllByStatus(UserState state);
