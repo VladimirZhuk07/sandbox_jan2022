@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.dto.telegramDto;
+package com.exadel.sandbox.team2.dto.telegram;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -5,12 +5,15 @@ import com.exadel.sandbox.team2.dao.OfficeRepository;
 import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.Office;
 import com.exadel.sandbox.team2.dto.MapDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnFloorDto;
 import com.exadel.sandbox.team2.mapper.MapMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.MapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -70,5 +73,10 @@ public class MapServiceImpl extends CRUDServiceImpl<Map> implements MapService {
     @Override
     public Map findByOfficeId(Long id) {
         return repository.findByOfficeId(id).orElse(null);
+    }
+
+    @Override
+    public List<ReportOnFloorDto> getDataForReportOnFloor(Long idOfFloor, Date bookedDateFrom, Date bookedDateTo) {
+        return repository.getDataForReportOnFloor(idOfFloor, bookedDateFrom, bookedDateTo);
     }
 }

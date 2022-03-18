@@ -108,9 +108,18 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
     @Override
     public Optional<User> findActiveUserByChatId(String chatId) {
-        return repository.findByChatIdAndStatus(chatId,UserState.ACTIVE);
+        return repository.findByChatIdAndStatus(chatId, UserState.ACTIVE);
     }
 
+    @Override
+    public List<ReportOnUsersDto> getDataForReportOnUsers(Date userBookDateFrom, Date userBookDateTo) {
+        return repository.getDataForUsersReport(userBookDateFrom, userBookDateTo);
+    }
+
+    @Override
+    public List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreateDateFrom, Date userCreateDateTo) {
+        return repository.getDataForEmployeesReport(userCreateDateFrom, userCreateDateTo);
+    }
     @Override
     public List<User> findByIsFiredTrue() {
         return repository.findAllByIsFiredTrueAndStatusNotContains();

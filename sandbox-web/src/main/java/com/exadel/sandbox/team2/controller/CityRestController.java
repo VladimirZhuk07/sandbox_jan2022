@@ -32,7 +32,7 @@ public class CityRestController {
     }
 
     @PutMapping("/{id}")
-    public CityDto update(@PathVariable Long id, @RequestBody CityDto cityDto){
+    public CityDto update(@PathVariable Long id, @RequestBody CityDto cityDto) {
         return service.update(cityDto, id);
     }
 
