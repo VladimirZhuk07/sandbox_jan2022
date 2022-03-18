@@ -2,6 +2,8 @@ package com.exadel.sandbox.team2.dao;
 
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
+import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnUsersDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,10 +26,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByStatus(UserState state);
 
-    Optional<User> findByChatIdAndStatus(String chatId,UserState state);
-
     @Query("select u from User u where u.isFired = true and u.status <> 'BLOCKED'")
     List<User> findAllByIsFiredTrueAndStatusNotContains();
+
     Optional<User> findByChatIdAndStatus(String chatId, UserState state);
 
     @Modifying

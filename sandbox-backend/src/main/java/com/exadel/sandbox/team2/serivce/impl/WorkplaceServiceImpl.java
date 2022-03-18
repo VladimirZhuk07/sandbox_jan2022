@@ -5,14 +5,13 @@ import com.exadel.sandbox.team2.dao.WorkplaceRepository;
 import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.Workplace;
 import com.exadel.sandbox.team2.dto.WorkplaceDto;
-import com.exadel.sandbox.team2.dto.telegramDto.CreateBookingDto;
+import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.mapper.WorkplaceMapper;
 import com.exadel.sandbox.team2.serivce.base.CRUDServiceImpl;
 import com.exadel.sandbox.team2.serivce.service.WorkplaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
