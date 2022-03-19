@@ -16,11 +16,12 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
-public class OfficeServiceImpl extends CRUDServiceImpl<Office> implements OfficeService {
+public class OfficeServiceImpl  extends CRUDServiceImpl<Office> implements OfficeService {
 
     private final OfficeRepository repository;
     private final CityRepository cityRepository;
@@ -45,11 +46,11 @@ public class OfficeServiceImpl extends CRUDServiceImpl<Office> implements Office
 
     @Override
     public void checkAndSet(Office office, OfficeDto officeDto) {
-        if (officeDto.getName() != null && !office.getName().equals(officeDto.getName()) && !officeDto.getName().equals("string"))
+        if(officeDto.getName() != null && !office.getName().equals(officeDto.getName()) && !officeDto.getName().equals("string"))
             office.setName(officeDto.getName());
-        if (officeDto.getAddress() != null && !office.getAddress().equals(officeDto.getAddress()) && !officeDto.getAddress().equals("string"))
+        if(officeDto.getAddress() != null && !office.getAddress().equals(officeDto.getAddress()) && !officeDto.getAddress().equals("string"))
             office.setAddress(officeDto.getAddress());
-        if (officeDto.getParking() != null && office.getParking() != officeDto.getParking())
+        if(officeDto.getParking() != null && office.getParking() != officeDto.getParking())
             office.setParking(officeDto.getParking());
     }
 
@@ -66,6 +67,12 @@ public class OfficeServiceImpl extends CRUDServiceImpl<Office> implements Office
     @Override
     public List<Office> findByCityName(String cityName) {
         return repository.findByCityName(cityName);
+    }
+
+    @Override
+    public List<Office> findByParameters(Integer kitchenNum, Integer confNum, String cityName){
+        Optional<City> city = cityRepository.findByName(cityName);
+        return repository.findByParameters(kitchenNum, confNum, city.get().getId());
     }
 
     @Override

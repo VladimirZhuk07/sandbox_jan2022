@@ -90,6 +90,159 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
     @Override
+    public SendMessage isWorkplaceNeedBeDefine(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(data.equals("Back")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setBookingTypeBeforeDefineWorkplaceAttributes(null);
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isKitchenNeed(String chatId, String message, String[][] titles, String[][] commands, User user, String data) {
+        if(!data.equals("Back")) {
+            TelegramState telegramState = user.getTelegramState();
+            CreateBookingDto dto = bookingList.get(chatId);
+            if (telegramState == TelegramState.ONE_DAY_IS_KITCHEN_NEED) {
+                dto.setBookingTypeBeforeDefineWorkplaceAttributes(TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED);
+            } else if (telegramState == TelegramState.CONTINUOUS_IS_KITCHEN_NEED) {
+                dto.setBookingTypeBeforeDefineWorkplaceAttributes(TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED);
+            } else {
+                dto.setBookingTypeBeforeDefineWorkplaceAttributes(TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED);
+            }
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+
+    }
+
+    @Override
+    public SendMessage backToIsKitchenNeed(String chatId, User user) {
+        CreateBookingDto dto = bookingList.get(chatId);
+        TelegramState telegramState = dto.getBookingTypeBeforeDefineWorkplaceAttributes();
+        if (telegramState == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED) {
+            user.setTelegramState(TelegramState.ONE_DAY_IS_KITCHEN_NEED);
+        } else if (telegramState == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED) {
+            user.setTelegramState(TelegramState.CONTINUOUS_IS_KITCHEN_NEED);
+        } else {
+            user.setTelegramState(TelegramState.RECURRING_IS_KITCHEN_NEED);
+        }
+        return utils.getSendMessage(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"Back","Next"}}, new String[][]{{"Yes"},{"Back","Next"}});
+    }
+
+    @Override
+    public SendMessage isConferenceHallNeed(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setKitchenNum(1);
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isNextToWindowNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setConfRoomsNum(1);
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isPcNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back") && !data.equals("Next")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setNextToWindow(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isMonitorNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back") && !data.equals("Next")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setPc(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isKeyboardNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back") && !data.equals("Next")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setMonitor(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isMouseNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back") && !data.equals("Next")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setKeyboard(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage isHeadsetNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data) {
+        if(!data.equals("Back") && !data.equals("Next")){
+            CreateBookingDto dto = bookingList.get(chatId);
+            dto.setMouse(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage finishDefineWorkplaceAttributes(String chatId, User user, String data) {
+        CreateBookingDto dto = bookingList.get(chatId);
+        if(!data.equals("Back") && !data.equals("Next")){
+            dto.setMouse(!data.equals("No"));
+            bookingList.put(chatId, dto);
+        }
+        TelegramState beforeWorkplace = dto.getBookingTypeBeforeDefineWorkplaceAttributes();
+        if(beforeWorkplace == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED){
+            user.setTelegramState(TelegramState.ONE_DAY_SELECT_DATE);
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+        }else if(beforeWorkplace == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
+            user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+        }else {
+            user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
+            return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+        }
+    }
+
+    @Override
+    public SendMessage backFromSelectDateOrSelectWeekDay(String chatId, User user, String date) {
+        CreateBookingDto dto = bookingList.get(chatId);
+        TelegramState beforeWorkplace = dto.getBookingTypeBeforeDefineWorkplaceAttributes();
+        if(beforeWorkplace == null){
+            TelegramState telegramState = user.getTelegramState();
+            if(telegramState == TelegramState.BACK_FROM_SELECT_ONE_DAY_DATE){
+                user.setTelegramState(TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED);
+            }else if(telegramState == TelegramState.BACK_FROM_SELECT_CONTINUOUS_DATE){
+                user.setTelegramState(TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED);
+            }else {
+                user.setTelegramState(TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED);
+            }
+            return utils.getSendMessage(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}});
+        }else {
+            user.setTelegramState(TelegramState.IS_HEADSET_NEED_BE);
+            return isHeadsetNeedBe(chatId, "Should there be headset?\nIf no, then please press No.\nIf does not matter then press Next",
+                    new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, date);
+        }
+    }
+
+    @Override
     public SendMessage defineRecurringWeekdays(String chatId, String message, String weekdays, String[][] titles, String[][] commands, User user) {
         if(!weekdays.equals("Back")) {
             CreateBookingDto dto = bookingList.get(chatId);
@@ -128,10 +281,15 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
     @Override
-    public SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands) {
+    public SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands, User user) {
         if(!weekTimes.equals("Back")) {
             CreateBookingDto dto = bookingList.get(chatId);
-            dto.setWeekTimes(Integer.parseInt(weekTimes));
+            int times = Integer.parseInt(weekTimes);
+            if(times > 8){
+                user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKDAYS);
+                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"Back"}}, new String[][] {{"Back"}});
+            }
+            dto.setWeekTimes(times);
             bookingList.put(chatId, dto);
         }
         return utils.getSendMessage(chatId, message, titles, commands);
@@ -142,9 +300,11 @@ public class TelegramServiceImpl implements TelegramService {
         if(!startDate.equals("Back")) {
             CreateBookingDto dto = bookingList.get(chatId);
             LocalDate localDate = checkDateAndSet(startDate, null, dto);
+            if(localDate.plusWeeks(dto.getWeekTimes()).isAfter(LocalDate.now().plusMonths(2)))
+                localDate = null;
             if (localDate == null) {
                 user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKS);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", titles, commands);
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, or date exceeds 2 months, please write date in form of `2022-03-10`", titles, commands);
             }
             localDate = checkRecurringStartDate(localDate, dto);
             dto.setStartDate(localDate);
@@ -154,8 +314,13 @@ public class TelegramServiceImpl implements TelegramService {
     }
 
     @Override
-    public SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands) {
-        List<Office> list = officeService.findByCityName(city);
+    public SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands, CreateBookingDto dto) {
+        List<Office> list;
+        if(dto.getBookingTypeBeforeDefineWorkplaceAttributes() == null) {
+            list = officeService.findByCityName(city);
+        }else {
+            list = officeService.findByParameters(dto.getKitchenNum(), dto.getConfRoomsNum(), dto.getCityName());
+        }
         StringBuilder builder = new StringBuilder();
         builder.append(message);
         for(Office office: list){
@@ -187,7 +352,7 @@ public class TelegramServiceImpl implements TelegramService {
             bookingList.put(chatId, dto);
         }
 
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     @Override
@@ -204,7 +369,7 @@ public class TelegramServiceImpl implements TelegramService {
             bookingList.put(chatId, dto);
         }
 
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     @Override
@@ -227,7 +392,7 @@ public class TelegramServiceImpl implements TelegramService {
             dto.setRecurring(true);
             bookingList.put(chatId, dto);
         }
-        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands);
+        return getOfficesByCity(chatId, message, dto.getCityName(), titles, commands, dto);
     }
 
     public SendMessage getWorkplaceByMapId(String chatId, String message, String officeId, User user, String[][] titles, String[][] commands){
@@ -300,7 +465,7 @@ public class TelegramServiceImpl implements TelegramService {
         if(localDate.isBefore(LocalDate.now()) || localDate.isEqual(LocalDate.now())){
             return null;
         }
-        if(localDate.isAfter(localDate.plusMonths(2)))
+        if(localDate.isAfter(LocalDate.now().plusMonths(2)))
             return null;
         if(endDate != null && dto.getStartDate() != null){
             if(!localDate.isAfter(dto.getStartDate()))

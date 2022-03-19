@@ -66,7 +66,8 @@ public class WorkplaceServiceImpl extends CRUDServiceImpl<Workplace> implements 
 
     @Override
     public List<Workplace> findByMapIdAndNotStartDate(long mapId, CreateBookingDto dto) {
-        return repository.findByMapIdAndNotStartDate(mapId, dto.getStartDate(), dto.getEndDate(), dto.getMonday(),
-                dto.getTuesday(), dto.getWednesday(), dto.getThursday(), dto.getFriday(), dto.getSaturday(), dto.getSunday(), dto.getRecurring());
+        return repository.findByMapIdAndNotStartDate1(mapId, dto.getStartDate(), dto.getEndDate(), dto.getMonday(),
+                dto.getTuesday(), dto.getWednesday(), dto.getThursday(), dto.getFriday(), dto.getSaturday(), dto.getSunday(), dto.getRecurring(),
+                dto.getNextToWindow(), dto.getPc(), dto.getMonitor(), dto.getKeyboard(), dto.getMouse(), dto.getHeadset());
     }
 }

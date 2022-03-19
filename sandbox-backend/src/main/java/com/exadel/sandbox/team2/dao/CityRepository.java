@@ -9,9 +9,12 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface CityRepository extends JpaRepository<City, Long> {
     List<City> findByCountryName(String countryName);
+
+    Optional<City> findByName(String name);
 
     @Modifying
     @Query(value = "select ci.name as cityName, o.name as officeName, o.address as officeAddress, COUNT(b.userId) as numberOfBooked"

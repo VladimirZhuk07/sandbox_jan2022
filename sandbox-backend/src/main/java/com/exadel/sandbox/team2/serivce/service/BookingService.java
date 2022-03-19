@@ -14,4 +14,6 @@ public interface BookingService extends BaseDtoService<Booking, BookingDto> {
     List<Booking> getBookingByUserId(Long id);
 
     boolean deleteBooking(Long id, Long userId);
+
+    void updateByUserId(Long userId);
 }

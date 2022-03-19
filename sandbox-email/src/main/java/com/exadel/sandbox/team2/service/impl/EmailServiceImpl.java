@@ -6,6 +6,7 @@ import com.exadel.sandbox.team2.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -20,6 +21,7 @@ public class EmailServiceImpl implements EmailService {
     private final MailSettingProperties mailProperties;
 
     @SneakyThrows
+    @Async
     public void sendMail(MailDto mailDto) {
         try {
             log.info("Send email called.");

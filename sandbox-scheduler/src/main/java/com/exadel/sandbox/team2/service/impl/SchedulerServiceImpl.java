@@ -4,7 +4,8 @@ import com.exadel.sandbox.team2.configuration.TelegramProperties;
 import com.exadel.sandbox.team2.domain.User;
 import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.MailDto;
-import com.exadel.sandbox.team2.serivce.impl.UserServiceImpl;
+import com.exadel.sandbox.team2.serivce.service.BookingService;
+import com.exadel.sandbox.team2.serivce.service.UserService;
 import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.service.SchedulerService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -23,7 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchedulerServiceImpl implements SchedulerService {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
+    private final BookingService bookingService;
     private final EmailService emailService;
     private final TelegramProperties telegramProperties;
 
@@ -50,15 +51,14 @@ public class SchedulerServiceImpl implements SchedulerService {
     public void cancelBookings() {
         List<User> list = userService.findByIsFiredTrue();
         for(User user: list){
+            bookingService.updateByUserId(user.getId());
+            user.setStatus(UserState.BLOCKED);
+            userService.save(user);
             MailDto mail = new MailDto();
             mail.setHeader("Your bookings were canceled since");
             mail.setRecipient(user.getEmail());
             mail.setBody("Dear" + user.getFirstName() + "\nYour bookings were canceled, since you was fired from the company");
             emailService.sendMail(mail);
-            user.getBookings().clear();
-            user.setBookings(new ArrayList<>());
-            user.setStatus(UserState.BLOCKED);
-            userService.save(user);
         }
     }
 }
