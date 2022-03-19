@@ -39,6 +39,8 @@ public class BookingDto extends BaseDto {
 
     private Boolean sunday = false;
 
+    private Boolean active = true;
+
     private String createdBy;
 
     private LocalDateTime createdDate;

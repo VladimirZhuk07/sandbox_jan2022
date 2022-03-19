@@ -18,6 +18,7 @@ public interface OfficeService extends BaseDtoService<Office, OfficeDto> {
     List<Office> findByCityName(String cityName);
 
     List<Office> findByParameters(Integer kitchenNum, Integer confNum, String cityName);
+
     List<ReportOnSingleOfficeDto> getDataForReportBySingleOffice(Long idOfOffice, Date creationDateFrom, Date creationDateTo);
 
     List<ReportOnAllOfficesDto> getDataForReportByAllOffices(Date creationDateFrom, Date creationDateTo);

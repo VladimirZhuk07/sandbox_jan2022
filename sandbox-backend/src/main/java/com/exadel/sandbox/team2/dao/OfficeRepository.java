@@ -1,9 +1,9 @@
 package com.exadel.sandbox.team2.dao;
 
 import com.exadel.sandbox.team2.domain.Office;
+import com.exadel.sandbox.team2.dto.report.ReportOnAllOfficesDto;
+import com.exadel.sandbox.team2.dto.report.ReportOnSingleOfficeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

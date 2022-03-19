@@ -14,7 +14,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -72,7 +71,7 @@ public class User extends AuditableEntity {
     private Vacation vacation;
 
     @NotFound(action= NotFoundAction.IGNORE)
-    @OneToMany(cascade = {CascadeType.REFRESH}, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE}, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 

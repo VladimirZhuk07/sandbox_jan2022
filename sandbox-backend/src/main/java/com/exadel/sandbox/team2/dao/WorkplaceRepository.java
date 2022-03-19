@@ -19,6 +19,7 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
             " LEFT JOIN Booking b ON b.workplaceId = w.id" +
             " AND b.startDate <= ?3" +
             " AND b.endDate > ?2" +
+            " AND b.active = true" +
             " AND (CASE WHEN (?11 = true) THEN (" +
             "   (CASE WHEN (?4 = true) THEN (b.monday) ELSE true END) = true" +
             "   AND (CASE WHEN (?5 = true) THEN (b.tuesday) ELSE true END = true)" +

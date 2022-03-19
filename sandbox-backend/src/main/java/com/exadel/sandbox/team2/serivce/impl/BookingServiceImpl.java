@@ -122,4 +122,9 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
         }
         return false;
     }
+
+    @Override
+    public void updateByUserId(Long userId) {
+        repository.updateByUserId(userId);
+    }
 }

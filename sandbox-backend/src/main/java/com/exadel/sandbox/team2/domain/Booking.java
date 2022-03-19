@@ -42,6 +42,8 @@ public class Booking extends AuditableEntity {
 
     private Boolean sunday = false;
 
+    private Boolean active = true;
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "userId")
     private User user;
