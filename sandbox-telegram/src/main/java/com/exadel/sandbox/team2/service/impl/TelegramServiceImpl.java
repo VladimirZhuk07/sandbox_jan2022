@@ -1,12 +1,14 @@
 package com.exadel.sandbox.team2.service.impl;
 
 import com.exadel.sandbox.team2.domain.*;
+import com.exadel.sandbox.team2.domain.enums.RoleType;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.MailDto;
 import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.*;
 import com.exadel.sandbox.team2.service.EmailService;
+import com.exadel.sandbox.team2.service.LocaleMessageService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ public class TelegramServiceImpl implements TelegramService {
 
     private static final Hashtable<String, CreateBookingDto> bookingList = new Hashtable<>();
 
+    private final LocaleMessageService lms;
     private final TelegramUtils utils;
     private final CountryService countryService;
     private final CityService cityService;
@@ -288,6 +292,21 @@ public class TelegramServiceImpl implements TelegramService {
             return utils.getSendMessage(chatId, "This id does not exist or not belong to you");
         }
         return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage checkUserRole(String chatId, String message, String[][] titles, String[][] commands, User user) {
+        Set<Role> list = user.getRoles();
+        for(Role role: list){
+            if(role.getName().equals(RoleType.ADMIN) || role.getName().equals(RoleType.MANAGER)){
+                return utils.getSendMessage(chatId, message, titles, commands);
+            }
+        }
+
+        user.setTelegramState(TelegramState.SETTINGS);
+        return utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
+                        {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}},
+                new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
     }
 
     private LocalDate checkDateAndSet(String date, String endDate, CreateBookingDto dto){

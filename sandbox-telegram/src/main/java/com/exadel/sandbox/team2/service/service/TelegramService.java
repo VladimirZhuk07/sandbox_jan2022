@@ -36,4 +36,6 @@ public interface TelegramService {
     SendMessage getUserBookings(String chatId, String message, Long userId, String[][] titles, String[][] commands);
 
     SendMessage deleteUserBooking(String chatId, String message, String bookingId, User user, String[][] titles, String[][] commands);
+
+    SendMessage checkUserRole(String chatId, String message, String[][] titles, String[][] commands, User user);
 }

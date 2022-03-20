@@ -73,15 +73,9 @@ public class CallbackQueryHandler implements BaseHandler {
       case SHOW_OFFICES_CONTINUOUS -> sendMessage = telegramService.getOfficesByCityForContinuous(chatId, "Please enter id of office", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"Back"}}, new String[][] {{"Back"}});
       case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"Back"}}, new String[][]{{"Back"}}, user);
-      case REPORT -> {
-        sendMessage =
-                // telegramReportService.sendReportOnCity(user,  1L,null, null);
-                // telegramReportService.sendReportOnEmployees(user, null, null);
-                // telegramReportService.sendReportOnSingleOffice(user, 1L,null, null);
-                // telegramReportService.sendReportOnFloor(user, 1L,null, null);
-                telegramReportService.sendReportOnEmployees(user, null, null);
-        // telegramReportService.sendReportOnAllOffices(user, null, null);
-      }
+      case REPORT -> sendMessage = telegramService.checkUserRole(chatId, "Please select report type.",
+              new String[][]{{"User", "All User"}, {"City", "Single Office"}, {"Offices", "Floor"}},
+              new String[][]{{"User_Report", "All_User_Report"}, {"City_Report", "Single_Office_Report"}, {"Offices_Report", "Floor_Report"}, {"Back"}}, user);
       default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
     }
     userService.save(user);
