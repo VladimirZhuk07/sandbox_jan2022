@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.handler;
 
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.handler.base.BaseHandler;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.UserService;
@@ -58,6 +59,27 @@ public class MessageHandler implements BaseHandler {
       case SHOW_WORKPLACES_BY_OFFICE, SHOW_WORKPLACES_CONTINUOUS, RECURRING_SHOW_WORKPLACES -> sendMessage = telegramService.getWorkplaceByMapId(chatId, "Please enter id to book workplace", data, user, new String[][] {{"Back"}}, new String[][] {{"Back"}});
       case BOOK_ONE_DAY_WORKPLACE -> sendMessage = telegramService.bookWorkplace(chatId, "Workplace is successfully booked", data, user, new String[][] {{"Back to Menu"}}, new String[][] {{"Back"}});
       case DELETE_USER_BOOKING -> sendMessage = telegramService.deleteUserBooking(chatId, "Your booking is successfully canceled", data, user, new String[][] {{"Back To Menu"}}, new String[][] {{"Back"}});
+      case CITY_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_FROM -> sendMessage = telegramService.defineId(chatId, "Please enter 'booking from' date in the form of '2022-03-01'", data, user);
+      case CITY_REPORT_DEFINE_BOOKING_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter 'booking to' in the form of '2022-03-01'",
+              "Wrong format, please enter 'booking from' date in the form of '2022-03-21'", TelegramState.CITY_REPORT_DEFINE_BOOKING_FROM, data, user);
+      case FLOOR_REPORT_DEFINE_BOOKING_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter 'booking to' in the form of '2022-03-01'",
+              "Wrong format, please enter 'booking from' date in the form of '2022-03-21'", TelegramState.FLOOR_REPORT_DEFINE_BOOKING_FROM, data, user);
+      case USER_REPORT_DEFINE_BOOKING_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter 'booking to' date in the form of ''2022-03-21",
+              "Wrong format, please enter date for user`s 'created date from' in the form of '2022-03-21'", TelegramState.ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM, data, user);
+      case ALL_USER_REPORT_DEFINE_CREATE_DATE_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter user`s 'created date from' in the form of '2022-03-21'",
+              "Wrong format, please enter date for user`s 'created date from' in the form of '2022-03-21'", TelegramState.ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM, data, user);
+      case ALL_OFFICE_REPORT_DEFINE_BOOKING_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter 'booking to' date in the form of '2022-03-21'",
+              "Wrong format, please enter 'booking from' date in the form of '2022-03-21'", TelegramState.ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM, data, user);
+      case GET_USER_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.USER_REPORT_DEFINE_BOOKING_TO,
+              "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
+      case GET_ALL_USER_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.ALL_USER_REPORT_DEFINE_CREATE_DATE_TO,
+              "Wrong date or 'created date from' date exceed 'created date to' date, please enter date for 'created date to' in the form '2022-03-21'");
+      case GET_ALL_OFFICE_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.ALL_OFFICE_REPORT_DEFINE_BOOKING_TO,
+              "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
+      case GET_CITY_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.CITY_REPORT_DEFINE_BOOKING_TO,
+              "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
+      case GET_FLOOR_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.FLOOR_REPORT_DEFINE_BOOKING_TO,
+              "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
       default -> sendMessage = utils.getSendMessage(chatId, "Command not found");
     }
     userService.save(user);

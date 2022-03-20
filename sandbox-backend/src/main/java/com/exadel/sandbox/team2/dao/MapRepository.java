@@ -27,7 +27,7 @@ public interface MapRepository extends JpaRepository<Map, Long> {
             + " w.mouse as mouse,"
             + " w.headset as headset,"
             + " COUNT(b.userId) as numberOfBooked"
-            + " FROM workplace w LEFT JOIN booking b on w.id = b.workplaceId"
+            + " FROM Workplace w LEFT JOIN Booking b on w.id = b.workplaceId"
             + " WHERE IF(b.startDate IS NULL, 1, b.startDate BETWEEN :dateFrom AND :dateTo)"
             + " GROUP BY w.floor, w.workplaceNumber, w.nextToWindow, w.pc, w.monitor, w.keyboard, w.mouse, w.headset"
             + " HAVING w.floor IN(:idOfFloor)", nativeQuery = true)

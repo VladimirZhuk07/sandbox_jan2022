@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +52,11 @@ public class CityServiceImpl extends CRUDServiceImpl<City> implements CityServic
     @Override
     public List<City> findByCountryName(String countryName) {
         return repository.findByCountryName(countryName);
+    }
+
+    @Override
+    public Optional<City> findByName(String name) {
+        return repository.findByName(name);
     }
 
     @Override

@@ -1,32 +1,35 @@
 package com.exadel.sandbox.team2.service.impl;
 
+import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.*;
 import com.exadel.sandbox.team2.domain.enums.RoleType;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.MailDto;
 import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
+import com.exadel.sandbox.team2.dto.telegram.CreatingReportDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.*;
 import com.exadel.sandbox.team2.service.EmailService;
 import com.exadel.sandbox.team2.service.LocaleMessageService;
+import com.exadel.sandbox.team2.service.service.TelegramReportService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class TelegramServiceImpl implements TelegramService {
 
     private static final Hashtable<String, CreateBookingDto> bookingList = new Hashtable<>();
+    private static final Hashtable<String, CreatingReportDto> reportList = new Hashtable<>();
 
     private final LocaleMessageService lms;
     private final TelegramUtils utils;
@@ -37,6 +40,7 @@ public class TelegramServiceImpl implements TelegramService {
     private final WorkplaceService workplaceService;
     private final BookingService bookingService;
     private final EmailService emailService;
+    private final TelegramReportService telegramReportService;
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -474,6 +478,66 @@ public class TelegramServiceImpl implements TelegramService {
                 new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
     }
 
+    @Override
+    public SendMessage defineId(String chatId, String message, String id, User user) {
+        if(!id.equals("Back")) {
+            CreatingReportDto dto = new CreatingReportDto();
+            if(user.getTelegramState() == TelegramState.CITY_REPORT_DEFINE_BOOKING_FROM){
+                Optional<City> byName = cityService.findByName(id);
+                if(byName.isEmpty()){
+                    user.setTelegramState(TelegramState.CITY_REPORT_DEFINE_ID);
+                    return utils.getSendMessage(chatId, "This city does not exist", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+                }
+                dto.setId(byName.get().getId());
+            }else{
+                dto.setId(Long.valueOf(id));
+            }
+            reportList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, new String[][] {{"Back to Menu"}}, new String[][] {{"Back"}});
+    }
+
+    @Override
+    public SendMessage defineDateFrom(String chatId, String message, String errorMessage, TelegramState telegramState, String dateFrom, User user) {
+        if(!dateFrom.equals("Back")){
+            CreatingReportDto dto;
+            if(user.getTelegramState() == TelegramState.USER_REPORT_DEFINE_BOOKING_TO
+            || user.getTelegramState() == TelegramState.ALL_USER_REPORT_DEFINE_CREATE_DATE_TO
+            || user.getTelegramState() == TelegramState.ALL_OFFICE_REPORT_DEFINE_BOOKING_TO) {
+                dto = new CreatingReportDto();
+            }else{
+                dto = reportList.get(chatId);
+            }
+            Date date = checkDateForReport(dateFrom, null);
+            if(date == null){
+                user.setTelegramState(telegramState);
+                return utils.getSendMessage(chatId, errorMessage, new String[][]{{"Back"}}, new String[][]{{"Back"}});
+            }
+            dto.setBookingFrom(date);
+            reportList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, new String[][]{{"Back"}}, new String[][]{{"Back"}});
+    }
+
+    @Override
+    public SendMessage getReport(String chatId, String dateTo, User user, TelegramState telegramState, String message) {
+        CreatingReportDto dto = reportList.get(chatId);
+        Date date = checkDateForReport(dateTo, dto);
+        if(date == null){
+            user.setTelegramState(telegramState);
+            return utils.getSendMessage(chatId, message, new String[][]{{"Back"}}, new String[][]{{"Back"}});
+        }
+        reportList.remove(chatId);
+        return switch (user.getTelegramState()){
+            case GET_USER_REPORT -> telegramReportService.sendReportOnUsers(user, dto.getBookingFrom(), date);
+            case GET_ALL_USER_REPORT -> telegramReportService.sendReportOnEmployees(user, dto.getBookingFrom(), date);
+            case GET_ALL_OFFICE_REPORT -> telegramReportService.sendReportOnAllOffices(user, dto.getBookingFrom(), date);
+            case GET_CITY_REPORT -> telegramReportService.sendReportOnCity(user, dto.getId(), dto.getBookingFrom(), date);
+            case GET_FLOOR_REPORT -> telegramReportService.sendReportOnFloor(user, dto.getId(), dto.getBookingFrom(), date);
+            default -> utils.getSendMessage(chatId, "ERROR!!!!!!!!!!!!");
+        };
+    }
+
     private LocalDate checkDateAndSet(String date, String endDate, CreateBookingDto dto){
         if(endDate != null)
             date = endDate;
@@ -680,5 +744,22 @@ public class TelegramServiceImpl implements TelegramService {
                 dayOfWeek = DayOfWeek.of(++value);
             }
         }
+    }
+
+    private Date checkDateForReport(String date, CreatingReportDto dto){
+        if(date.length() != 10 || !date.contains("-")){
+            return null;
+        }
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(dto != null){
+            if(dto.getBookingFrom().after(date1))
+                return null;
+        }
+        return date1;
     }
 }

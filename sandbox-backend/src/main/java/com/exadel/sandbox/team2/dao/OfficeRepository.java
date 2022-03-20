@@ -53,7 +53,7 @@ public interface OfficeRepository  extends JpaRepository<Office, Long> {
             + " left join City ci on o.cityId = ci.id"
             + " left join Country co on co.id = ci.countryId"
             + " WHERE IF(b.startDate IS null, 1, b.startDate between :bookDateFrom AND :bookDateTo)"
-            + " GROUP BY o.address", nativeQuery = true)
+            + " GROUP BY o.id", nativeQuery = true)
     List<ReportOnAllOfficesDto> getDataForReportOnAllOffices(@Param("bookDateFrom") Date bookDateFrom,
                                                              @Param("bookDateTo") Date bookDateTo);
 }
