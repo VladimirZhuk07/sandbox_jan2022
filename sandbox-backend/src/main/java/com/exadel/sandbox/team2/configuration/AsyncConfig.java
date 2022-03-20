@@ -1,4 +1,4 @@
-package com.exadel.sandbox.team2.service.configuration;
+package com.exadel.sandbox.team2.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

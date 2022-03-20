@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.service.service;
 
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import java.util.Date;
@@ -13,15 +14,39 @@ public interface TelegramService {
 
     SendMessage setBookingType(String chatId, String message, String[][] titles, String[][] commands, String city);
 
+    SendMessage isWorkplaceNeedBeDefine(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isKitchenNeed(String chatId, String message, String[][] titles, String[][] commands, User user, String data);
+
+    SendMessage backToIsKitchenNeed(String chatId, User user);
+
+    SendMessage isConferenceHallNeed(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isNextToWindowNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isPcNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isMonitorNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isKeyboardNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isMouseNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage isHeadsetNeedBe(String chatId, String message, String[][] titles, String[][] commands, String data);
+
+    SendMessage finishDefineWorkplaceAttributes(String chatId, User user, String data);
+
+    SendMessage backFromSelectDateOrSelectWeekDay(String chatId, User user, String date);
+
     SendMessage setEndDateForContinuousBooking(String chatId, String message, String startDate, User user, String[][] titles, String[][] commands);
 
     SendMessage defineRecurringWeekdays(String chatId, String message, String weekdays, String[][] titles, String[][] commands, User user);
 
-    SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands);
+    SendMessage defineRecurringWeeks(String chatId, String message, String weekTimes, String[][] titles, String[][] commands, User user);
 
     SendMessage defineRecurringStartDate(String chatId, String message, String startDate, User user, String[][] titles, String[][] commands);
 
-    SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands);
+    SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands, CreateBookingDto dto);
 
     SendMessage getOfficesByCityForOneDay(String chatId, String message, String date, User user, String[][] titles, String[][] commands);
 

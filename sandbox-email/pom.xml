@@ -18,6 +18,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.exadel.sandbox</groupId>
+            <artifactId>sandbox-backend</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>${javax.mail.version}</version>

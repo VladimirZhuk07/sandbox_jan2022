@@ -10,9 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -69,7 +70,8 @@ public class User extends AuditableEntity {
     @JsonIgnore
     private Vacation vacation;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    @NotFound(action= NotFoundAction.IGNORE)
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE}, mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Booking> bookings = new ArrayList<>();
 

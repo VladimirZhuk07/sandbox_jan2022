@@ -27,6 +27,8 @@ public class TelegramAuthorizationService {
         Optional<User> current = userService.findUserByChatIdOrPhoneNumber(chatId, phoneNumber);
         if (current.isPresent()) {
             User user = current.get();
+            if(user.getStatus() == UserState.BLOCKED)
+                return Optional.empty();
             if (Objects.equals(chatId, user.getChatId()) && user.getStatus() == UserState.WAIT_PHONE_AUTHORIZATION) {
                 user.setStatus(UserState.ACTIVE);
                 user.setPhoneNumber(phoneNumber);

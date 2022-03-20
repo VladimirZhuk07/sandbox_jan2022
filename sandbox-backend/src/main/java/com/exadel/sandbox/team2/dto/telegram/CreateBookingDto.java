@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.dto.telegram;
 
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,22 @@ public class CreateBookingDto {
     private String officeName;
 
     private String officeAddress;
+
+    private Boolean nextToWindow;
+
+    private Boolean pc;
+
+    private Boolean monitor;
+
+    private Boolean keyboard;
+
+    private Boolean mouse;
+
+    private Boolean headset;
+
+    private Integer kitchenNum;
+
+    private Integer confRoomsNum;
 
     private long workplaceId;
 
@@ -44,6 +61,8 @@ public class CreateBookingDto {
     private Boolean saturday;
 
     private Boolean sunday;
+
+    private TelegramState bookingTypeBeforeDefineWorkplaceAttributes;
 
     private int weekTimes;
 }
