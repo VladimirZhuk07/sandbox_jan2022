@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -59,8 +58,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " ORDER BY role.name ASC", nativeQuery = true)
     List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,
                                                          @Param("userCreateDateTo") Date userCreateDateTo);
-
-    @Modifying
-    @Query(value = "update User u set u.phoneNumber = ?1 where u.id = ?2")
-    void updatePhoneNumber(String newPhoneNumber, Long userId);
 }

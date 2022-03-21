@@ -19,6 +19,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * Клас для адлову каманд і паведамленні, у выпадку:
+ * 1) націску на кнопку.
+ *
+ * Class for catching commands and messages, in case of:
+ * 1) Pressing the button.
+ *
+ * Класс для отлова команд и сообщения, в случае:
+ * 1) Нажатия на кнопку.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -106,19 +116,16 @@ public class CallbackQueryHandler implements BaseHandler {
       case FLOOR_REPORT_DEFINE_FLOOR -> sendMessage = utils.getSendMessage(chatId, "Please enter floor number", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       case CITY_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_FROM, OFFICE_REPORT_DEFINE_BOOKING_FROM -> sendMessage = telegramService.defineId(chatId, "Please enter 'booking from' date in the form of '2022-03-01'", data, user);
 
-      //TODO
       case EDIT_INFORMATION -> sendMessage = utils.getSendMessage(chatId, "Please select what you want to edit",
               new String[][]{{"Firstname", "Lastname"},
                       {"\uD83D\uDD10 Password"}, {"\uD83D\uDD19 Back"}},
               new String[][]{{"EDIT_FIRSTNAME", "EDIT_LASTNAME"}, {"EDIT_PASSWORD"}, {"Back"}});
-
       case EDIT_FIRSTNAME -> sendMessage = utils.getSendMessage(chatId,
               "Enter your new Firstname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       case EDIT_LASTNAME ->sendMessage = utils.getSendMessage(chatId,
               "Enter your new Lastname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       case EDIT_PASSWORD -> sendMessage = utils.getSendMessage(chatId,
               "Enter your new Password", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
-
       default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
     }
     userService.save(user);

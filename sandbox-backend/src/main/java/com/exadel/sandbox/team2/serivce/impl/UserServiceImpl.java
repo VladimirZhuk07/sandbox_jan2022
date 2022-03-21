@@ -129,10 +129,4 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
         return repository.findAllByIsFiredTrueAndStatusNotContains();
     }
 
-
-    @Override
-    public void updatePhoneNumber(Long userId, String newPhoneNumber) {
-        repository.updatePhoneNumber(newPhoneNumber, userId);
-    }
-
 }

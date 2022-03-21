@@ -16,6 +16,19 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * Клас для адлову каманд і паведамленні, у выпадку:
+ * 1) пры адпраўцы паведамлення.
+ * 2) Меню(камандным) у самым нізе Тэлеграма.
+ *
+ * A class for capturing commands and messages, in the case of:
+ * 1) When sending a message.
+ * 2) The (command) menu at the very bottom is telegram.
+ *
+ * Класс для отлова команд и сообщения, в случае:
+ * 1) При отправке сообщения.
+ * 2) Меню(командном) в самом низу телеграмма.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

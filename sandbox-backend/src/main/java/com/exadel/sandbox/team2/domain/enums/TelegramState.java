@@ -25,8 +25,23 @@ public enum TelegramState {
     CHECK_PHONE_NUMBER, EDIT_INFORMATION, EDIT_FIRSTNAME, EDIT_LASTNAME, EDIT_PASSWORD, CHECK_EDIT_INFORMATION,
     CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD;
 
-// Переходы, двка вида 1 колбэк кнопка отправление сообщения и переход в определённый стэйт,
-   // 2) когда юзер пишет какой то мессэдж pjone number, id
+    /**
+     * * Пераходы дзеляцца на два выгляду.
+     * 1) Callback кнопка і адпраўленне паведамленні і далей пераход у пэўны стан.
+     * 2) калі карыстальнік піша опредеенное паведамленне ў выглядзе нумара тэлефона або айди.
+     *
+     * Transitions are divided into two types.
+     * 1) Callback button and sending a message and then switching to a certain state.
+     * 2) When the user writes a certain message in the form of a phone number or ID.
+     *
+     * Переходы делятся на два вида.
+     * 1) Callback кнопка и отправление сообщения и дальше переход в определённое состояние.
+     * 2) Когда пользователь пишет опредеённое сообщение в виде номера телефона или айди.
+     *
+     * @param command command.
+     * @param user user entity
+     * @return boolean result
+     */
     public static boolean commandToTelegramState(String command, User user){
         boolean isEditMessage = false;
         TelegramState telegramState = null;
@@ -128,7 +143,11 @@ public enum TelegramState {
         return isEditMessage;
     }
 
-    // Back
+    /**
+     * Back menu management
+     *
+     * @param user for getting telegram state
+     */
     public static void backAndUserState(User user){
         TelegramState telegramState;
         telegramState = switch (user.getTelegramState()){
@@ -170,8 +189,8 @@ public enum TelegramState {
             case OFFICE_REPORT_DEFINE_BOOKING_TO -> OFFICE_REPORT_DEFINE_BOOKING_FROM;
             case USER_REPORT_DEFINE_BOOKING_TO -> USER_REPORT_DEFINE_BOOKING_FROM;
             case ALL_USER_REPORT_DEFINE_CREATE_DATE_TO -> ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM;
-            case EDIT_FIRSTNAME, EDIT_LASTNAME, EDIT_PASSWORD -> EDIT_INFORMATION;
-
+            case EDIT_FIRSTNAME, EDIT_LASTNAME, EDIT_PASSWORD,
+                    CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD -> EDIT_INFORMATION;
             default -> null;
         };
         if(telegramState != null)
