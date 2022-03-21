@@ -19,6 +19,16 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+/**
+ * Клас для адлову каманд і паведамленні, у выпадку:
+ * 1) націску на кнопку.
+ *
+ * Class for catching commands and messages, in case of:
+ * 1) Pressing the button.
+ *
+ * Класс для отлова команд и сообщения, в случае:
+ * 1) Нажатия на кнопку.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -94,9 +104,9 @@ public class CallbackQueryHandler implements BaseHandler {
       case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}}, user);
       case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
                       {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"◀️Back"}},
-              new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+              new String[][]{{"PHONE", "EDIT_INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
       case REPORT -> sendMessage = telegramService.checkUserRole(chatId, "Please select report type.",
-              new String[][]{{"Users", "Supervisors"}, {"City", "Single Office"}, {"Offices", "Floor"}, {"◀️Back"}},
+              new String[][]{{"User", "All User"}, {"City", "Single Office"}, {"Offices", "Floor"}, {"Back"}},
               new String[][]{{"USER_REPORT", "ALL_USER_REPORT"}, {"CITY_REPORT", "SINGLE_OFFICE_REPORT"}, {"OFFICES_REPORT", "FLOOR_REPORT"}, {"Back"}}, user);
       case USER_REPORT_DEFINE_BOOKING_FROM -> sendMessage = utils.getSendMessage(chatId, "Please enter 'booking from' date in the form of '2022-03-21", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       case ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM -> sendMessage = utils.getSendMessage(chatId, "Please enter user`s 'created date' in the form of '2022-03-21'", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
@@ -105,6 +115,17 @@ public class CallbackQueryHandler implements BaseHandler {
       case OFFICE_REPORT_DEFINE_ID -> sendMessage = telegramService.getOfficesByCity(chatId, "Please enter office id", null, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}}, null);
       case FLOOR_REPORT_DEFINE_FLOOR -> sendMessage = utils.getSendMessage(chatId, "Please enter floor number", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       case CITY_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_FROM, OFFICE_REPORT_DEFINE_BOOKING_FROM -> sendMessage = telegramService.defineId(chatId, "Please enter 'booking from' date in the form of '2022-03-01'", data, user);
+
+      case EDIT_INFORMATION -> sendMessage = utils.getSendMessage(chatId, "Please select what you want to edit",
+              new String[][]{{"Firstname", "Lastname"},
+                      {"\uD83D\uDD10 Password"}, {"\uD83D\uDD19 Back"}},
+              new String[][]{{"EDIT_FIRSTNAME", "EDIT_LASTNAME"}, {"EDIT_PASSWORD"}, {"Back"}});
+      case EDIT_FIRSTNAME -> sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Firstname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+      case EDIT_LASTNAME ->sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Lastname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+      case EDIT_PASSWORD -> sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Password", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
       default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
     }
     userService.save(user);

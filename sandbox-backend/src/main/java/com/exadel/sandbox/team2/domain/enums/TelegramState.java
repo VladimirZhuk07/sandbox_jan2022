@@ -21,9 +21,27 @@ public enum TelegramState {
     CITY_REPORT_DEFINE_ID, CITY_REPORT_DEFINE_BOOKING_FROM, CITY_REPORT_DEFINE_BOOKING_TO, GET_CITY_REPORT,
     OFFICE_REPORT_DEFINE_ID, OFFICE_REPORT_DEFINE_BOOKING_FROM, OFFICE_REPORT_DEFINE_BOOKING_TO, GET_OFFICE_REPORT,
     ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM, ALL_OFFICE_REPORT_DEFINE_BOOKING_TO, GET_ALL_OFFICE_REPORT,
-    FLOOR_REPORT_DEFINE_FLOOR, FLOOR_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_TO, GET_FLOOR_REPORT;
+    FLOOR_REPORT_DEFINE_FLOOR, FLOOR_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_TO, GET_FLOOR_REPORT,
+    CHECK_PHONE_NUMBER, EDIT_INFORMATION, EDIT_FIRSTNAME, EDIT_LASTNAME, EDIT_PASSWORD, CHECK_EDIT_INFORMATION,
+    CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD;
 
-
+    /**
+     * * Пераходы дзеляцца на два выгляду.
+     * 1) Callback кнопка і адпраўленне паведамленні і далей пераход у пэўны стан.
+     * 2) калі карыстальнік піша опредеенное паведамленне ў выглядзе нумара тэлефона або айди.
+     *
+     * Transitions are divided into two types.
+     * 1) Callback button and sending a message and then switching to a certain state.
+     * 2) When the user writes a certain message in the form of a phone number or ID.
+     *
+     * Переходы делятся на два вида.
+     * 1) Callback кнопка и отправление сообщения и дальше переход в определённое состояние.
+     * 2) Когда пользователь пишет опредеённое сообщение в виде номера телефона или айди.
+     *
+     * @param command command.
+     * @param user user entity
+     * @return boolean result
+     */
     public static boolean commandToTelegramState(String command, User user){
         boolean isEditMessage = false;
         TelegramState telegramState = null;
@@ -66,6 +84,11 @@ public enum TelegramState {
             case "CITY_REPORT" -> telegramState = CITY_REPORT_DEFINE_ID;
             case "SINGLE_OFFICE_REPORT" -> telegramState = OFFICE_REPORT_DEFINE_ID;
             case "FLOOR_REPORT" -> telegramState = FLOOR_REPORT_DEFINE_FLOOR;
+
+            case "EDIT_INFORMATION" -> telegramState = EDIT_INFORMATION;
+            case "EDIT_FIRSTNAME" -> telegramState = EDIT_FIRSTNAME;
+            case "EDIT_LASTNAME" -> telegramState = EDIT_LASTNAME;
+            case "EDIT_PASSWORD" -> telegramState = EDIT_PASSWORD;
         }
         if(telegramState == null){
             switch (user.getTelegramState()){
@@ -107,6 +130,11 @@ public enum TelegramState {
                 case FLOOR_REPORT_DEFINE_FLOOR -> telegramState = FLOOR_REPORT_DEFINE_BOOKING_FROM;
                 case FLOOR_REPORT_DEFINE_BOOKING_FROM -> telegramState = FLOOR_REPORT_DEFINE_BOOKING_TO;
                 case FLOOR_REPORT_DEFINE_BOOKING_TO -> telegramState = GET_FLOOR_REPORT;
+                case UPDATE_PHONE_NUMBER -> telegramState = CHECK_PHONE_NUMBER;
+
+                case EDIT_FIRSTNAME -> telegramState = CHECK_EDIT_FIRSTNAME;
+                case EDIT_LASTNAME -> telegramState = CHECK_EDIT_LASTNAME;
+                case EDIT_PASSWORD -> telegramState = CHECK_EDIT_PASSWORD;
             }
         }
         if(telegramState != null)
@@ -115,6 +143,11 @@ public enum TelegramState {
         return isEditMessage;
     }
 
+    /**
+     * Back menu management
+     *
+     * @param user for getting telegram state
+     */
     public static void backAndUserState(User user){
         TelegramState telegramState;
         telegramState = switch (user.getTelegramState()){
@@ -146,7 +179,7 @@ public enum TelegramState {
             case RECURRING_ASSIGN_START_WEEKDAY -> RECURRING_DEFINE_WEEKS;
             case RECURRING_ASSIGN_END_WEEKDAY -> RECURRING_ASSIGN_START_WEEKDAY;
             case RECURRING_SHOW_WORKPLACES -> RECURRING_ASSIGN_END_WEEKDAY;
-            case REPORT -> SETTINGS;
+            case REPORT, UPDATE_PHONE_NUMBER, EDIT_INFORMATION  -> SETTINGS;
             case USER_REPORT_DEFINE_BOOKING_FROM, ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM, FLOOR_REPORT_DEFINE_FLOOR, CITY_REPORT_DEFINE_ID, OFFICE_REPORT_DEFINE_ID -> REPORT;
             case FLOOR_REPORT_DEFINE_BOOKING_FROM -> FLOOR_REPORT_DEFINE_FLOOR;
             case CITY_REPORT_DEFINE_BOOKING_FROM -> CITY_REPORT_DEFINE_ID;
@@ -156,7 +189,8 @@ public enum TelegramState {
             case OFFICE_REPORT_DEFINE_BOOKING_TO -> OFFICE_REPORT_DEFINE_BOOKING_FROM;
             case USER_REPORT_DEFINE_BOOKING_TO -> USER_REPORT_DEFINE_BOOKING_FROM;
             case ALL_USER_REPORT_DEFINE_CREATE_DATE_TO -> ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM;
-            case GET_USER_REPORT -> MAIN_MENU;
+            case EDIT_FIRSTNAME, EDIT_LASTNAME, EDIT_PASSWORD,
+                    CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD -> EDIT_INFORMATION;
             default -> null;
         };
         if(telegramState != null)

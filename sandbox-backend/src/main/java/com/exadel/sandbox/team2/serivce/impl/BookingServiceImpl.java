@@ -112,7 +112,6 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
         return repository.findByUserId(id);
     }
 
-    //TODO need to finish deleteBooking
     @Override
     public boolean deleteBooking(Long id, Long userId) {
         Booking booking = repository.findById(id).orElse(null);

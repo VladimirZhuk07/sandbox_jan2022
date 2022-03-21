@@ -5,7 +5,6 @@ import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.dto.report.ReportOnUsersDto;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -59,6 +58,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " ORDER BY role.name ASC", nativeQuery = true)
     List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,
                                                          @Param("userCreateDateTo") Date userCreateDateTo);
-
-
 }
