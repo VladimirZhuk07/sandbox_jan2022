@@ -41,6 +41,7 @@ public class TelegramServiceImpl implements TelegramService {
     private final BookingService bookingService;
     private final EmailService emailService;
     private final TelegramReportService telegramReportService;
+    private final UserService userService;
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -538,6 +539,43 @@ public class TelegramServiceImpl implements TelegramService {
         };
     }
 
+    @Override
+    public SendMessage changePhoneNumber(String chatId, String newPhoneNumber, User user) {
+        while (newPhoneNumber.length() < 7) {
+            user.setTelegramState(TelegramState.UPDATE_PHONE_NUMBER);
+            return utils.getSendMessage(chatId, "Please enter right number of phone!\nIn format: +[code of country] [code of operator] [numbers of phone]"
+                    ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+        }
+        newPhoneNumber = newPhoneNumber.replaceAll(" ","");
+        user.setPhoneNumber(newPhoneNumber);
+        return utils.getSendMessage(chatId, "Ваш номер обновлён успешно!"
+                , new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+    }
+
+    @Override
+    public SendMessage editAccountInformation(String chatId, String newData, User user) {
+        SendMessage sendMessage;
+        switch (user.getTelegramState()) {
+            case CHECK_EDIT_FIRSTNAME -> {
+                user.setFirstName(newData);
+                sendMessage = utils.getSendMessage(chatId, "Ваше имя успешно изменено!"
+                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            }
+            case CHECK_EDIT_LASTNAME -> {
+                user.setLastName(newData);
+                sendMessage = utils.getSendMessage(chatId, "Ваша фамилия успешно изменена!"
+                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            }
+            case CHECK_EDIT_PASSWORD -> {
+                user.setPassword(newData);
+                sendMessage = utils.getSendMessage(chatId, "Ваш пароль обновлён успешно!"
+                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            }
+            default -> sendMessage = utils.getSendMessage(chatId, "Error editing information");
+        };
+        return sendMessage;
+    }
+
     private LocalDate checkDateAndSet(String date, String endDate, CreateBookingDto dto){
         if(endDate != null)
             date = endDate;
@@ -762,4 +800,5 @@ public class TelegramServiceImpl implements TelegramService {
         }
         return date1;
     }
+
 }

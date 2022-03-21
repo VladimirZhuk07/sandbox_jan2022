@@ -21,6 +21,8 @@ public interface UserService extends BaseDtoService<User, UserDto> {
 
     void unassignUserRole(Long userId, Long roleId);
 
+    void updatePhoneNumber(Long userId, String newPhoneNumber);
+
     Optional<User> findInvitedUserByAuthorizationCode(String code);
 
     Optional<User> findUserByChatIdOrPhoneNumber(String chatId, String phone);

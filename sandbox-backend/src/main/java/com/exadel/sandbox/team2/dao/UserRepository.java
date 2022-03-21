@@ -5,11 +5,11 @@ import com.exadel.sandbox.team2.domain.enums.UserState;
 import com.exadel.sandbox.team2.dto.report.ReportOnEmployeesDto;
 import com.exadel.sandbox.team2.dto.report.ReportOnUsersDto;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -60,5 +60,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,
                                                          @Param("userCreateDateTo") Date userCreateDateTo);
 
-
+    @Modifying
+    @Query(value = "update User u set u.phoneNumber = ?1 where u.id = ?2")
+    void updatePhoneNumber(String newPhoneNumber, Long userId);
 }

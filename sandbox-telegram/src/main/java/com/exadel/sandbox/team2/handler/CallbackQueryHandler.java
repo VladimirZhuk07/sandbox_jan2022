@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.handler;
 
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.handler.base.BaseHandler;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.report.PdfReportServiceImpl;
@@ -53,7 +54,10 @@ public class CallbackQueryHandler implements BaseHandler {
       case MAIN_MENU -> sendMessage = utils.getSendMessage(chatId, "Please select your function", new String[][]{{"\uD83D\uDDD2 Menu","\uD83D\uDC64 Account"}, {"\uD83D\uDCD8 Contact",  "⚙️ Settings"}});
       case MENU -> sendMessage = utils.getSendMessage(chatId, "Please select functionality", new String[][]{{lms.getMessage("menu.booking"),lms.getMessage("menu.lastInformation")},
               {"Back"}}, new String[][]{{"BOOK", "INFO"}, {"Back"}});
-      case UPDATE_PHONE_NUMBER -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.reply.enterYourNewNumber"), lms.getMessage("cBQH.reply.pleaseSendYourNumber"));
+      //TODO
+      case UPDATE_PHONE_NUMBER -> sendMessage = utils.getSendMessage(chatId,
+              lms.getMessage("cBQH.reply.enterYourNewNumber"), new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+
       case CHOOSE_COUNTRY -> sendMessage = telegramService.getCountries(chatId, "Please select country", data);
       case CHOOSE_CITY -> sendMessage = telegramService.getCities(chatId, "Please select city", data);
       case ASSIGN_BOOKING_TYPE -> sendMessage = telegramService.setBookingType(chatId, "Please, select booking type", new String[][] {{"One day"},{"Continuous"},{"Recurring"},{"Back"}}, new String[][] {{"One day"},{"Continuous"},{"Recurring"},{"Back"}}, data);
@@ -92,9 +96,12 @@ public class CallbackQueryHandler implements BaseHandler {
       case SHOW_OFFICES_CONTINUOUS -> sendMessage = telegramService.getOfficesByCityForContinuous(chatId, "Please enter id of office", data, user, new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"Back"}}, new String[][] {{"Back"}});
       case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"Back"}}, new String[][]{{"Back"}}, user);
-      case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
+      //TODO
+      case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action",
+              new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
                       {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}},
-              new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+              new String[][]{{"PHONE", "EDIT_INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+
       case REPORT -> sendMessage = telegramService.checkUserRole(chatId, "Please select report type.",
               new String[][]{{"User", "All User"}, {"City", "Single Office"}, {"Offices", "Floor"}, {"Back"}},
               new String[][]{{"USER_REPORT", "ALL_USER_REPORT"}, {"CITY_REPORT", "SINGLE_OFFICE_REPORT"}, {"OFFICES_REPORT", "FLOOR_REPORT"}, {"Back"}}, user);
@@ -105,6 +112,19 @@ public class CallbackQueryHandler implements BaseHandler {
       case OFFICE_REPORT_DEFINE_ID -> sendMessage = utils.getSendMessage(chatId, "Please enter office id", new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case FLOOR_REPORT_DEFINE_FLOOR -> sendMessage = utils.getSendMessage(chatId, "Please enter floor number", new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case CITY_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_FROM -> sendMessage = telegramService.defineId(chatId, "Please enter 'booking from' date in the form of '2022-03-01'", data, user);
+      //TODO
+      case EDIT_INFORMATION -> sendMessage = utils.getSendMessage(chatId, "Please select what you want to edit",
+              new String[][]{{"Firstname", "Lastname"},
+                      {"\uD83D\uDD10 Password"}, {"\uD83D\uDD19 Back"}},
+              new String[][]{{"EDIT_FIRSTNAME", "EDIT_LASTNAME"}, {"EDIT_PASSWORD"}, {"Back"}});
+
+      case EDIT_FIRSTNAME -> sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Firstname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+      case EDIT_LASTNAME ->sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Lastname", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+      case EDIT_PASSWORD -> sendMessage = utils.getSendMessage(chatId,
+              "Enter your new Password", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+
       default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
     }
     userService.save(user);

@@ -46,9 +46,12 @@ public class MessageHandler implements BaseHandler {
       case GET_CONTACT -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("contact.contact"),  new String[][]{{"Back"}}, new String[][]{{"Back"}});
       case MENU -> sendMessage = utils.getSendMessage(chatId, "Please select functionality", new String[][]{{lms.getMessage("menu.booking"),lms.getMessage("menu.lastInformation")},
               {"Back"}}, new String[][]{{"BOOK", "INFO"}, {"Back"}});
-      case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
+
+      case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action",
+              new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
               {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"Back"}},
-              new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+              new String[][]{{"PHONE", "EDIT_INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+
       case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
       case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"Back"}}, new String[][] {{"Back"}}, user);
       case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"Back"}}, new String[][] {{"Back"}});
@@ -80,7 +83,13 @@ public class MessageHandler implements BaseHandler {
               "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
       case GET_FLOOR_REPORT -> sendMessage = telegramService.getReport(chatId, data, user, TelegramState.FLOOR_REPORT_DEFINE_BOOKING_TO,
               "Wrong date or 'booking from' date exceed 'booking to' date, please enter date for 'booking to' in the form '2022-03-21'");
-      default -> sendMessage = utils.getSendMessage(chatId, "Command not found");
+
+      case CHECK_PHONE_NUMBER -> sendMessage = telegramService.changePhoneNumber(chatId, data, user);
+
+      case CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD  -> sendMessage = telegramService.editAccountInformation(chatId, data, user);
+
+
+      default -> sendMessage = utils.getSendMessage(chatId, "[MH] -> Command not found");
     }
     userService.save(user);
     return sendMessage;
