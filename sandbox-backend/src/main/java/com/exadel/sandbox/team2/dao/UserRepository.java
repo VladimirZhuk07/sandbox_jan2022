@@ -54,7 +54,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " role.name as roleName, u.email as email"
             + " from User u join UserRole url on u.id = url.userId"
             + " join Role role on url.roleId = role.id "
-            + " where role.name NOT IN ('USER') "
+            + " where role.name NOT IN ('USER')"
             + " AND u.createdDate between :userCreateDateFrom AND :userCreateDateTo "
             + " ORDER BY role.name ASC", nativeQuery = true)
     List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,

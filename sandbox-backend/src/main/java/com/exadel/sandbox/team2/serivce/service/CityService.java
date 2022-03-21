@@ -7,9 +7,12 @@ import com.exadel.sandbox.team2.serivce.base.BaseDtoService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface CityService extends BaseDtoService<City, CityDto> {
     List<City> findByCountryName(String countryName);
+
+    Optional<City> findByName(String name);
 
     List<ReportOnCityDto> getDataForReportOnCity(Long idOfCity, Date bookedDateFrom, Date bookedDateTo);
 }

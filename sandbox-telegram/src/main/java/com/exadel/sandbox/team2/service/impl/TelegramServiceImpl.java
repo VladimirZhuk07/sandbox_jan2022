@@ -1,30 +1,37 @@
 package com.exadel.sandbox.team2.service.impl;
 
+import com.exadel.sandbox.team2.domain.Map;
 import com.exadel.sandbox.team2.domain.*;
+import com.exadel.sandbox.team2.domain.enums.RoleType;
 import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.MailDto;
 import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
+import com.exadel.sandbox.team2.dto.telegram.CreatingReportDto;
 import com.exadel.sandbox.team2.handler.utils.TelegramUtils;
 import com.exadel.sandbox.team2.serivce.service.*;
 import com.exadel.sandbox.team2.service.EmailService;
+import com.exadel.sandbox.team2.service.LocaleMessageService;
+import com.exadel.sandbox.team2.service.service.TelegramReportService;
 import com.exadel.sandbox.team2.service.service.TelegramService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class TelegramServiceImpl implements TelegramService {
 
     private static final Hashtable<String, CreateBookingDto> bookingList = new Hashtable<>();
+    private static final Hashtable<String, CreatingReportDto> reportList = new Hashtable<>();
 
+    private final LocaleMessageService lms;
     private final TelegramUtils utils;
     private final CountryService countryService;
     private final CityService cityService;
@@ -33,6 +40,7 @@ public class TelegramServiceImpl implements TelegramService {
     private final WorkplaceService workplaceService;
     private final BookingService bookingService;
     private final EmailService emailService;
+    private final TelegramReportService telegramReportService;
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -48,7 +56,7 @@ public class TelegramServiceImpl implements TelegramService {
             }
         }
         rows.add(row);
-        rows.add(List.of("Back"));
+        rows.add(List.of("◀️Back"));
         return utils.showOptions(chatId, message, rows);
     }
 
@@ -75,7 +83,7 @@ public class TelegramServiceImpl implements TelegramService {
             }
         }
         rows.add(row);
-        rows.add(List.of("Back"));
+        rows.add(List.of("◀️Back"));
         return utils.showOptions(chatId, message, rows);
     }
 
@@ -128,7 +136,7 @@ public class TelegramServiceImpl implements TelegramService {
         } else {
             user.setTelegramState(TelegramState.RECURRING_IS_KITCHEN_NEED);
         }
-        return utils.getSendMessage(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"Back","Next"}}, new String[][]{{"Yes"},{"Back","Next"}});
+        return utils.getSendMessage(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"◀️Back","Next ➡️"}}, new String[][]{{"Yes"},{"Back","Next"}});
     }
 
     @Override
@@ -211,13 +219,13 @@ public class TelegramServiceImpl implements TelegramService {
         TelegramState beforeWorkplace = dto.getBookingTypeBeforeDefineWorkplaceAttributes();
         if(beforeWorkplace == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED){
             user.setTelegramState(TelegramState.ONE_DAY_SELECT_DATE);
-            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
         }else if(beforeWorkplace == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
             user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
-            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
         }else {
             user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
-            return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
         }
     }
 
@@ -234,11 +242,11 @@ public class TelegramServiceImpl implements TelegramService {
             }else {
                 user.setTelegramState(TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED);
             }
-            return utils.getSendMessage(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}});
+            return utils.getSendMessage(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"◀️Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}});
         }else {
             user.setTelegramState(TelegramState.IS_HEADSET_NEED_BE);
             return isHeadsetNeedBe(chatId, "Should there be headset?\nIf no, then please press No.\nIf does not matter then press Next",
-                    new String[][]{{"Yes","No"},{"Back","Next"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, date);
+                    new String[][]{{"Yes","No"},{"◀️Back","Next ➡️"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, date);
         }
     }
 
@@ -253,7 +261,7 @@ public class TelegramServiceImpl implements TelegramService {
             for (String weekday : list) {
                 if (!checkWeekday(weekday, dto) || cnt == 7) {
                     user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
-                    return utils.getSendMessage(chatId, "Wrong format or entered weekdays more than 7");
+                    return utils.getSendMessage(chatId, "Wrong format or entered weekdays more than 7", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
                 }
                 builder.append(weekday).append(", ");
                 cnt++;
@@ -272,7 +280,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate localDate = checkDateAndSet(startDate, null, dto);
             if (localDate == null) {
                 user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`");
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`",  new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
             }
             dto.setStartDate(localDate);
             bookingList.put(chatId, dto);
@@ -287,7 +295,7 @@ public class TelegramServiceImpl implements TelegramService {
             int times = Integer.parseInt(weekTimes);
             if(times > 8){
                 user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKDAYS);
-                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"Back"}}, new String[][] {{"Back"}});
+                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"◀️Back"}}, new String[][] {{"Back"}});
             }
             dto.setWeekTimes(times);
             bookingList.put(chatId, dto);
@@ -316,7 +324,9 @@ public class TelegramServiceImpl implements TelegramService {
     @Override
     public SendMessage getOfficesByCity(String chatId, String message, String city, String[][] titles, String[][] commands, CreateBookingDto dto) {
         List<Office> list;
-        if(dto.getBookingTypeBeforeDefineWorkplaceAttributes() == null) {
+        if(dto == null){
+            list = officeService.findAll();
+        }else if(dto.getBookingTypeBeforeDefineWorkplaceAttributes() == null) {
             list = officeService.findByCityName(city);
         }else {
             list = officeService.findByParameters(dto.getKitchenNum(), dto.getConfRoomsNum(), dto.getCityName());
@@ -344,7 +354,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate startDate = checkDateAndSet(date, null, dto);
             if (startDate == null) {
                 user.setTelegramState(TelegramState.ONE_DAY_SELECT_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`");
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
             }
             dto.setStartDate(startDate);
             dto.setEndDate(startDate.plusDays(1));
@@ -362,7 +372,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate endDate = checkDateAndSet(null, date, dto);
             if (endDate == null) {
                 user.setTelegramState(TelegramState.SELECT_END_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`");
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
             }
             dto.setEndDate(endDate);
             setWeekDays(dto.getStartDate(), endDate, dto, null);
@@ -450,9 +460,85 @@ public class TelegramServiceImpl implements TelegramService {
     public SendMessage deleteUserBooking(String chatId, String message, String bookingId, User user, String[][] titles, String[][] commands) {
         if(!bookingService.deleteBooking(Long.valueOf(bookingId), user.getId())){
             user.setTelegramState(TelegramState.CANCEL_BOOKING);
-            return utils.getSendMessage(chatId, "This id does not exist or not belong to you");
+            return utils.getSendMessage(chatId, "This id does not exist or not belong to you", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
         }
         return utils.getSendMessage(chatId, message, titles, commands);
+    }
+
+    @Override
+    public SendMessage checkUserRole(String chatId, String message, String[][] titles, String[][] commands, User user) {
+        Set<Role> list = user.getRoles();
+        for(Role role: list){
+            if(role.getName().equals(RoleType.ADMIN) || role.getName().equals(RoleType.MANAGER)){
+                return utils.getSendMessage(chatId, message, titles, commands);
+            }
+        }
+
+        user.setTelegramState(TelegramState.SETTINGS);
+        return utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
+                        {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"◀️Back"}},
+                new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
+    }
+
+    @Override
+    public SendMessage defineId(String chatId, String message, String id, User user) {
+        if(!id.equals("Back")) {
+            CreatingReportDto dto = new CreatingReportDto();
+            if(user.getTelegramState() == TelegramState.CITY_REPORT_DEFINE_BOOKING_FROM){
+                Optional<City> byName = cityService.findByName(id);
+                if(byName.isEmpty()){
+                    user.setTelegramState(TelegramState.CITY_REPORT_DEFINE_ID);
+                    return utils.getSendMessage(chatId, "This city does not exist", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                }
+                dto.setId(byName.get().getId());
+            }else{
+                dto.setId(Long.valueOf(id));
+            }
+            reportList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, new String[][] {{"Back to Menu"}}, new String[][] {{"Back"}});
+    }
+
+    @Override
+    public SendMessage defineDateFrom(String chatId, String message, String errorMessage, TelegramState telegramState, String dateFrom, User user) {
+        if(!dateFrom.equals("Back")){
+            CreatingReportDto dto;
+            if(user.getTelegramState() == TelegramState.USER_REPORT_DEFINE_BOOKING_TO
+            || user.getTelegramState() == TelegramState.ALL_USER_REPORT_DEFINE_CREATE_DATE_TO
+            || user.getTelegramState() == TelegramState.ALL_OFFICE_REPORT_DEFINE_BOOKING_TO) {
+                dto = new CreatingReportDto();
+            }else{
+                dto = reportList.get(chatId);
+            }
+            Date date = checkDateForReport(dateFrom, null);
+            if(date == null){
+                user.setTelegramState(telegramState);
+                return utils.getSendMessage(chatId, errorMessage, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            }
+            dto.setBookingFrom(date);
+            reportList.put(chatId, dto);
+        }
+        return utils.getSendMessage(chatId, message, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+    }
+
+    @Override
+    public SendMessage getReport(String chatId, String dateTo, User user, TelegramState telegramState, String message) {
+        CreatingReportDto dto = reportList.get(chatId);
+        Date date = checkDateForReport(dateTo, dto);
+        if(date == null){
+            user.setTelegramState(telegramState);
+            return utils.getSendMessage(chatId, message, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+        }
+        reportList.remove(chatId);
+        return switch (user.getTelegramState()){
+            case GET_USER_REPORT -> telegramReportService.sendReportOnUsers(user, dto.getBookingFrom(), date);
+            case GET_ALL_USER_REPORT -> telegramReportService.sendReportOnEmployees(user, dto.getBookingFrom(), date);
+            case GET_ALL_OFFICE_REPORT -> telegramReportService.sendReportOnAllOffices(user, dto.getBookingFrom(), date);
+            case GET_CITY_REPORT -> telegramReportService.sendReportOnCity(user, dto.getId(), dto.getBookingFrom(), date);
+            case GET_FLOOR_REPORT -> telegramReportService.sendReportOnFloor(user, dto.getId(), dto.getBookingFrom(), date);
+            case GET_OFFICE_REPORT -> telegramReportService.sendReportOnSingleOffice(user, dto.getId(), dto.getBookingFrom(), date);
+            default -> utils.getSendMessage(chatId, "ERROR‼️");
+        };
     }
 
     private LocalDate checkDateAndSet(String date, String endDate, CreateBookingDto dto){
@@ -661,5 +747,22 @@ public class TelegramServiceImpl implements TelegramService {
                 dayOfWeek = DayOfWeek.of(++value);
             }
         }
+    }
+
+    private Date checkDateForReport(String date, CreatingReportDto dto){
+        if(date.length() != 10 || !date.contains("-")){
+            return null;
+        }
+        Date date1 = null;
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(dto != null){
+            if(dto.getBookingFrom().after(date1))
+                return null;
+        }
+        return date1;
     }
 }

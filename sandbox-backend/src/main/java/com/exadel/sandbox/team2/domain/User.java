@@ -58,7 +58,7 @@ public class User extends AuditableEntity {
     @Column
     private UserState status = UserState.NEW;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "UserRole"
             , joinColumns = @JoinColumn(name = "userId")

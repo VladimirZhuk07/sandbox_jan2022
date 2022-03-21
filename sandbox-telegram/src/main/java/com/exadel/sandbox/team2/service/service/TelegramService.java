@@ -1,6 +1,7 @@
 package com.exadel.sandbox.team2.service.service;
 
 import com.exadel.sandbox.team2.domain.User;
+import com.exadel.sandbox.team2.domain.enums.TelegramState;
 import com.exadel.sandbox.team2.dto.telegram.CreateBookingDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -61,4 +62,12 @@ public interface TelegramService {
     SendMessage getUserBookings(String chatId, String message, Long userId, String[][] titles, String[][] commands);
 
     SendMessage deleteUserBooking(String chatId, String message, String bookingId, User user, String[][] titles, String[][] commands);
+
+    SendMessage checkUserRole(String chatId, String message, String[][] titles, String[][] commands, User user);
+
+    SendMessage defineId(String chatId, String message, String id, User user);
+
+    SendMessage defineDateFrom(String chatId, String message, String errorMessage, TelegramState telegramState, String createdDateFrom, User user);
+
+    SendMessage getReport(String chatId, String dateTo, User user, TelegramState telegramState, String message);
 }
