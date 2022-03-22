@@ -41,7 +41,6 @@ public class TelegramServiceImpl implements TelegramService {
     private final BookingService bookingService;
     private final EmailService emailService;
     private final TelegramReportService telegramReportService;
-    private final UserService userService;
 
     @Override
     public SendMessage getCountries(String chatId, String message, String data) {
@@ -57,7 +56,7 @@ public class TelegramServiceImpl implements TelegramService {
             }
         }
         rows.add(row);
-        rows.add(List.of("◀️Back"));
+        rows.add(List.of("\uD83D\uDD19"));
         return utils.showOptions(chatId, message, rows);
     }
 
@@ -84,7 +83,7 @@ public class TelegramServiceImpl implements TelegramService {
             }
         }
         rows.add(row);
-        rows.add(List.of("◀️Back"));
+        rows.add(List.of("\uD83D\uDD19"));
         return utils.showOptions(chatId, message, rows);
     }
 
@@ -137,7 +136,7 @@ public class TelegramServiceImpl implements TelegramService {
         } else {
             user.setTelegramState(TelegramState.RECURRING_IS_KITCHEN_NEED);
         }
-        return utils.getSendMessage(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"◀️Back","Next ➡️"}}, new String[][]{{"Yes"},{"Back","Next"}});
+        return utils.getSendMessage(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"Yes"},{"\uD83D\uDD19","Next ➡️"}}, new String[][]{{"Yes"},{"Back","Next"}});
     }
 
     @Override
@@ -220,13 +219,13 @@ public class TelegramServiceImpl implements TelegramService {
         TelegramState beforeWorkplace = dto.getBookingTypeBeforeDefineWorkplaceAttributes();
         if(beforeWorkplace == TelegramState.ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED){
             user.setTelegramState(TelegramState.ONE_DAY_SELECT_DATE);
-            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }else if(beforeWorkplace == TelegramState.CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
             user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
-            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write start date of your booking in form of `2022-03-10`", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }else {
             user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
-            return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "Please write all weekdays you want to book in the format 'MONDAY,TUESDAY,WEDNESDAY'", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }
     }
 
@@ -243,11 +242,11 @@ public class TelegramServiceImpl implements TelegramService {
             }else {
                 user.setTelegramState(TelegramState.RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED);
             }
-            return utils.getSendMessage(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"◀️Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}});
+            return utils.getSendMessage(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"Yes","No"},{"\uD83D\uDD19"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}});
         }else {
             user.setTelegramState(TelegramState.IS_HEADSET_NEED_BE);
             return isHeadsetNeedBe(chatId, "Should there be headset?\nIf no, then please press No.\nIf does not matter then press Next",
-                    new String[][]{{"Yes","No"},{"◀️Back","Next ➡️"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, date);
+                    new String[][]{{"Yes","No"},{"\uD83D\uDD19","Next ➡️"}}, new String[][]{{"Yes","No"},{"Back","Next"}}, date);
         }
     }
 
@@ -262,7 +261,7 @@ public class TelegramServiceImpl implements TelegramService {
             for (String weekday : list) {
                 if (!checkWeekday(weekday, dto) || cnt == 7) {
                     user.setTelegramState(TelegramState.RECURRING_SELECT_WEEK_DAY);
-                    return utils.getSendMessage(chatId, "Wrong format or entered weekdays more than 7", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                    return utils.getSendMessage(chatId, "Wrong format or entered weekdays more than 7", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
                 }
                 builder.append(weekday).append(", ");
                 cnt++;
@@ -281,7 +280,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate localDate = checkDateAndSet(startDate, null, dto);
             if (localDate == null) {
                 user.setTelegramState(TelegramState.CONTINUOUS_SELECT_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`",  new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`",  new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             dto.setStartDate(localDate);
             bookingList.put(chatId, dto);
@@ -296,7 +295,7 @@ public class TelegramServiceImpl implements TelegramService {
             int times = Integer.parseInt(weekTimes);
             if(times > 8){
                 user.setTelegramState(TelegramState.RECURRING_DEFINE_WEEKDAYS);
-                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"◀️Back"}}, new String[][] {{"Back"}});
+                return utils.getSendMessage(chatId, "Please enter start date of your booking in the form of `2022-03-10`", new String[][] {{"\uD83D\uDD19"}}, new String[][] {{"Back"}});
             }
             dto.setWeekTimes(times);
             bookingList.put(chatId, dto);
@@ -355,7 +354,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate startDate = checkDateAndSet(date, null, dto);
             if (startDate == null) {
                 user.setTelegramState(TelegramState.ONE_DAY_SELECT_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             dto.setStartDate(startDate);
             dto.setEndDate(startDate.plusDays(1));
@@ -373,7 +372,7 @@ public class TelegramServiceImpl implements TelegramService {
             LocalDate endDate = checkDateAndSet(null, date, dto);
             if (endDate == null) {
                 user.setTelegramState(TelegramState.SELECT_END_DATE);
-                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                return utils.getSendMessage(chatId, "Wrong form of date or date is expired, please write date in form of `2022-03-10`", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             dto.setEndDate(endDate);
             setWeekDays(dto.getStartDate(), endDate, dto, null);
@@ -461,7 +460,7 @@ public class TelegramServiceImpl implements TelegramService {
     public SendMessage deleteUserBooking(String chatId, String message, String bookingId, User user, String[][] titles, String[][] commands) {
         if(!bookingService.deleteBooking(Long.valueOf(bookingId), user.getId())){
             user.setTelegramState(TelegramState.CANCEL_BOOKING);
-            return utils.getSendMessage(chatId, "This id does not exist or not belong to you", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, "This id does not exist or not belong to you", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }
         return utils.getSendMessage(chatId, message, titles, commands);
     }
@@ -477,7 +476,7 @@ public class TelegramServiceImpl implements TelegramService {
 
         user.setTelegramState(TelegramState.SETTINGS);
         return utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
-                        {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"◀️Back"}},
+                        {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"\uD83D\uDD19"}},
                 new String[][]{{"PHONE", "INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
     }
 
@@ -489,7 +488,7 @@ public class TelegramServiceImpl implements TelegramService {
                 Optional<City> byName = cityService.findByName(id);
                 if(byName.isEmpty()){
                     user.setTelegramState(TelegramState.CITY_REPORT_DEFINE_ID);
-                    return utils.getSendMessage(chatId, "This city does not exist", new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                    return utils.getSendMessage(chatId, "This city does not exist", new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
                 }
                 dto.setId(byName.get().getId());
             }else{
@@ -514,12 +513,12 @@ public class TelegramServiceImpl implements TelegramService {
             Date date = checkDateForReport(dateFrom, null);
             if(date == null){
                 user.setTelegramState(telegramState);
-                return utils.getSendMessage(chatId, errorMessage, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                return utils.getSendMessage(chatId, errorMessage, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             dto.setBookingFrom(date);
             reportList.put(chatId, dto);
         }
-        return utils.getSendMessage(chatId, message, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+        return utils.getSendMessage(chatId, message, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
     }
 
     @Override
@@ -528,7 +527,7 @@ public class TelegramServiceImpl implements TelegramService {
         Date date = checkDateForReport(dateTo, dto);
         if(date == null){
             user.setTelegramState(telegramState);
-            return utils.getSendMessage(chatId, message, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+            return utils.getSendMessage(chatId, message, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }
         reportList.remove(chatId);
         return switch (user.getTelegramState()){
@@ -547,12 +546,12 @@ public class TelegramServiceImpl implements TelegramService {
         while (newPhoneNumber.length() < 7) {
             user.setTelegramState(TelegramState.UPDATE_PHONE_NUMBER);
             return utils.getSendMessage(chatId, "Please enter right number of phone!\nIn format: +[code of country] [code of operator] [numbers of phone]"
-                    ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                    ,new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
         }
         newPhoneNumber = newPhoneNumber.replaceAll(" ","");
         user.setPhoneNumber(newPhoneNumber);
         return utils.getSendMessage(chatId, "Ваш номер обновлён успешно!"
-                , new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                , new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
     }
 
     @Override
@@ -562,20 +561,20 @@ public class TelegramServiceImpl implements TelegramService {
             case CHECK_EDIT_FIRSTNAME -> {
                 user.setFirstName(newData);
                 sendMessage = utils.getSendMessage(chatId, "Ваше имя успешно изменено!"
-                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                        ,new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             case CHECK_EDIT_LASTNAME -> {
                 user.setLastName(newData);
                 sendMessage = utils.getSendMessage(chatId, "Ваша фамилия успешно изменена!"
-                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                        ,new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             case CHECK_EDIT_PASSWORD -> {
                 user.setPassword(newData);
                 sendMessage = utils.getSendMessage(chatId, "Ваш пароль обновлён успешно!"
-                        ,new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+                        ,new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
             }
             default -> sendMessage = utils.getSendMessage(chatId, "Error editing information");
-        };
+        }
         return sendMessage;
     }
 

@@ -55,23 +55,23 @@ public class MessageHandler implements BaseHandler {
                       + "\n\uD83D\uDCDE " + lms.getMessage("account.phoneNumber") + ": %s"
                       + "\n\uD83D\uDCE7 " + lms.getMessage("account.email") + ": %s",
               user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail()),
-    new String[][]{{"Back"}}, new String[][]{{"Back"}});
-      case GET_CONTACT -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("contact.contact"),  new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
+    new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
+      case GET_CONTACT -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("contact.contact"),  new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
       case MENU -> sendMessage = utils.getSendMessage(chatId, "Please select functionality", new String[][]{{lms.getMessage("menu.booking"),lms.getMessage("menu.lastInformation")},
-              {"◀️Back"}}, new String[][]{{"BOOK", "INFO"}, {"Back"}});
+              {"\uD83D\uDD19"}}, new String[][]{{"BOOK", "INFO"}, {"Back"}});
       case SETTINGS -> sendMessage = utils.getSendMessage(chatId, "Please select action", new String[][]{{lms.getMessage("settings.changePhoneNumber"), lms.getMessage("settings.editAccountInformation")},
-              {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"◀️Back"}},
+              {lms.getMessage("settings.changeLanguage"), lms.getMessage("settings.report")}, {"\uD83D\uDD19"}},
               new String[][]{{"PHONE", "EDIT_INFORMATION"}, {"LANGUAGE", "REPORT"}, {"Back"}});
-      case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"◀️Back"}}, new String[][] {{"Back"}}, user);
-      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"◀️Back"}}, new String[][] {{"Back"}}, user);
-      case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"◀️Back"}}, new String[][] {{"Back"}});
-      case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}}, user);
-      case SELECT_END_DATE -> sendMessage = telegramService.setEndDateForContinuousBooking(chatId, "Please enter end date of your booking in the form of `2022-03-10`", data, user, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
-      case SHOW_OFFICES_CONTINUOUS -> sendMessage = telegramService.getOfficesByCityForContinuous(chatId, "Please enter id of office", data, user, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
-      case SHOW_OFFICES_BY_CITY -> sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", data, user, new String[][]{{"◀️Back"}}, new String[][]{{"Back"}});
-      case SHOW_WORKPLACES_BY_OFFICE, SHOW_WORKPLACES_CONTINUOUS, RECURRING_SHOW_WORKPLACES -> sendMessage = telegramService.getWorkplaceByMapId(chatId, "Please enter id to book workplace", data, user, new String[][] {{"◀️Back"}}, new String[][] {{"Back"}});
-      case BOOK_ONE_DAY_WORKPLACE -> sendMessage = telegramService.bookWorkplace(chatId, "Workplace is successfully booked", data, user, new String[][] {{"◀️Back to Menu"}}, new String[][] {{"Back"}});
-      case DELETE_USER_BOOKING -> sendMessage = telegramService.deleteUserBooking(chatId, "Your booking is successfully canceled", data, user, new String[][] {{"◀️Back To Menu"}}, new String[][] {{"Back"}});
+      case RECURRING_DEFINE_WEEKDAYS -> sendMessage = telegramService.defineRecurringWeekdays(chatId, "You want to book these weekdays ", data, new String[][] {{"\uD83D\uDD19"}}, new String[][] {{"Back"}}, user);
+      case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"\uD83D\uDD19"}}, new String[][] {{"Back"}}, user);
+      case RECURRING_ASSIGN_START_WEEKDAY -> sendMessage = telegramService.defineRecurringStartDate(chatId, "Please write till what weekday you want to book in the form of 'MONDAY', only one weekday is allowed", data, user, new String[][] {{"\uD83D\uDD19"}}, new String[][] {{"Back"}});
+      case RECURRING_ASSIGN_END_WEEKDAY -> sendMessage = telegramService.showRecurringOffices(chatId, "Please enter id of office", data, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}}, user);
+      case SELECT_END_DATE -> sendMessage = telegramService.setEndDateForContinuousBooking(chatId, "Please enter end date of your booking in the form of `2022-03-10`", data, user, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
+      case SHOW_OFFICES_CONTINUOUS -> sendMessage = telegramService.getOfficesByCityForContinuous(chatId, "Please enter id of office", data, user, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
+      case SHOW_OFFICES_BY_CITY -> sendMessage = telegramService.getOfficesByCityForOneDay(chatId, "Please enter office id", data, user, new String[][]{{"\uD83D\uDD19"}}, new String[][]{{"Back"}});
+      case SHOW_WORKPLACES_BY_OFFICE, SHOW_WORKPLACES_CONTINUOUS, RECURRING_SHOW_WORKPLACES -> sendMessage = telegramService.getWorkplaceByMapId(chatId, "Please enter id to book workplace", data, user, new String[][] {{"\uD83D\uDD19"}}, new String[][] {{"Back"}});
+      case BOOK_ONE_DAY_WORKPLACE -> sendMessage = telegramService.bookWorkplace(chatId, "Workplace is successfully booked", data, user, new String[][] {{"\uD83D\uDD19 to Menu"}}, new String[][] {{"Back"}});
+      case DELETE_USER_BOOKING -> sendMessage = telegramService.deleteUserBooking(chatId, "Your booking is successfully canceled", data, user, new String[][] {{"\uD83D\uDD19 To Menu"}}, new String[][] {{"Back"}});
       case CITY_REPORT_DEFINE_BOOKING_FROM, FLOOR_REPORT_DEFINE_BOOKING_FROM, OFFICE_REPORT_DEFINE_BOOKING_FROM -> sendMessage = telegramService.defineId(chatId, "Please enter 'booking from' date in the form of '2022-03-01'", data, user);
       case CITY_REPORT_DEFINE_BOOKING_TO -> sendMessage = telegramService.defineDateFrom(chatId, "Please enter 'booking to' in the form of '2022-03-01'",
               "Wrong format, please enter 'booking from' date in the form of '2022-03-21'", TelegramState.CITY_REPORT_DEFINE_BOOKING_FROM, data, user);
