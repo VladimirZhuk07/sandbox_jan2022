@@ -39,7 +39,7 @@ public class TelegramMessageService {
             User user = current.get();
             String command = update.hasMessage() ? update.getMessage().getText() : update.getCallbackQuery().getData();
             boolean isEditMessage = false;
-            if(command.equals("Back")) {
+            if(command.equals("Back") || command.equals("⬅ ️Back")) {
                 TelegramState.backAndUserState(user);
             }else
                 isEditMessage = TelegramState.commandToTelegramState(command, user);
@@ -72,10 +72,9 @@ public class TelegramMessageService {
         return  authorizationService.authenticatePhoneNumber(chatId, contact.getPhoneNumber())
           .map(user -> user.getStatus() == UserState.NEW?
             utils.getSendMessage(chatId, lms.getMessage("reply.weSentInvitationToYourEmail")) :
-            utils.getSendMessage(chatId, "Please select your function", new String[][]{{lms.getMessage("menu.menu"), lms.getMessage("menu.account")},
-                    {lms.getMessage("menu.contact"), lms.getMessage("menu.settings")}},
+            utils.getSendMessage(chatId, "Please select your function",
                     new String[][]{{"\uD83D\uDDD2 Menu", "\uD83D\uDC64 Account"},
                             {"\uD83D\uDCD8 Contact", "⚙️ Settings"}}))
-          .orElse(utils.getSendMessage(chatId, "Sorry, but your account is blocked"));
+          .orElse(utils.getSendMessage(chatId, "Sorry, but your account is blocked or not exist"));
     }
 }

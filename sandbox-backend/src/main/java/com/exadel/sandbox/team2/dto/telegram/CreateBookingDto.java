@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -65,4 +66,8 @@ public class CreateBookingDto {
     private TelegramState bookingTypeBeforeDefineWorkplaceAttributes;
 
     private int weekTimes;
+
+    private List<Long> officeIds;
+
+    private List<Long> workplaceIds;
 }
