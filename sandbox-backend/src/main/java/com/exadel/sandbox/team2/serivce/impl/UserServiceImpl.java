@@ -125,6 +125,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
     }
 
     @Override
+    public Optional<User> findByRefreshToken(String refreshToken) {
+        return repository.findByRefreshToken(refreshToken);
+    }
+
+    @Override
     public List<User> findByIsFiredTrue() {
         return repository.findAllByIsFiredTrueAndStatusNotContains();
     }

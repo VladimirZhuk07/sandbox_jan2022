@@ -36,4 +36,6 @@ public interface UserService extends BaseDtoService<User, UserDto> {
     List<ReportOnUsersDto> getDataForReportOnUsers(Date userBookDateFrom, Date userBookDateTo);
 
     List<ReportOnEmployeesDto> getDataForEmployeesReport(Date userCreateDateFrom, Date userCreateDateTo);
+
+    Optional<User> findByRefreshToken(String refreshToken);
 }

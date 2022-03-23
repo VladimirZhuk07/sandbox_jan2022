@@ -21,11 +21,9 @@ public class JwtTokenProvider {
     @Value("${authorization.expiration}")
     private int expiration;
 
-    public TokenDto generateJwtToken(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-        String refreshToken = UUID.randomUUID().toString();
+    public TokenDto generateJwtToken(String username, String refreshToken) {
         String accessToken = Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration* 1000L))
                 .signWith(SignatureAlgorithm.HS512, secret)
@@ -34,23 +32,21 @@ public class JwtTokenProvider {
         return new TokenDto(accessToken,refreshToken);
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public int validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
-            return true;
+            return 200;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature -> Message: {} ", e);
+            return 500;
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token -> Message: {}", e);
+            return 501;
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT token -> Message: {}", e);
+            return 201;
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
+            return 502;
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            return 503;
         }
-
-        return false;
     }
 
     public String getUserNameFromJwtToken(String token) {
