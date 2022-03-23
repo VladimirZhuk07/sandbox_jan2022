@@ -58,4 +58,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " ORDER BY role.name ASC", nativeQuery = true)
     List<ReportOnEmployeesDto> getDataForEmployeesReport(@Param("userCreateDateFrom") Date userCreateDateFrom,
                                                          @Param("userCreateDateTo") Date userCreateDateTo);
+
+    Optional<User> findByRefreshToken(String refreshToken);
 }
