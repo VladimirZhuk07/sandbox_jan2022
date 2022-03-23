@@ -1,5 +1,6 @@
 package com.exadel.sandbox.team2.component;
 
+import com.exadel.sandbox.team2.dto.TokenDto;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {
@@ -19,15 +21,17 @@ public class JwtTokenProvider {
     @Value("${authorization.expiration}")
     private int expiration;
 
-    public String generateJwtToken(Authentication authentication) {
+    public TokenDto generateJwtToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-
-        return Jwts.builder()
+        String refreshToken = UUID.randomUUID().toString();
+        String accessToken = Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration* 1000L))
                 .signWith(SignatureAlgorithm.HS512, secret)
+                .setId(refreshToken)
                 .compact();
+        return new TokenDto(accessToken,refreshToken);
     }
 
     public boolean validateJwtToken(String authToken) {
