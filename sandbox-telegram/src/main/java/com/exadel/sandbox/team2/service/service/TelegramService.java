@@ -70,4 +70,8 @@ public interface TelegramService {
     SendMessage defineDateFrom(String chatId, String message, String errorMessage, TelegramState telegramState, String createdDateFrom, User user);
 
     SendMessage getReport(String chatId, String dateTo, User user, TelegramState telegramState, String message);
+
+    SendMessage changePhoneNumber(String chatId, String newPhoneNumber, User user);
+
+    SendMessage editAccountInformation(String chatId, String newData, User user);
 }
