@@ -41,7 +41,7 @@ notification:
 
 authorization:
    secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
-   expiration: 3600
+   expiration: 2
 
 language:
   english: en_EN

@@ -49,6 +49,12 @@ public class User extends AuditableEntity {
     private String telegramAuthorizationCode;
 
     private String password;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "token_expiry_date")
+    private LocalDate tokenExpiryDate;
   
     @Enumerated(EnumType.STRING)
     @Column
