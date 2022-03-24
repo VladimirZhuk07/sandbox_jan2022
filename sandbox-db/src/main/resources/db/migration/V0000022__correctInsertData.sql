@@ -42,3 +42,5 @@ UPDATE `User` u set email = 'divergenny1@gmail.com' where u.id = 3;
 UPDATE `User` u set email = 'divergenny@gmail.com' where u.id = 5;
 
 UPDATE `User` u set email = 'vlad_2397@mail.ru', phoneNumber = '+998938022308' where u.id = 1;
+
+UPDATE `User` u set phoneNumber = '+998998771017' where id = 2;
