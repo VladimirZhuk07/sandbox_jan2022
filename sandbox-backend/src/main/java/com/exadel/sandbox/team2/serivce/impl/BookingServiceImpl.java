@@ -103,6 +103,7 @@ public class BookingServiceImpl extends CRUDServiceImpl<Booking> implements Book
         Booking booking = mapper.CreatedBookingDtoToEntity(dto);
         booking.setUser(user);
         booking.setWorkplace(workplace);
+        booking.setActive(true);
         repository.save(booking);
         return true;
     }

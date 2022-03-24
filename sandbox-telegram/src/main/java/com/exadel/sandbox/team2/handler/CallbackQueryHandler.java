@@ -52,6 +52,7 @@ public class CallbackQueryHandler implements BaseHandler {
   public SendMessage handleSendMessage(Update update, User user) {
     String chatId = utils.getChatId(update);
     SendMessage sendMessage;
+    boolean error = false;
     if(user.getTelegramState() == null)
       return utils.getSendMessage(chatId, "Command not found");
     String data = update.getCallbackQuery().getData();
@@ -70,7 +71,7 @@ public class CallbackQueryHandler implements BaseHandler {
       case GET_CONTACT -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("contact.contact"),  new String[][]{{"⬅ ️Back"}}, new String[][]{{"Back"}});
       case UPDATE_PHONE_NUMBER -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.reply.enterYourNewNumber"), new String[][]{{"⬅ ️Back"}}, new String[][]{{"Back"}});
       case CHOOSE_COUNTRY -> sendMessage = telegramService.getCountries(chatId, "Please select country", data);
-      case CHOOSE_CITY -> sendMessage = telegramService.getCities(chatId, "Please select city", data);
+      case CHOOSE_CITY -> sendMessage = telegramService.getCities(chatId, "Please select city", data, user);
       case ASSIGN_BOOKING_TYPE -> sendMessage = telegramService.setBookingType(chatId, "Please, select booking type", new String[][] {{"\uD83D\uDCC5 One day"},{"\uD83D\uDCC6 Continuous"},{"\uD83D\uDD04 Recurring"},{"⬅ ️Back"}}, new String[][] {{"One day"},{"Continuous"},{"Recurring"},{"Back"}}, data);
       case ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED, CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED, RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED -> sendMessage = telegramService.isWorkplaceNeedBeDefine(chatId, "Do you want to define office/workplace attributes?", new String[][]{{"☑️Yes","❌ No"},{"⬅ ️Back"}}, new String[][]{{"DEFINE_WORKPLACE_ATTRIBUTES", "NOT_DEFINE_WORKPLACE_ATTRIBUTES"},{"Back"}}, data);
       case ONE_DAY_IS_KITCHEN_NEED, CONTINUOUS_IS_KITCHEN_NEED, RECURRING_IS_KITCHEN_NEED -> sendMessage = telegramService.isKitchenNeed(chatId, "Should there be a kitchen?\nIf not, please press Next", new String[][]{{"☑️Yes"},{"⬅ ️Back","Next ➡️"}}, new String[][]{{"Yes"},{"Back","Next"}}, user, data);
@@ -98,8 +99,8 @@ public class CallbackQueryHandler implements BaseHandler {
       case RECURRING_DEFINE_WEEKS -> sendMessage = telegramService.defineRecurringWeeks(chatId, "Please enter start date of your booking in the form of `2022-03-10`", data, new String[][] {{"⬅ ️Back"}}, new String[][] {{"Back"}}, user);
       case CHOOSE_LANGUAGE -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("settings.pleaseSelectLanguage"),
               new String[][]{{lms.getMessage("language.belarusian"), lms.getMessage("language.english")},
-                      {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}},
-              new String[][]{{"BY", "EN"}, {"UZ", "RU"}});
+                      {lms.getMessage("language.uzbek"), lms.getMessage("language.russian")}, {"⬅ ️Back"}},
+              new String[][]{{"BY", "EN"}, {"UZ", "RU"}, {"Back"}});
       case SET_LANGUAGE -> sendMessage = setLang(data, chatId);
       case GET_USER_BOOKINGS -> sendMessage = telegramService.getUserBookings(chatId, "Here is your active bookings", user.getId(), new String[][]{{"\uD83D\uDEAB Cancel Booking"},{"⬅ ️Back"}}, new String[][]{{"CANCEL_BOOKING"},{"Back"}});
       case CANCEL_BOOKING -> sendMessage = utils.getSendMessage(chatId, "Please enter id of your booking to cancel it");
@@ -130,9 +131,13 @@ public class CallbackQueryHandler implements BaseHandler {
               "Enter your new Lastname", new String[][]{{"⬅ ️Back"}}, new String[][]{{"Back"}});
       case EDIT_PASSWORD -> sendMessage = utils.getSendMessage(chatId,
               "Enter your new Password", new String[][]{{"⬅ ️Back"}}, new String[][]{{"Back"}});
-      default -> sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
+      default -> {
+        error = true;
+        sendMessage = utils.getSendMessage(chatId, lms.getMessage("cBQH.status.weWorkWithThisCommand").concat(" ").concat(user.getTelegramState().toString()));
+      }
     }
-    userService.save(user);
+    if(!error)
+      userService.save(user);
     return sendMessage;
   }
 
@@ -152,7 +157,7 @@ public class CallbackQueryHandler implements BaseHandler {
   }
 
   private SendMessage getMessageChanged(String chatId) {
-    return utils.getSendMessage(chatId, lms.getMessage("status.languageChanged").concat(lms.getCurrentLanguage()));
+    return utils.getSendMessage(chatId, lms.getMessage("status.languageChanged").concat(lms.getCurrentLanguage()), new String[][]{{"⬅ ️Back"}}, new String[][]{{"Back"}});
   }
 
   private SendMessage setLang(String lan, String chatId){

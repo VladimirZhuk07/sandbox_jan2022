@@ -54,9 +54,18 @@ public enum TelegramState {
             case "\uD83D\uDC64 Account" -> telegramState = GET_ACCOUNT_INFO;
             case "\uD83D\uDCD8 Contact" -> telegramState = GET_CONTACT;
             case "⚙️ Settings" -> telegramState = SETTINGS;
-            case "One day" -> telegramState = ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED;
-            case "Continuous" -> telegramState = CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED;
-            case "Recurring" -> telegramState = RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED;
+            case "One day" -> {
+                if(user.getTelegramState() == ASSIGN_BOOKING_TYPE)
+                    telegramState = ONE_DAY_IS_WORKPLACE_ATTRIBUTES_NEED;
+            }
+            case "Continuous" -> {
+                if(user.getTelegramState() == ASSIGN_BOOKING_TYPE)
+                    telegramState = CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED;
+            }
+            case "Recurring" -> {
+                if(user.getTelegramState() == ASSIGN_BOOKING_TYPE)
+                    telegramState = RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED;
+            }
             case "LANGUAGE" -> telegramState = CHOOSE_LANGUAGE;
             case "CANCEL_BOOKING" -> telegramState = CANCEL_BOOKING;
             case "DEFINE_WORKPLACE_ATTRIBUTES" -> {
@@ -64,7 +73,7 @@ public enum TelegramState {
                     telegramState = ONE_DAY_IS_KITCHEN_NEED;
                 }else if(user.getTelegramState() == CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
                     telegramState = CONTINUOUS_IS_KITCHEN_NEED;
-                }else{
+                }else if(user.getTelegramState() == RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED){
                     telegramState = RECURRING_IS_KITCHEN_NEED;
                 }
             }
@@ -73,17 +82,35 @@ public enum TelegramState {
                     telegramState = ONE_DAY_SELECT_DATE;
                 }else if(user.getTelegramState() == CONTINUOUS_IS_WORKPLACE_ATTRIBUTES_NEED){
                     telegramState = CONTINUOUS_SELECT_DATE;
-                }else{
+                }else if(user.getTelegramState() == RECURRING_IS_WORKPLACE_ATTRIBUTES_NEED){
                     telegramState = RECURRING_SELECT_WEEK_DAY;
                 }
             }
             case "REPORT" -> telegramState = REPORT;
-            case "USER_REPORT" -> telegramState = USER_REPORT_DEFINE_BOOKING_FROM;
-            case "ALL_USER_REPORT" -> telegramState = ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM;
-            case "OFFICES_REPORT" -> telegramState = ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM;
-            case "CITY_REPORT" -> telegramState = CITY_REPORT_DEFINE_ID;
-            case "SINGLE_OFFICE_REPORT" -> telegramState = OFFICE_REPORT_DEFINE_ID;
-            case "FLOOR_REPORT" -> telegramState = FLOOR_REPORT_DEFINE_FLOOR;
+            case "USER_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = USER_REPORT_DEFINE_BOOKING_FROM;
+            }
+            case "ALL_USER_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM;
+            }
+            case "OFFICES_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM;
+            }
+            case "CITY_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = CITY_REPORT_DEFINE_ID;
+            }
+            case "SINGLE_OFFICE_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = OFFICE_REPORT_DEFINE_ID;
+            }
+            case "FLOOR_REPORT" -> {
+                if(user.getTelegramState() == REPORT)
+                    telegramState = FLOOR_REPORT_DEFINE_FLOOR;
+            }
 
             case "EDIT_INFORMATION" -> telegramState = EDIT_INFORMATION;
             case "EDIT_FIRSTNAME" -> telegramState = EDIT_FIRSTNAME;
@@ -179,8 +206,11 @@ public enum TelegramState {
             case RECURRING_ASSIGN_START_WEEKDAY -> RECURRING_DEFINE_WEEKS;
             case RECURRING_ASSIGN_END_WEEKDAY -> RECURRING_ASSIGN_START_WEEKDAY;
             case RECURRING_SHOW_WORKPLACES -> RECURRING_ASSIGN_END_WEEKDAY;
-            case REPORT, CHECK_PHONE_NUMBER, EDIT_INFORMATION, UPDATE_PHONE_NUMBER  -> SETTINGS;
-            case USER_REPORT_DEFINE_BOOKING_FROM, ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM, FLOOR_REPORT_DEFINE_FLOOR, CITY_REPORT_DEFINE_ID, OFFICE_REPORT_DEFINE_ID -> REPORT;
+            case REPORT, CHECK_PHONE_NUMBER, EDIT_INFORMATION, UPDATE_PHONE_NUMBER, CHOOSE_LANGUAGE, SET_LANGUAGE -> SETTINGS;
+            case USER_REPORT_DEFINE_BOOKING_FROM, ALL_USER_REPORT_DEFINE_CREATE_DATE_FROM, FLOOR_REPORT_DEFINE_FLOOR, ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM,
+                    CITY_REPORT_DEFINE_ID, OFFICE_REPORT_DEFINE_ID, GET_USER_REPORT, GET_ALL_USER_REPORT, GET_ALL_OFFICE_REPORT,
+                    GET_CITY_REPORT, GET_FLOOR_REPORT, GET_OFFICE_REPORT -> REPORT;
+            case ALL_OFFICE_REPORT_DEFINE_BOOKING_TO -> ALL_OFFICE_REPORT_DEFINE_BOOKING_FROM;
             case FLOOR_REPORT_DEFINE_BOOKING_FROM -> FLOOR_REPORT_DEFINE_FLOOR;
             case CITY_REPORT_DEFINE_BOOKING_FROM -> CITY_REPORT_DEFINE_ID;
             case OFFICE_REPORT_DEFINE_BOOKING_FROM -> OFFICE_REPORT_DEFINE_ID;

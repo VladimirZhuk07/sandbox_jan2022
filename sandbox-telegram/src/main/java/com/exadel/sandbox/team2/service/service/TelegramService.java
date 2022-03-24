@@ -11,7 +11,7 @@ public interface TelegramService {
 
     SendMessage getCountries(String chatId, String message, String data);
 
-    SendMessage getCities(String chatId, String message, String country);
+    SendMessage getCities(String chatId, String message, String country, User user);
 
     SendMessage setBookingType(String chatId, String message, String[][] titles, String[][] commands, String city);
 

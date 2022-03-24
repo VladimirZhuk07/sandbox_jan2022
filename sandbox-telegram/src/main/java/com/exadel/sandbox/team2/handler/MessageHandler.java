@@ -44,6 +44,7 @@ public class MessageHandler implements BaseHandler {
   public SendMessage handleSendMessage(Update update, User user) {
     String chatId = utils.getChatId(update);
     SendMessage sendMessage;
+    boolean error = false;
     if(user.getTelegramState() == null)
       return utils.getSendMessage(chatId, "Command not found");
     String data = update.getMessage().getText();
@@ -103,9 +104,13 @@ public class MessageHandler implements BaseHandler {
       case CHECK_EDIT_FIRSTNAME, CHECK_EDIT_LASTNAME, CHECK_EDIT_PASSWORD  -> sendMessage = telegramService.editAccountInformation(chatId, data, user);
 
 
-      default -> sendMessage = utils.getSendMessage(chatId, "[MH] -> Command not found");
+      default -> {
+        error = true;
+        sendMessage = utils.getSendMessage(chatId, "[MH] -> Command not found");
+      }
     }
-    userService.save(user);
+    if(!error)
+      userService.save(user);
     return sendMessage;
   }
 

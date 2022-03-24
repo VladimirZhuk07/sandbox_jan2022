@@ -244,7 +244,7 @@ public class TelegramReportServiceImpl implements TelegramReportService {
                 .append(" to ")
                 .append(bookDateTo)
                 .append(" there is no any information. You can try again, choosing another period of time. \uD83E\uDDF8");
-        return utils.getSendMessage(chatId, builder.toString());
+        return utils.getSendMessage(chatId, builder.toString(), new String[][]{{"⬅ ️Back To Menu"}}, new String[][]{{"Back"}});
     }
 
     private Date setDefaultDateFromIfNull(Date dateFrom) {
@@ -258,6 +258,6 @@ public class TelegramReportServiceImpl implements TelegramReportService {
     private SendMessage byeMessage(String chatId, String typeOfReport) {
         StringBuilder builder = new StringBuilder();
         builder.append("There is your report on ").append(typeOfReport).append(", you are welcome!\nHave a nice day to you \uD83E\uDDF8☘️");
-        return utils.getSendMessage(chatId, builder.toString());
+        return utils.getSendMessage(chatId, builder.toString(), new String[][]{{"⬅ ️Back To Menu"}}, new String[][]{{"Back"}});
     }
 }
