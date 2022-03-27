@@ -1,26 +1,51 @@
 server:
-   port: 8080
-   servlet:
-      context-path: /api
+  port: 8080
+  servlet:
+    context-path: /api
 
 spring:
-   application:
-      name: sandbox
-   datasource:
-      url: ${JDBC_URL:jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
-      username: ${JDBC_USER:root}
-      password: ${JDBC_PASSWORD:root}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-   jpa:
-      generate-ddl: false
-      hibernate:
-         naming:
-            implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  application:
+    name: sandbox
+  datasource:
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/sandbox?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${JDBC_USER:root}
+    password: ${JDBC_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    generate-ddl: false
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  profiles:
+    active: dev
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
 logging:
-   level:
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-      org.hibernate.SQL: DEBUG
-      org.springframework.web: DEBUG
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.SQL: DEBUG
+    org.springframework.web: DEBUG
+
+notification:
+  mail:
+    username: ${MAIL_USERNAME:bookingServiceExadelTeam2@gmail.com}
+    password: ${MAIL_PASSWORD:AzizVladTeam2}
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls: true
+
+authorization:
+   secret: fgjdfhgjrfhsgkjhsdighehrgfsjhgfkdsjhuerghjfjdgsjkfhs
+   expiration: 2
+
+language:
+  english: en_EN
+  belarusian: by_BY
+  uzbek: uz_UZ
+  russian: ru_RU
 

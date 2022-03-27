@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar sandbox-web/target/sandbox-web-0.0.1-SNAPSHOT.jar
